@@ -1,0 +1,84 @@
+# Python specific
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+*.env
+*.venv
+ENV/
+env/
+venv/
+ENV.bak/
+env.bak/
+venv.bak/
+*.egg
+*.egg-info/
+.eggs/
+dist/
+build/
+*.log
+*.pot
+*.mo
+*.py[cod]
+*.sqlite3
+*.db
+
+# Django specific
+*.local_settings.py
+local_settings.py
+db.sqlite3
+/media/
+staticfiles/
+*.migrations/
+secrets.json
+instance/
+*.sage.py
+.env
+
+# Django static files
+static/
+
+# Ignore the local SQLite database
+*.sqlite3
+
+# Ignore PyCharm project files
+.idea/
+
+# Ignore Visual Studio Code settings
+.vscode/
+
+# macOS specific
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Thumbnails
+._*
+
+# Archives
+*.zip
+*.tar.gz
+*.rar
+*.tar.bz2
+
+# Virtualenv
+venv/
+ENV/
+env/
+bin/
+include/
+lib/
+local/
+venv.bak/
+
+# Heroku specific files
+*.mo
+*.pot
+
+# pipenv
+Pipfile.lock
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
