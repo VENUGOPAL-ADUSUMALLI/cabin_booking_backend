@@ -1,5 +1,7 @@
 import logging
 from collections import defaultdict
+from dataclasses import dataclass
+
 from oauth2_provider.models import Application
 
 from django.contrib.auth.hashers import check_password
@@ -7,6 +9,8 @@ from django.core.exceptions import ObjectDoesNotExist
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.response import Response
 from rest_framework import status
+
+from cabin_booking.databases.user_authentication_db import
 from cabin_booking.exception import InvalidUserException, UserAlreadyExistsException, InvalidPasswordException, \
     InvalidEmailExceptiom
 from cabin_booking.models import *
@@ -15,6 +19,11 @@ from django.conf import settings
 logger = logging.getLogger(__name__)
 
 
+
+@dataclass
+class UserDTO:
+    name: str
+    email: str
 def get_tokens_for_user(user):
     refresh = RefreshToken.for_user(user)
     return {
@@ -33,7 +42,7 @@ def get_user_object(email):
     )
 
 
-def check_user_login(email: str, password: str) -> dict:
+def check_user_login(email: str, password: str) -> UserDTO:
     try:
         user = User.objects.get(email=email)
     except User.DoesNotExist:
@@ -42,15 +51,19 @@ def check_user_login(email: str, password: str) -> dict:
     if not user.check_password(password):
         logger.warning(f"Failed login attempt:Invalid password for email {email}")
         raise InvalidPasswordException("Invalid Password (please check your password)")
-    user_dict = {
-        "first_name": user.first_name,
-        "last_name": user.last_name,
-        "team_name": user.team_name,
-        "contact_number": user.contact_number,
-        "email": user.email,
-        "tokens": get_tokens_for_user(user)
-    }
-    return user_dict
+    return UserDTO(
+        name=user.first_name,
+        email=user.email
+    )
+    # user_dict = {
+    #     "first_name": user.first_name,
+    #     "last_name": user.last_name,
+    #     "team_name": user.team_name,
+    #     "contact_number": user.contact_number,
+    #     "email": user.email,
+    #     "tokens": get_tokens_for_user(user)
+    # }
+    # return user_dict
 
 
 def create_user_for_signup(email, username, password, first_name, last_name, team_name, contact_number):
@@ -72,3 +85,7 @@ def update_user_password(email, new_password, confirm_password):
         return Response({"message": "password Updated Successfully"}, status=status.HTTP_200_OK)
     except:
         raise InvalidEmailExceptiom("Invalid Email id")
+
+# user = check_user_login(1, 2)
+# name = user.name
+# email = user.email

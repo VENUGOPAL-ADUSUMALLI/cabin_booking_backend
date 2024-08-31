@@ -1,8 +1,9 @@
-from cabin_booking.exception import InvalidUserException
+from cabin_booking.exception import InvalidUserException, InvalidPasswordException
 from cabin_booking.models import *
+from cabin_booking.utils import check_user_login, UserDTO
 
 
-class UserDB():
+class UserDB:
     def __init__(self):
         pass
 
@@ -10,6 +11,15 @@ class UserDB():
     def get_user_id(email):
         try:
             user = User.objects.get(email=email)
-            return user
+            return user.id
         except User.DoesNotExist:
             raise InvalidUserException()
+
+    @staticmethod
+    def check_user_login(email, password):
+        try:
+            user = User.objects.get(email=email)
+        except User.DoesNotExist:
+            raise InvalidUserException()
+        return  user.check_password(password)
+
