@@ -11,7 +11,9 @@ class UserDB:
     def get_user_id(email):
         try:
             user = User.objects.get(email=email)
-            return user.id
+            return str(user.user_id)
+            # print(user.user_id)
+
         except User.DoesNotExist:
             raise InvalidUserException()
 

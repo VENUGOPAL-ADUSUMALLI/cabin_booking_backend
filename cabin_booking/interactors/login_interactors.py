@@ -1,16 +1,23 @@
 from django.contrib.auth.handlers.modwsgi import check_password
 
-from cabin_booking.databases.user_authentication_db import user_authentication
+from cabin_booking.databases.user_authentication_db import UserAuthentication
 from cabin_booking.databases.user_db import UserDB
 from cabin_booking.exception import InvalidPasswordException
 
 
-class Interactor:
-    @staticmethod
-    def login_interactor(email, password):
-        check_password_for_user = UserDB.check_user_login(email,password)
+class LoginInteractor:
+    def __init__(self, storage: UserDB):
+        self.storage = storage
+
+    def login_interactor(self, email, password):
+        check_password_for_user = self.storage.check_user_login(email, password)
         if not check_password_for_user:
             raise InvalidPasswordException()
-        user_id = UserDB.get_user_id(email)
-        return user_authentication.create_access_token(user_id)
+        user_id = self.storage.get_user_id(email)
+        access_token = UserAuthentication().create_access_token(user_id)
+        refresh_token = UserAuthentication().create_refresh_token(access_token,user_id)
+        return {
+            "access_token": access_token,
+            "refresh_token": refresh_token
+        }
 

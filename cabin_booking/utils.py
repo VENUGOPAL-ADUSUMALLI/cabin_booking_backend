@@ -10,7 +10,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.response import Response
 from rest_framework import status
 
-from cabin_booking.databases.user_authentication_db import
+# from cabin_booking.databases.user_authentication_db import
 from cabin_booking.exception import InvalidUserException, UserAlreadyExistsException, InvalidPasswordException, \
     InvalidEmailExceptiom
 from cabin_booking.models import *
@@ -89,3 +89,11 @@ def update_user_password(email, new_password, confirm_password):
 # user = check_user_login(1, 2)
 # name = user.name
 # email = user.email
+
+def create_access_token():
+    from cabin_booking.databases.user_db import UserDB
+    from cabin_booking.interactors.login_interactors import LoginInteractor
+    storage = UserDB()
+    a = LoginInteractor(storage)
+    b = a.login_interactor("yaswanthram2006@gmail.com", "87654321")
+    return b

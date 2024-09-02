@@ -136,7 +136,7 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'cabin_booking.User'
-Application_name = 'cabin_booking'
-ClientId = "s8o4OHGhpZDdHnSwirlyCIhr1HYafB4UsOTtnAVnj"
-ClientSecret = "ZjL7Mo8pL3XZUi2V1u26lL8Wh1Z6ZX7JoVV3O8MPsxwmwQXW4lR9CEom3j3d9onyxbiffEleTwig9areLEDy9PqsC9OjJNDI7HTL6IEtiALAWleGxTumBdQuipXo"
+APPLICATION_NAME = 'cabin_booking'
+CLIENT_ID = "s8o4OHGhpZDdHnSwirlyCIhr1HYafB4UsOTtnAVnj"
+CLIENT_SECRET = "ZjL7Mo8pL3XZUi2V1u26lL8Wh1Z6ZX7JoVV3O8MPsxwmwQXW4lR9CEom3j3d9onyxbiffEleTwig9areLEDy9PqsC9OjJNDI7HTL6IEtiALAWleGxTumBdQuipXo"
 ACCESS_TOKEN_EXPIRE_SECONDS = 3600

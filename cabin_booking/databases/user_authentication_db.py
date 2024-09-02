@@ -2,6 +2,7 @@ import logging
 from collections import defaultdict
 from os import access
 
+from django.core.exceptions import MultipleObjectsReturned
 from oauth2_provider.models import Application
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.conf import settings
@@ -15,32 +16,37 @@ from cabin_booking.databases.user_db import UserDB
 from cabin_booking_backend.asgi import application
 
 
-class user_authentication:
+class UserAuthentication:
     @staticmethod
     def create_application(user_id):
         app = Application.objects.create(
-            name=settings.Application_name,
+            name=settings.APPLICATION_NAME,
             client_type=Application.CLIENT_CONFIDENTIAL,
-            authrization_grant_type=Application.GRANT_PASSWORD,
+            authorization_grant_type=Application.GRANT_PASSWORD,
             user_id=user_id
         )
         return app
 
-    @staticmethod
-    def create_access_token(user_id):
+    def create_access_token(self, user_id):
+        try:
+            app = Application.objects.get(name=settings.APPLICATION_NAME,user_id=user_id)
+        except MultipleObjectsReturned:
+            app = self.create_application(user_id)
         expires = timezone.now() + timedelta(seconds=oauth2_settings.ACCESS_TOKEN_EXPIRE_SECONDS)
-        app = Application.objects.get(settings.Application_name)
         access_token = AccessToken.objects.create(
-            user=user_id,
+            user_id=user_id,
             scope='read write',
             expires=expires,
             token=uuid.uuid4().hex,
             application=app
         )
         return access_token
-    @staticmethod
-    def create_refresh_token(access_token, user_id):
-        app = Application.objects.get(settings.Application_name)
+
+    def create_refresh_token(self, access_token, user_id):
+        try:
+            app = Application.objects.get(name=settings.APPLICATION_NAME, user_id=user_id)
+        except MultipleObjectsReturned:
+            app = self.create_application(user_id)
         refresh_token = RefreshToken.objects.create(
             user_id=user_id,
             token=uuid.uuid4().hex,
