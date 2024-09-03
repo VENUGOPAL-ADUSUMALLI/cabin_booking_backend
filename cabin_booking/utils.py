@@ -12,7 +12,7 @@ from rest_framework import status
 
 # from cabin_booking.databases.user_authentication_db import
 from cabin_booking.exception import InvalidUserException, UserAlreadyExistsException, InvalidPasswordException, \
-    InvalidEmailExceptiom
+    InvalidEmailException
 from cabin_booking.models import *
 from django.conf import settings
 

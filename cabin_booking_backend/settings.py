@@ -140,3 +140,4 @@ APPLICATION_NAME = 'cabin_booking'
 CLIENT_ID = "s8o4OHGhpZDdHnSwirlyCIhr1HYafB4UsOTtnAVnj"
 CLIENT_SECRET = "ZjL7Mo8pL3XZUi2V1u26lL8Wh1Z6ZX7JoVV3O8MPsxwmwQXW4lR9CEom3j3d9onyxbiffEleTwig9areLEDy9PqsC9OjJNDI7HTL6IEtiALAWleGxTumBdQuipXo"
 ACCESS_TOKEN_EXPIRE_SECONDS = 3600
+# curl -X POST -d "grant_type=password&username=<your-username>&password=<your-password>&client_id=s8o4OHGhpZDdHnSwirlyCIhr1HYafB4UsOTtnAVnj&client_secret=ZjL7Mo8pL3XZUi2V1u26lL8Wh1Z6ZX7JoVV3O8MPsxwmwQXW4lR9CEom3j3d9onyxbiffEleTwig9areLEDy9PqsC9OjJNDI7HTL6IEtiALAWleGxTumBdQuipXo" http://<your-domain>/o/token/

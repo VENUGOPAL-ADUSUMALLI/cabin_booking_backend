@@ -28,9 +28,8 @@ class UserAuthentication:
         return app
 
     def create_access_token(self, user_id):
-        try:
-            app = Application.objects.get(name=settings.APPLICATION_NAME,user_id=user_id)
-        except MultipleObjectsReturned:
+        app = Application.objects.filter(name=settings.APPLICATION_NAME, user_id=user_id).first()
+        if not app:
             app = self.create_application(user_id)
         expires = timezone.now() + timedelta(seconds=oauth2_settings.ACCESS_TOKEN_EXPIRE_SECONDS)
         access_token = AccessToken.objects.create(
@@ -43,9 +42,8 @@ class UserAuthentication:
         return access_token
 
     def create_refresh_token(self, access_token, user_id):
-        try:
-            app = Application.objects.get(name=settings.APPLICATION_NAME, user_id=user_id)
-        except MultipleObjectsReturned:
+        app = Application.objects.filter(name=settings.APPLICATION_NAME, user_id=user_id).first()
+        if not app:
             app = self.create_application(user_id)
         refresh_token = RefreshToken.objects.create(
             user_id=user_id,
