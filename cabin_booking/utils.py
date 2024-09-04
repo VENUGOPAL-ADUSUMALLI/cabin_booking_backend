@@ -95,10 +95,10 @@ def create_access_token():
     from cabin_booking.interactors.login_interactors import LoginInteractor
     storage = UserDB()
     a = LoginInteractor(storage)
-    b = a.login_interactor("yaswanthram2006@gmail.com", "87654321")
+    b = a.login_interactor("", "87654321")
     return b
 
 def get_user_id():
-    a = User.objects.get(email="venugopaladusumalli1304@gmail.com")
+    a = User.objects.get(email="yaswanthram2006@gmail.com")
     print(a.__dict__)
     print(a.user_id)

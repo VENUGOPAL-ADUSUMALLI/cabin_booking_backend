@@ -22,7 +22,7 @@ from cabin_booking.responses.signup_interactor_response import SignupInteractorR
 def get_login_interactor_view(request):
     email = request.data.get("email")
     password = request.data.get("password")
-    response = LoginInteractor(storage=UserDB(),response=LoginInteractorResponse()).login_interactor(email, password)
+    response = LoginInteractor(storage=UserDB(), response=LoginInteractorResponse()).login_interactor(email, password)
     return response
 
 
@@ -38,7 +38,7 @@ def get_signup_interactor_view(request):
     contact_number = request.data.get("contact_number")
     team_name = request.data.get("team_name")
 
-    response = SignupInteractor(storage=UserDB(),response=SignupInteractorResponse()).signup_interactor(
+    response = SignupInteractor(storage=UserDB(), response=SignupInteractorResponse()).signup_interactor(
         email=email, password=password,
         username=username, first_name=first_name,
         last_name=last_name,
@@ -49,11 +49,11 @@ def get_signup_interactor_view(request):
 
 
 @api_view(['GET'])
-@authentication_classes([])
-@permission_classes([])
 def get_user_profile_api_view(request):
     user_id = request.data.get('user_id')
     if not user_id:
         return HttpResponse({'error_code': "invalid_user", "error_message": "invalid User"})
-    user_profile_dto = ProfileInteractor(storage=UserDB(),response=ProfileInteractorResponse()).get_user_details_profile_interactor(user_id=user_id)
+    user_profile_dto = ProfileInteractor(storage=UserDB(),
+                                         response=ProfileInteractorResponse()).get_user_details_profile_interactor(
+        user_id=user_id)
     return user_profile_dto

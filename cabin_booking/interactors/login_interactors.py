@@ -20,11 +20,10 @@ class LoginInteractor:
         try:
             user_login = self.storage.check_user_login(email, password)
             if not user_login:
-                raise InvalidPasswordException()
+                return  self.response.invalid_password_exception_response()
+
         except InvalidUserException:
-           self.response.invalid_user_response()
-        except InvalidPasswordException:
-          self.response.invalid_password_exception_response()
+           return self.response.invalid_user_response()
         user_id = self.storage.get_user_id(email)
         access_token = UserAuthentication().create_access_token(user_id)
         refresh_token = UserAuthentication().create_refresh_token(access_token, user_id)
