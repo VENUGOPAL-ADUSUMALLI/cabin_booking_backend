@@ -17,11 +17,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from cabin_booking.views import get_login_interactor_view, get_signup_interactor_view, get_user_profile_api_view
+from cabin_booking.views import get_login_interactor_view, get_signup_interactor_view, get_user_profile_api_view, \
+    get_update_password_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('user_account/login/v1/', get_login_interactor_view),
     path('user_account/signup/v1', get_signup_interactor_view),
-    path('user/profile/v1',get_user_profile_api_view)
+    path('user/profile/v1', get_user_profile_api_view),
+    path("user_accounts/update_password/v1", get_update_password_view)
 ]

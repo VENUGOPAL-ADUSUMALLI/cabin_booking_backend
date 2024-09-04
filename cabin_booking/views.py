@@ -1,4 +1,5 @@
 import json
+from http.client import responses
 
 from django.shortcuts import render
 from oauth2_provider.contrib.rest_framework import OAuth2Authentication
@@ -11,6 +12,8 @@ from cabin_booking.databases.user_db import UserDB
 from cabin_booking.interactors.login_interactors import LoginInteractor
 from cabin_booking.interactors.profile_interactor import ProfileInteractor
 from cabin_booking.interactors.signup_interactor import SignupInteractor
+from cabin_booking.interactors.update_password_interactor import UpdatePasswordInteractor
+from cabin_booking.interactors.update_password_response import UpdatePasswordResponse
 from cabin_booking.responses.login_interactor_response import LoginInteractorResponse
 from cabin_booking.responses.profile_interactor_response import ProfileInteractorResponse
 from cabin_booking.responses.signup_interactor_response import SignupInteractorResponse
@@ -57,3 +60,15 @@ def get_user_profile_api_view(request):
                                          response=ProfileInteractorResponse()).get_user_details_profile_interactor(
         user_id=user_id)
     return user_profile_dto
+
+
+@api_view(['POST'])
+def get_update_password_view(request):
+    email = request.data.get("email")
+    password = request.data.get('password')
+    new_password = request.data.get('confirm_password')
+    response = UpdatePasswordInteractor(storage=UserDB(),
+                                         response=UpdatePasswordResponse()).update_password_interactor(email=email,
+                                                                                                       password=password,
+                                                                                                       new_password=new_password)
+    return response

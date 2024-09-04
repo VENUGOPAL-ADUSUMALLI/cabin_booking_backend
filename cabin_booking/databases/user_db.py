@@ -32,18 +32,27 @@ class UserDB:
             raise UserAlreadyExistsException()
         try:
             user = User.objects.create_user(email=email, password=password, username=username, first_name=first_name,
-                                        last_name=last_name, team_name=team_name, contact_number=contact_number)
+                                            last_name=last_name, team_name=team_name, contact_number=contact_number)
 
         except Exception as e:
             raise UniqueConstraintException(message=e)
         return user
+
     @staticmethod
     def profile(user_id):
         user_details = User.objects.get(user_id=user_id)
         return user_details
-    # @staticmethod
-    # def get_email(email):
-    #     try:
-    #         user = User.objects.get(email=email)
-    #     except User.DoesNotExist:
-    #         raise InvalidUserException()
+
+    @staticmethod
+    def get_email(email):
+        try:
+            user = User.objects.get(email=email)
+        except User.DoesNotExist:
+            raise InvalidUserException()
+        return user
+
+    @staticmethod
+    def setup_newpassword(user, new_password):
+        user.set_password(new_password)
+        user_save_password = user.save()
+        return user_save_password
