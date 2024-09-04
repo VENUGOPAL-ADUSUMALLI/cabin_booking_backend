@@ -1,0 +1,27 @@
+import json
+
+from django.http import HttpResponse
+
+class LoginInteractorResponse:
+    @staticmethod
+    def invalid_user_response():
+        return HttpResponse(json.dumps(
+            {
+                "error_code":400,
+                "error_message":"Invalid email id (don't have an account please signup to continue)"
+            }),status=400)
+    @staticmethod
+    def invalid_password_exception_response():
+        return HttpResponse(json.dumps({
+            "error_code":400,
+            "error_message":"Invalid Password (please check your password)"
+        }),status=400)
+    @staticmethod
+    def user_login_dto_response(user_login_dto):
+        user_login_dict = {
+            "access_token": str(user_login_dto.access_token),
+            "refresh_token": str(user_login_dto.refresh_token)
+        }
+        return HttpResponse(json.dumps(user_login_dict),status=200)
+
+

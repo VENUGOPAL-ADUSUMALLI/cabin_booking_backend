@@ -1,4 +1,5 @@
-from cabin_booking.exception import InvalidUserException, InvalidPasswordException, UserAlreadyExistsException
+from cabin_booking.exception import InvalidUserException, InvalidPasswordException, UserAlreadyExistsException, \
+    UniqueConstraintException
 from cabin_booking.models import *
 from cabin_booking.utils import check_user_login, UserDTO
 
@@ -29,13 +30,17 @@ class UserDB:
     def create_user_for_signup(email, password, username, first_name, last_name, team_name, contact_number):
         if User.objects.filter(email=email).exists():
             raise UserAlreadyExistsException()
-        user = User.objects.create_user(email=email, password=password, username=username, first_name=first_name,
+        try:
+            user = User.objects.create_user(email=email, password=password, username=username, first_name=first_name,
                                         last_name=last_name, team_name=team_name, contact_number=contact_number)
+
+        except Exception as e:
+            raise UniqueConstraintException(message=e)
         return user
     @staticmethod
     def profile(user_id):
-        user = User.objects.get(user_id=user_id)
-        return user
+        user_details = User.objects.get(user_id=user_id)
+        return user_details
     # @staticmethod
     # def get_email(email):
     #     try:

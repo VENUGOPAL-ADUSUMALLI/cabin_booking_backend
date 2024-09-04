@@ -436,7 +436,7 @@
     }
   },
   "paths": {
-    "/user/accounts/login": {
+    "/user_accounts/login/v1": {
       "get": {
         "summary": "User login and verification",
         "operationId": "user_login",
@@ -469,7 +469,7 @@
         }
       }
     },
-    "/user/accounts/signup": {
+    "/user_account/signup/v1": {
       "post": {
         "summary": "User accounts signUp",
         "operationId": "user_signup",

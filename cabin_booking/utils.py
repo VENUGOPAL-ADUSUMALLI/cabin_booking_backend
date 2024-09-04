@@ -84,7 +84,7 @@ def update_user_password(email, new_password, confirm_password):
         user.save()
         return Response({"message": "password Updated Successfully"}, status=status.HTTP_200_OK)
     except:
-        raise InvalidEmailExceptiom("Invalid Email id")
+        raise InvalidEmailException("Invalid Email id")
 
 # user = check_user_login(1, 2)
 # name = user.name
@@ -97,3 +97,8 @@ def create_access_token():
     a = LoginInteractor(storage)
     b = a.login_interactor("yaswanthram2006@gmail.com", "87654321")
     return b
+
+def get_user_id():
+    a = User.objects.get(email="venugopaladusumalli1304@gmail.com")
+    print(a.__dict__)
+    print(a.user_id)
