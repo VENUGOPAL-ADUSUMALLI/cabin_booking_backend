@@ -488,7 +488,7 @@
         }
       }
     },
-    "/user/accounts/update_password": {
+    "/user_accounts/update_password/v1": {
       "post": {
         "summary": "Update User Password",
         "operationId": "update_user_password",

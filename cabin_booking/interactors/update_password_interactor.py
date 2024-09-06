@@ -1,8 +1,7 @@
-from django.http import HttpResponse
-
 from cabin_booking.databases.user_db import UserDB
-from cabin_booking.exception import InvalidPasswordException, InvalidUserException
-from cabin_booking.interactors.update_password_response import UpdatePasswordResponse
+from cabin_booking.exception import InvalidUserException
+from cabin_booking.responses.update_password_response import UpdatePasswordResponse
+from cabin_booking.models import User
 
 
 class UpdatePasswordInteractor:
@@ -12,10 +11,12 @@ class UpdatePasswordInteractor:
 
     def update_password_interactor(self, email, password, new_password):
         try:
-            user = self.storage.get_email(email)
+            is_correct_password = self.storage.check_password_user(email, password)
+            if is_correct_password is False:
+                return self.response.invalid_password_response()
         except InvalidUserException:
             return self.response.invalid_user_response()
-        if new_password != password:
-            return self.response.invalid_password_response()
-        self.storage.setup_newpassword(user,new_password)
+        user_id = self.storage.get_user_id(email)
+        self.storage.setup_newpassword(user_id, new_password)
         return self.response.password_update_successfull_response()
+

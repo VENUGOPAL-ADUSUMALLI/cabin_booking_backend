@@ -34,3 +34,6 @@ class ProfileDTO:
     last_name: str
     team_name: str
     contact_number: str
+@dataclass
+class UserPasswordUpdateDTo:
+    user_id : str

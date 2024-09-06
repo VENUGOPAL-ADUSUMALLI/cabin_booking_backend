@@ -16,89 +16,39 @@ from cabin_booking.exception import InvalidUserException, UserAlreadyExistsExcep
 from cabin_booking.models import *
 from django.conf import settings
 
-logger = logging.getLogger(__name__)
 
 
 
-@dataclass
-class UserDTO:
-    name: str
-    email: str
-def get_tokens_for_user(user):
-    refresh = RefreshToken.for_user(user)
-    return {
-        'refresh': str(refresh),
-        'access': str(refresh.access_token)
-    }
 
-
-def get_user_object(email):
-    user = User.objects.get(email=email)
-    app = Application.objects.create(
-        name = settings.Application_name,
-        client_type = Application.CLIENT_CONFIDENTIAL,
-        authorization_grant_type = Application.GRANT_PASSWORD,
-        user = user
-    )
-
-
-def check_user_login(email: str, password: str) -> UserDTO:
-    try:
-        user = User.objects.get(email=email)
-    except User.DoesNotExist:
-        logger.warning(f"Failed login attempt: Invalid email {email}")
-        raise InvalidUserException("Invalid email id (don't have an account please signup to continue)")
-    if not user.check_password(password):
-        logger.warning(f"Failed login attempt:Invalid password for email {email}")
-        raise InvalidPasswordException("Invalid Password (please check your password)")
-    return UserDTO(
-        name=user.first_name,
-        email=user.email
-    )
-    # user_dict = {
-    #     "first_name": user.first_name,
-    #     "last_name": user.last_name,
-    #     "team_name": user.team_name,
-    #     "contact_number": user.contact_number,
-    #     "email": user.email,
-    #     "tokens": get_tokens_for_user(user)
-    # }
-    # return user_dict
-
-
-def create_user_for_signup(email, username, password, first_name, last_name, team_name, contact_number):
-    if User.objects.filter(email=email).exists():
-        raise UserAlreadyExistsException("you have an account please login to continue")
-
-    user = User.objects.create_user(email=email, password=password, username=username, first_name=first_name,
-                                    last_name=last_name, team_name=team_name, contact_number=contact_number)
-    return get_tokens_for_user(user)
-
-
-def update_user_password(email, new_password, confirm_password):
-    try:
-        user = User.objects.get(email=email)
-        if new_password != confirm_password:
-            raise InvalidPasswordException("password Doesn't match")
-        user.set_password(new_password)
-        user.save()
-        return Response({"message": "password Updated Successfully"}, status=status.HTTP_200_OK)
-    except:
-        raise InvalidEmailException("Invalid Email id")
-
-# user = check_user_login(1, 2)
-# name = user.name
-# email = user.email
-
-def create_access_token():
-    from cabin_booking.databases.user_db import UserDB
-    from cabin_booking.interactors.login_interactors import LoginInteractor
-    storage = UserDB()
-    a = LoginInteractor(storage)
-    b = a.login_interactor("", "87654321")
-    return b
 
 def get_user_id():
-    a = User.objects.get(email="yaswanthram2006@gmail.com")
-    print(a.__dict__)
-    print(a.user_id)
+    a = User.objects.all().count()
+    print(a)
+    # print(a.user_id)
+    # a.set_password(password)
+    # a.save()
+    # print(a.check_password(password))
+
+
+def get_cabin_details():
+    cabin_details = Cabin.objects.all().select_related("floor").order_by('floor__order')
+    print(cabin_details)
+    floor_wise_cabins_list = []
+    floor_id_wise_cabins_list = defaultdict(list)
+    floor_id_wise_name = {}
+    for each_cabins in cabin_details:
+        cabin_dict = {
+            "cabin_id": str(each_cabins.id),
+            "name": each_cabins.name,
+            "description": each_cabins.description
+        }
+        floor_id_wise_cabins_list[str(each_cabins.floor_id)].append(cabin_dict)
+        floor_id_wise_name[str(each_cabins.floor_id)] = each_cabins.floor_name
+
+    for floor_id, cabin_list in floor_id_wise_cabins_list:
+        cabin_dict = {
+            "floor": floor_id_wise_name[floor_id],
+            'cabins': cabin_list
+        }
+        floor_wise_cabins_list.append(cabin_dict)
+    return floor_wise_cabins_list

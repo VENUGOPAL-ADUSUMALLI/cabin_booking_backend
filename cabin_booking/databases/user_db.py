@@ -1,7 +1,9 @@
+from django.contrib.auth.hashers import check_password
+
+from cabin_booking.databases.dtos import UserPasswordUpdateDTo
 from cabin_booking.exception import InvalidUserException, InvalidPasswordException, UserAlreadyExistsException, \
     UniqueConstraintException
 from cabin_booking.models import *
-from cabin_booking.utils import check_user_login, UserDTO
 
 
 class UserDB:
@@ -44,15 +46,15 @@ class UserDB:
         return user_details
 
     @staticmethod
-    def get_email(email):
+    def check_password_user(email,password):
         try:
             user = User.objects.get(email=email)
         except User.DoesNotExist:
             raise InvalidUserException()
-        return user
+        return user.check_password(password)
 
     @staticmethod
-    def setup_newpassword(user, new_password):
+    def setup_newpassword(user_id, new_password):
+        user = User.objects.get(user_id = user_id)
         user.set_password(new_password)
-        user_save_password = user.save()
-        return user_save_password
+        user.save()

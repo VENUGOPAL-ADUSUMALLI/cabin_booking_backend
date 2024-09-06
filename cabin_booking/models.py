@@ -21,6 +21,7 @@ class User(AbstractUser,CreateUpdateTimeDetails):
     team_name = models.CharField(max_length=20)
     contact_number = models.CharField(max_length=10, null=True, blank=True)
     profile_pic = models.URLField(null=True, blank=True)
+    is_password_reset = models.BooleanField(default=True)
 
     def __str__(self):
         return f"{self.first_name} {self.last_name} from {self.team_name} team"
