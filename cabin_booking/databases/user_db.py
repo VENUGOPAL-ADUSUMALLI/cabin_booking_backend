@@ -1,6 +1,6 @@
-from django.contrib.auth.hashers import check_password
 
-from cabin_booking.databases.dtos import UserPasswordUpdateDTo
+
+from cabin_booking.databases.dtos import UserPasswordUpdateDTO, ProfileDTO
 from cabin_booking.exception import InvalidUserException, InvalidPasswordException, UserAlreadyExistsException, \
     UniqueConstraintException
 from cabin_booking.models import *
@@ -21,11 +21,12 @@ class UserDB:
             raise InvalidUserException()
 
     @staticmethod
-    def check_user_login(email, password):
+    def validate_password(email, password):
         try:
             user = User.objects.get(email=email)
         except User.DoesNotExist:
             raise InvalidUserException()
+
         return user.check_password(password)
 
     @staticmethod
@@ -38,23 +39,47 @@ class UserDB:
 
         except Exception as e:
             raise UniqueConstraintException(message=e)
-        return user
+        user_dto = ProfileDTO(
+            email=user.email,
+            first_name=user.first_name,
+            last_name=user.last_name,
+            username=user.username,
+            team_name=user.team_name,
+            contact_number=user.contact_number
+        )
+        return user_dto
 
     @staticmethod
     def profile(user_id):
         user_details = User.objects.get(user_id=user_id)
-        return user_details
-
-    @staticmethod
-    def check_password_user(email,password):
-        try:
-            user = User.objects.get(email=email)
-        except User.DoesNotExist:
-            raise InvalidUserException()
-        return user.check_password(password)
+        user_dto = ProfileDTO(
+            email=user_details.email,
+            first_name=user_details.first_name,
+            last_name=user_details.last_name,
+            username=user_details.username,
+            team_name=user_details.team_name,
+            contact_number=user_details.contact_number
+        )
+        return user_dto
 
     @staticmethod
     def setup_newpassword(user_id, new_password):
-        user = User.objects.get(user_id = user_id)
+        user = User.objects.get(user_id=user_id)
+        print(new_password)
         user.set_password(new_password)
         user.save()
+        user_dto = ProfileDTO(
+            email=user.email,
+            first_name=user.first_name,
+            last_name=user.last_name,
+            username=user.username,
+            team_name=user.team_name,
+            contact_number=user.contact_number
+        )
+        return user_dto
+    @staticmethod
+    def validate_user_id(user_id):
+        get_user = User.objects.get(user_id=user_id)
+        if not get_user:
+            raise InvalidUserException()
+

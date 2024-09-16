@@ -24,7 +24,7 @@ class User(AbstractUser,CreateUpdateTimeDetails):
     is_password_reset = models.BooleanField(default=True)
 
     def __str__(self):
-        return f"{self.first_name} {self.last_name} from {self.team_name} team"
+        return f"{self.first_name} {self.last_name} from {self.team_name} team {self.user_id}"
 
 
 class Floor(CreateUpdateTimeDetails):
@@ -59,7 +59,7 @@ class Booking(CreateUpdateTimeDetails):
     purpose = models.TextField()
 
     def __str__(self):
-        return f"{self.user} Booked {self.cabins}"
+        return f"{self.user} Booked {self.purpose}"
 
 
 class CabinBooking(CreateUpdateTimeDetails):
@@ -69,6 +69,9 @@ class CabinBooking(CreateUpdateTimeDetails):
 
     class Meta:
         unique_together = ('cabin', 'booking')
+
+    def __str__(self):
+        return f"{self.cabin} "
 
 
 class BookingSlot(CreateUpdateTimeDetails):

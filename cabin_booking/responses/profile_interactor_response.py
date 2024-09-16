@@ -14,7 +14,6 @@ class ProfileInteractorResponse:
     def user_details_dto_response(user_dto):
         user_profile_dict = {
             "email": user_dto.email,
-            "password": user_dto.password,
             "username": user_dto.username,
             "first_name": user_dto.first_name,
             "last_name": user_dto.last_name,

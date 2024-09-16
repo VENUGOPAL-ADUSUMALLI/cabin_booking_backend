@@ -19,7 +19,6 @@ class ProfileInteractor:
             return self.response.invalid_user_response()
         user_dto = ProfileDTO(
             email=user_details.email,
-            password=user_details.password,
             first_name=user_details.first_name,
             last_name=user_details.last_name,
             username=user_details.username,

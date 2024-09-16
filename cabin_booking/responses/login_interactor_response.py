@@ -7,13 +7,13 @@ class LoginInteractorResponse:
     def invalid_user_response():
         return HttpResponse(json.dumps(
             {
-                "error_code":400,
+                "error_code":'400',
                 "error_message":"Invalid email id (don't have an account please signup to continue)"
             }),status=400)
     @staticmethod
     def invalid_password_exception_response():
         return HttpResponse(json.dumps({
-            "error_code":400,
+            "error_code":'400',
             "error_message":"Invalid Password (please check your password)"
         }),status=400)
     @staticmethod
