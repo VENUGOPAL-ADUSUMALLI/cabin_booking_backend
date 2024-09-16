@@ -28,6 +28,7 @@ class ProfileDTO:
     last_name: str
     team_name: str
     contact_number: str
+    purpose : str =""
 @dataclass
 class UserPasswordUpdateDTO:
     user_id : str

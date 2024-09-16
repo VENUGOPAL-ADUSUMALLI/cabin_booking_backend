@@ -136,24 +136,40 @@ def get_floor_wise_cabins_list_utils():
         sorted_cabin_details_dto = sorted(cabin_details_dto, key=lambda x: order_types.index(x.cabin_type))
         each_dto.cabin = sorted_cabin_details_dto
         # print(each_dto)
+
+
 def get_cabin_details(cabin_id):
     cabins = Cabin.objects.filter(id=cabin_id).select_related("floor")
     for i in cabins:
         return f"name ={i.name},floor = {i.floor.name}"
 
+
 fixed_time_slots = []
 for each_hour in range(SLOT_BOOKING_START_TIME, SLOT_BOOKING_END_TIME):
     fixed_time_slots.append(time(each_hour, 0))
+
+
 def get_cabin():
-    cabin = Cabin.objects.get(id = "a99183d9-52b4-443a-b30e-9b189702249f")
-    print(cabin.name,cabin.floor)
+    cabin = Cabin.objects.get(id="a99183d9-52b4-443a-b30e-9b189702249f")
+    print(cabin.name, cabin.floor)
 
 
 def create_cabin_slots(cabin_id, start_date, end_date, purpose, user_id):
-    start_date = datetime.strptime(start_date,"%Y-%m-%d %H:%M")
+    start_date = datetime.strptime(start_date, "%Y-%m-%d %H:%M")
     end_date = datetime.strptime(end_date, "%Y-%m-%d %H:%M")
     create_user_booking = Booking.objects.create(user_id=user_id, purpose=purpose)
     create_cabin_bookings = CabinBooking.objects.create(cabin_id=cabin_id, booking=create_user_booking)
     create_time_slot = BookingSlot.objects.create(start_date_time=start_date, end_date_time=end_date,
                                                   cabin_booking=create_cabin_bookings)
     print(create_time_slot)
+
+
+def user_details(cabin_id, start_date_time, end_date_time):
+    cabin_slots = BookingSlot.objects.filter(start_date_time=start_date_time, end_date_time=end_date_time,
+                                             cabin_booking__cabin_id=cabin_id)
+    print(cabin_slots)
+    for each in cabin_slots:
+        print(each.cabin_booking.booking.user.first_name)
+        print(each.cabin_booking.booking.purpose)
+        print(each.start_date_time,each.end_date_time)
+

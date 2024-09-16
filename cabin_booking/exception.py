@@ -27,3 +27,7 @@ class SomethingWentWrongException(Exception):
 
 class InvalidCabinIDException(Exception):
     pass
+class InvalidUsernameException(Exception):
+    pass
+class InvalidUserDetailsException(Exception):
+    pass

@@ -187,20 +187,13 @@
           "cabin_id": {
             "type": "string"
           },
-          "purpose": {
-            "type": "string"
-          },
-          "slot_time": {
+          "start_date_time": {
             "type": "string",
-            "format": "time"
+            "format": "date-time"
           },
-          "start_date": {
+          "end_date-time": {
             "type": "string",
-            "format": "date"
-          },
-          "end_date": {
-            "type": "string",
-            "format": "date"
+            "format": "date-time"
           }
         },
         "required": [
@@ -219,7 +212,13 @@
       "schema": {
         "type": "object",
         "properties": {
-          "name": {
+          "username": {
+            "type": "string"
+          },
+          "firstname": {
+            "type": "string"
+          },
+          "lastname": {
             "type": "string"
           },
           "team_name": {
@@ -410,6 +409,9 @@
           },
           "contact_number": {
             "type": "string"
+          },
+          "purpose": {
+            "type": "string"
           }
         },
         "required": [
@@ -417,7 +419,8 @@
           "name",
           "team_name",
           "email",
-          "contact_number"
+          "contact_number",
+          "purpose"
         ]
       }
     }

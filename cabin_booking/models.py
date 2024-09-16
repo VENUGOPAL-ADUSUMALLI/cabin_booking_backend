@@ -79,3 +79,6 @@ class BookingSlot(CreateUpdateTimeDetails):
     start_date_time = models.DateTimeField()
     end_date_time = models.DateTimeField()
     cabin_booking = models.ForeignKey(CabinBooking, on_delete=models.CASCADE)
+    class Meta:
+        unique_together = ('start_date_time', 'end_date_time')
+

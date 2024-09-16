@@ -14,6 +14,8 @@ from cabin_booking.interactors.login_interactors import LoginInteractor
 from cabin_booking.interactors.profile_interactor import ProfileInteractor
 from cabin_booking.interactors.signup_interactor import SignupInteractor
 from cabin_booking.interactors.update_password_interactor import UpdatePasswordInteractor
+from cabin_booking.interactors.user_booked_slots_interactor import UserBookedSlotsInteractor
+from cabin_booking.interactors.user_profile_update_interactor import UserProfileUpdate
 from cabin_booking.responses.cabin_confirm_slots_response import ConfirmSlotResponse
 from cabin_booking.responses.cabin_details_response import CabinDetailsResponse
 from cabin_booking.responses.get_cabins_slots_response import CabinSlotsDetailsResponse
@@ -21,6 +23,7 @@ from cabin_booking.responses.update_password_response import UpdatePasswordRespo
 from cabin_booking.responses.login_interactor_response import LoginInteractorResponse
 from cabin_booking.responses.profile_interactor_response import ProfileInteractorResponse
 from cabin_booking.responses.signup_interactor_response import SignupInteractorResponse
+from cabin_booking.responses.user_booked_slots_response import UserBookedSlotResponse
 
 
 @api_view(['GET'])
@@ -118,4 +121,28 @@ def get_cabin_confirm_slot_view(request):
         start_date=start_date,
         end_date=end_date, purpose=purpose,
         user_id=user_id)
+    return response
+
+
+@api_view(["GET"])
+def get_user_booked_slots_view(request):
+    cabin_id = request.data.get('cabin_id')
+    start_date_time = request.data.get('start_date_time')
+    end_date_time = request.data.get('end_date_time')
+    response = UserBookedSlotsInteractor(storage=BookingDB(user_db_storage=UserDB()),
+                                         response=UserBookedSlotResponse()).user_booked_slot(
+        cabin_id=cabin_id, start_date_time=start_date_time, end_date_time=end_date_time)
+    return response
+
+
+@api_view(['GET'])
+def update_user_profile_view(request):
+    username = request.data.get('username')
+    first_name = request.data.get('firstname')
+    last_name = request.data.get('lastname')
+    contact_number = request.data.get('contact_number')
+    response = UserProfileUpdate(storage=UserDB()).update_user_profile_interactor(username=username,
+                                                                                  first_name=first_name,
+                                                                                  last_name=last_name,
+                                                                                  contact_number=contact_number)
     return response

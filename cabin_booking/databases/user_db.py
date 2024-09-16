@@ -1,8 +1,6 @@
-
-
 from cabin_booking.databases.dtos import UserPasswordUpdateDTO, ProfileDTO
 from cabin_booking.exception import InvalidUserException, InvalidPasswordException, UserAlreadyExistsException, \
-    UniqueConstraintException
+    UniqueConstraintException, InvalidUsernameException, InvalidUserDetailsException
 from cabin_booking.models import *
 
 
@@ -77,9 +75,28 @@ class UserDB:
             contact_number=user.contact_number
         )
         return user_dto
+
     @staticmethod
     def validate_user_id(user_id):
         get_user = User.objects.get(user_id=user_id)
         if not get_user:
             raise InvalidUserException()
 
+    @staticmethod
+    def validate_user_name(username):
+        try:
+            User.objects.get(username=username)
+        except User.DoesNotExist:
+            raise InvalidUsernameException()
+
+    @staticmethod
+    def validate_user_first_name(first_name, last_name, contact_number):
+        try:
+            User.objects.get(first_name=first_name, last_name=last_name, contact_number=contact_number)
+        except User.DoesNotExist:
+            raise InvalidUserDetailsException()
+
+    @staticmethod
+    def update_user_profile(username, first_name, last_name, contact_number):
+        user_profile_update = User.objects.filter(username=username, first_name=first_name, last_name=last_name,
+                                                  contact_number=contact_number)

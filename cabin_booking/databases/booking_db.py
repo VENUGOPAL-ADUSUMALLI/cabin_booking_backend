@@ -2,11 +2,12 @@ from datetime import datetime
 from typing import List
 from django.utils import timezone
 from cabin_booking.databases.cabin_db import CabinDB
-from cabin_booking.databases.dtos import CabinTimeSlotsDTO, TimeSlotsDTO
+from cabin_booking.databases.dtos import CabinTimeSlotsDTO, TimeSlotsDTO, ProfileDTO
 from cabin_booking.databases.user_db import UserDB
 from cabin_booking.exception import InvalidCabinIDException
 from cabin_booking.models import BookingSlot, Cabin, Booking, CabinBooking, User
 from cabin_booking.responses.cabin_confirm_slots_response import ConfirmSlotResponse
+from cabin_booking.utils import user_details
 
 
 class BookingDB:
@@ -33,8 +34,8 @@ class BookingDB:
             )
             cabin_id_wise_slots_dict[cabin_id].time_slots.append(time_slots_dict)
         return list(cabin_id_wise_slots_dict.values())
-
-    def create_cabin_slots(self, cabin_id, start_date, end_date, purpose, user_id):
+    @staticmethod
+    def create_cabin_slots(cabin_id, start_date, end_date, purpose, user_id):
         start_date = timezone.make_aware(datetime.strptime(start_date, "%Y-%m-%d %H:%M"))
         end_date = timezone.make_aware(datetime.strptime(end_date, "%Y-%m-%d %H:%M"))
         create_user_booking = Booking.objects.create(user_id=user_id, purpose=purpose)
@@ -51,3 +52,27 @@ class BookingDB:
 
     def validate_user_id(self, user_id):
         self.storage.validate_user_id(user_id)
+    @staticmethod
+    def get_user_booked_slot(cabin_id,start_date_time,end_date_time):
+        start_date_time = timezone.make_aware(datetime.strptime(start_date_time, "%Y-%m-%d %H:%M"))
+        end_date_time = timezone.make_aware(datetime.strptime(end_date_time, "%Y-%m-%d %H:%M"))
+        cabin_slot_details = BookingSlot.objects.filter(start_date_time=start_date_time, end_date_time=end_date_time,
+                                                 cabin_booking__cabin_id=cabin_id)
+        user_slot_details = []
+        for each_details in cabin_slot_details:
+            user_details_dto = ProfileDTO(
+                email=each_details.cabin_booking.booking.user.email,
+                first_name=each_details.cabin_booking.booking.user.first_name,
+                last_name=each_details.cabin_booking.booking.user.last_name,
+                username=each_details.cabin_booking.booking.user.username,
+                team_name=each_details.cabin_booking.booking.user.team_name,
+                contact_number=each_details.cabin_booking.booking.user.contact_number,
+                purpose= each_details.cabin_booking.booking.purpose
+            )
+            user_slot_details.append(user_details_dto)
+        return user_slot_details
+
+
+
+
+
