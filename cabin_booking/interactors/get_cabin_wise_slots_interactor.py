@@ -21,7 +21,7 @@ class CabinWiseSlotsInteractor:
 
         cabin_id_wise_booked_slots = {}
         for dto in cabin_slot_details_dtos:
-            cabin_id_wise_booked_slots[str(dto.cabin_id)]  = dto.time_slots
+            cabin_id_wise_booked_slots[str(dto.cabin_id)] = dto.time_slots
         fixed_time_slots = []
         for each_hour in range(SLOT_BOOKING_START_TIME, SLOT_BOOKING_END_TIME):
             fixed_time_slots.append(time(each_hour, 0))
@@ -47,11 +47,5 @@ class CabinWiseSlotsInteractor:
                     time_slots=time_slot_dtos
                 )
             )
-
-
-
-
-
-
 
         return self.response.get_cabin_slot_details_success_response(cabin_id_available_slot_dtos)

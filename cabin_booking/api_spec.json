@@ -161,11 +161,17 @@
           },
           "start_date": {
             "type": "string",
-            "format": "date-time"
+            "format": "date"
           },
           "end_date": {
             "type": "string",
-            "format": "date-time"
+            "format": "date"
+          },
+          "time_slots": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           }
         },
         "required": [
