@@ -24,6 +24,7 @@ from cabin_booking.responses.login_interactor_response import LoginInteractorRes
 from cabin_booking.responses.profile_interactor_response import ProfileInteractorResponse
 from cabin_booking.responses.signup_interactor_response import SignupInteractorResponse
 from cabin_booking.responses.user_booked_slots_response import UserBookedSlotResponse
+from cabin_booking.responses.user_profile_update_response import UserProfileUpdateResponse
 
 
 @api_view(['GET'])
@@ -98,7 +99,6 @@ def get_cabin_wise_slots_view(request):
         }
     """
     cabin_ids = request.data.get('cabin_ids')
-    # print(cabin_ids)
     start_date = request.data.get('start_date')
     end_date = request.data.get('end_date')
     response = CabinWiseSlotsInteractor(storage=BookingDB(user_db_storage=UserDB()),
@@ -138,11 +138,14 @@ def get_user_booked_slots_view(request):
 @api_view(['GET'])
 def update_user_profile_view(request):
     username = request.data.get('username')
+    email = request.data.get('email')
     first_name = request.data.get('firstname')
     last_name = request.data.get('lastname')
+    team_name = request.data.get('team_name')
     contact_number = request.data.get('contact_number')
-    response = UserProfileUpdate(storage=UserDB()).update_user_profile_interactor(username=username,
-                                                                                  first_name=first_name,
-                                                                                  last_name=last_name,
-                                                                                  contact_number=contact_number)
+    response = UserProfileUpdate(storage=UserDB(), response=UserProfileUpdateResponse()).update_user_profile_interactor(
+        username=username,
+        first_name=first_name,
+        last_name=last_name, team_name=team_name,
+        contact_number=contact_number, email=email)
     return response

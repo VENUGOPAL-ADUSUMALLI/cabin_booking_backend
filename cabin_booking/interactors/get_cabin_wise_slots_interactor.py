@@ -13,7 +13,7 @@ class CabinWiseSlotsInteractor:
         self.response = response
 
     def get_cabin_slots_interactor(self, cabin_ids, start_date, end_date):
-        cabin_id_validation = self.storage.validate_cabin_id(cabin_ids)
+        # cabin_id_validation = self.storage.validate_cabin_id(cabin_ids)
         # if not cabin_id_validation:
         #     return self.response.invalid_cabin_id_exception()
         cabin_slot_details_dtos = self.storage.get_cabin_slots(cabin_ids, start_date, end_date)
