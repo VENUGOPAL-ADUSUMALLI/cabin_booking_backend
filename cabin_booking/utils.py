@@ -19,7 +19,7 @@ from cabin_booking.constants.time_slots_constant import SLOT_BOOKING_START_TIME,
 from cabin_booking.databases.cabin_db import CabinDB
 # from cabin_booking.databases.user_authentication_db import
 from cabin_booking.exception import InvalidUserException, UserAlreadyExistsException, InvalidPasswordException, \
-    InvalidEmailException
+    InvalidEmailException, InvalidCabinIDException
 from cabin_booking.models import *
 from django.conf import settings
 
@@ -173,3 +173,13 @@ def user_details(cabin_id, start_date_time, end_date_time):
         print(each.cabin_booking.booking.purpose)
         print(each.start_date_time,each.end_date_time)
 
+
+
+def validate_cabin_id_foe_cabin_slots(cabin_ids):
+    all_cabins = []
+    cabins = Cabin.objects.all()
+    for each_cabin in cabins:
+        all_cabins.append(str(each_cabin.id))
+    for each_cabin in cabin_ids:
+        if each_cabin not in all_cabins:
+            raise InvalidCabinIDException()

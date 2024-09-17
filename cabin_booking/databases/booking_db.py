@@ -16,9 +16,6 @@ class BookingDB:
 
     @staticmethod
     def get_cabin_slots(cabin_ids, start_date, end_date) -> List[CabinTimeSlotsDTO]:
-        # cabin_id = Cabin.objects.filter(id__in=cabin_ids)
-        # if  cabin_id:
-        #     raise InvalidCabinIDException()
         cabin_slots = BookingSlot.objects.filter(start_date_time__gte=start_date, end_date_time__lte=end_date,
                                                  cabin_booking__cabin_id__in=cabin_ids)
         cabin_id_wise_slots_dict = {}
@@ -42,7 +39,15 @@ class BookingDB:
         create_cabin_bookings = CabinBooking.objects.create(cabin_id=cabin_id, booking=create_user_booking)
         create_time_slot = BookingSlot.objects.create(start_date_time=start_date, end_date_time=end_date,
                                                       cabin_booking=create_cabin_bookings)
-
+    @staticmethod
+    def validate_cabin_id_for_cabin_slots(cabin_ids):
+        all_cabins = []
+        cabins = Cabin.objects.all()
+        for each_cabin in cabins:
+            all_cabins.append(str(each_cabin.id))
+        for each_cabin in cabin_ids:
+            if each_cabin not in all_cabins:
+                raise InvalidCabinIDException()
     @staticmethod
     def validate_cabin_id(cabin_id):
         try:

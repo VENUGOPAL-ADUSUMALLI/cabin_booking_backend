@@ -3,7 +3,7 @@ from datetime import time
 from cabin_booking.constants.time_slots_constant import SLOT_BOOKING_START_TIME, SLOT_BOOKING_END_TIME
 from cabin_booking.databases.booking_db import BookingDB
 from cabin_booking.databases.dtos import CabinTimeSlotsDTO, TimeSlotsDTO
-from cabin_booking.exception import SomethingWentWrongException
+from cabin_booking.exception import SomethingWentWrongException, InvalidCabinIDException
 from cabin_booking.responses.get_cabins_slots_response import CabinSlotsDetailsResponse
 
 
@@ -13,9 +13,10 @@ class CabinWiseSlotsInteractor:
         self.response = response
 
     def get_cabin_slots_interactor(self, cabin_ids, start_date, end_date):
-        # cabin_id_validation = self.storage.validate_cabin_id(cabin_ids)
-        # if not cabin_id_validation:
-        #     return self.response.invalid_cabin_id_exception()
+        try:
+            self.storage.validate_cabin_id_for_cabin_slots(cabin_ids)
+        except InvalidCabinIDException:
+                return self.response.invalid_cabin_id_exception()
         cabin_slot_details_dtos = self.storage.get_cabin_slots(cabin_ids, start_date, end_date)
         fixed_time_slots = []
         for each_hour in range(SLOT_BOOKING_START_TIME, SLOT_BOOKING_END_TIME):
