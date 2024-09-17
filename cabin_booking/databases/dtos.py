@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 from datetime import datetime
+from typing import List
 
 
 @dataclass
@@ -13,12 +14,11 @@ class LoginResponseDTO:
     refresh_token: str
 
 
-
-
 @dataclass
 class SignupResponseDTO:
     access_token: str
     refresh_token: str
+
 
 @dataclass
 class ProfileDTO:
@@ -28,25 +28,33 @@ class ProfileDTO:
     last_name: str
     team_name: str
     contact_number: str
-    purpose : str =""
+    purpose: str = ""
+
+
 @dataclass
 class UserPasswordUpdateDTO:
-    user_id : str
+    user_id: str
+
+
 @dataclass
 class CabinDetailsDTO:
-    cabin_id : str
-    name : str
-    cabin_type : str
-    description : str
+    cabin_id: str
+    name: str
+    cabin_type: str
+    description: str
+
+
 @dataclass
 class FloorWiseCabinDetailsDTO:
-    floor : str
+    floor: str
     cabin: list[CabinDetailsDTO]
+
 @dataclass
-class TimeSlotsDTO:
-    slot : datetime.time
+class AvailabilityDTO:
     availability: bool
+
+
 @dataclass
 class CabinTimeSlotsDTO:
-    cabin_ids : str
-    time_slots : list[TimeSlotsDTO]
+    cabin_id: str
+    time_slots: List[datetime.time]

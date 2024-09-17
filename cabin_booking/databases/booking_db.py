@@ -1,13 +1,12 @@
 from datetime import datetime
 from typing import List
+
 from django.utils import timezone
-from cabin_booking.databases.cabin_db import CabinDB
-from cabin_booking.databases.dtos import CabinTimeSlotsDTO, TimeSlotsDTO, ProfileDTO
+
+from cabin_booking.databases.dtos import CabinTimeSlotsDTO, ProfileDTO
 from cabin_booking.databases.user_db import UserDB
 from cabin_booking.exception import InvalidCabinIDException
-from cabin_booking.models import BookingSlot, Cabin, Booking, CabinBooking, User
-from cabin_booking.responses.cabin_confirm_slots_response import ConfirmSlotResponse
-from cabin_booking.utils import user_details
+from cabin_booking.models import BookingSlot, Cabin, Booking, CabinBooking
 
 
 class BookingDB:
@@ -18,18 +17,16 @@ class BookingDB:
     def get_cabin_slots(cabin_ids, start_date, end_date) -> List[CabinTimeSlotsDTO]:
         cabin_slots = BookingSlot.objects.filter(start_date_time__gte=start_date, end_date_time__lte=end_date,
                                                  cabin_booking__cabin_id__in=cabin_ids)
+
         cabin_id_wise_slots_dict = {}
         for each_cabin_slot in cabin_slots:
             cabin_id = each_cabin_slot.cabin_booking.cabin.id
             if cabin_id not in cabin_id_wise_slots_dict:
                 cabin_id_wise_slots_dict[cabin_id] = CabinTimeSlotsDTO(
-                    cabin_ids=cabin_id,
+                    cabin_id=cabin_id,
                     time_slots=[]
                 )
-            time_slots_dict = TimeSlotsDTO(
-                slot=each_cabin_slot.start_date.time()
-            )
-            cabin_id_wise_slots_dict[cabin_id].time_slots.append(time_slots_dict)
+            cabin_id_wise_slots_dict[cabin_id].time_slots.append(each_cabin_slot.start_date_time.time())
         return list(cabin_id_wise_slots_dict.values())
     @staticmethod
     def create_cabin_slots(cabin_id, start_date, end_date, purpose, user_id):
