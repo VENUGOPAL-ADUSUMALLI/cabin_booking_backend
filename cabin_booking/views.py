@@ -1,7 +1,4 @@
-from http.client import responses
-
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
-from django.http import HttpResponse
 
 from cabin_booking.databases.booking_db import BookingDB
 from cabin_booking.databases.cabin_db import CabinDB
@@ -19,10 +16,10 @@ from cabin_booking.interactors.user_profile_update_interactor import UserProfile
 from cabin_booking.responses.cabin_confirm_slots_response import ConfirmSlotResponse
 from cabin_booking.responses.cabin_details_response import CabinDetailsResponse
 from cabin_booking.responses.get_cabins_slots_response import CabinSlotsDetailsResponse
-from cabin_booking.responses.update_password_response import UpdatePasswordResponse
 from cabin_booking.responses.login_interactor_response import LoginInteractorResponse
 from cabin_booking.responses.profile_interactor_response import ProfileInteractorResponse
 from cabin_booking.responses.signup_interactor_response import SignupInteractorResponse
+from cabin_booking.responses.update_password_response import UpdatePasswordResponse
 from cabin_booking.responses.user_booked_slots_response import UserBookedSlotResponse
 from cabin_booking.responses.user_profile_update_response import UserProfileUpdateResponse
 

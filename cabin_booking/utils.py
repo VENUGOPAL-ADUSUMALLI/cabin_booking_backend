@@ -1,27 +1,12 @@
-import json
-import logging
-from collections import defaultdict
-from dataclasses import dataclass
 from datetime import time
-from http.client import responses
-from math import floor
-
-from oauth2_provider.models import Application
-
-from django.contrib.auth.hashers import check_password
-from django.core.exceptions import ObjectDoesNotExist
-from rest_framework_simplejwt.tokens import RefreshToken
-from rest_framework.response import Response
-from rest_framework import status
 
 from cabin_booking.constants.config import order_types
 from cabin_booking.constants.time_slots_constant import SLOT_BOOKING_START_TIME, SLOT_BOOKING_END_TIME
 from cabin_booking.databases.cabin_db import CabinDB
 # from cabin_booking.databases.user_authentication_db import
-from cabin_booking.exception import InvalidUserException, UserAlreadyExistsException, InvalidPasswordException, \
+from cabin_booking.exception import InvalidPasswordException, \
     InvalidEmailException, InvalidCabinIDException
 from cabin_booking.models import *
-from django.conf import settings
 
 
 def get_user_id():

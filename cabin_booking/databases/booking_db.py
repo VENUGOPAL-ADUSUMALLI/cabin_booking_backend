@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 from typing import List
 
+from django.db import transaction
 from django.utils import timezone
 
 from cabin_booking.databases.dtos import CabinTimeSlotsDTO, ProfileDTO
@@ -30,29 +31,17 @@ class BookingDB:
         return list(cabin_id_wise_slots_dict.values())
 
     @staticmethod
-    def create_cabin_slots(cabin_id, start_date, end_date, purpose, user_id, time_slots):
+    def create_cabin_slots(cabin_id,purpose, user_id,list_start_end_date_time_dto):
         try:
-            start_date = timezone.make_aware(datetime.strptime(start_date, "%Y-%m-%d"))
-            end_date = timezone.make_aware(datetime.strptime(end_date, "%Y-%m-%d"))
-            start_date_day = start_date.date()
-            end_date_day = end_date.date()
-            create_user_booking = Booking.objects.create(user_id=user_id, purpose=purpose)
-            create_cabin_bookings = CabinBooking.objects.create(cabin_id=cabin_id, booking=create_user_booking)
-            # for date in range(int(start_date_day),int(end_date_day))
-            for date in range((end_date_day - start_date_day).days + 1):
-                current_date = start_date_day + timedelta(days=date)
-                for each_slot in time_slots:
-                    combined_date = f"{current_date.strftime('%Y-%m-%d')} {each_slot}"
-                    start_date_time = timezone.make_aware(datetime.strptime(combined_date, "%Y-%m-%d %H:%M"))
-                    end_date_time = start_date_time + timedelta(hours=1)
-
-                    create_time_slot = BookingSlot.objects.create(start_date_time=start_date_time,
-                                                                  end_date_time=end_date_time,
-                                                                  cabin_booking=create_cabin_bookings)
+            with transaction.atomic():
+                create_user_booking = Booking.objects.create(user_id=user_id, purpose=purpose)
+                create_cabin_bookings = CabinBooking.objects.create(cabin_id=cabin_id, booking=create_user_booking)
+                for dto in list_start_end_date_time_dto:
+                    BookingSlot.objects.create(start_date_time=dto.start_date_time,
+                                                                      end_date_time=dto.end_date_time,
+                                                                      cabin_booking=create_cabin_bookings)
         except Exception as e:
             raise UniqueConstraintException(e)
-
-
 
     @staticmethod
     def validate_cabin_id_for_cabin_slots(cabin_ids):
