@@ -243,6 +243,18 @@
           "contact_number"
         ]
       }
+    },
+    "createUserMyBookings": {
+      "name": "user bookings",
+      "in": "body",
+      "description": "get user my bookings",
+      "schema": {
+        "properties": {
+          "user_id": {
+            "type": "string"
+          }
+        }
+      }
     }
   },
   "responses": {
@@ -432,6 +444,36 @@
           "purpose"
         ]
       }
+    },
+    "createMyBookingResponse": {
+      "description": "get my bookings response",
+      "schema": {
+        "properties": {
+          "floor": {
+            "type": "string"
+          },
+          "cabin_name": {
+            "type": "string"
+          },
+          "booking_id": {
+            "type": "string"
+          },
+          "start_date": {
+            "type": "string",
+            "format": "date"
+          },
+          "end_date": {
+            "type": "string",
+            "format": "date"
+          },
+          "time_slots": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
     }
   },
   "paths": {
@@ -589,6 +631,25 @@
         "responses": {
           "200": {
             "description": "Profile Updated successfully"
+          },
+          "400": {
+            "$ref": "#/responses/error"
+          }
+        }
+      }
+    },
+    "/user/my_bookings/v1": {
+      "get": {
+        "summary": "Get user My bookings",
+        "operationId": "user_my_bookings",
+        "parameters": [
+          {
+            "$ref": "#/parameters/createUserMyBookings"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/createMyBookingResponse"
           },
           "400": {
             "$ref": "#/responses/error"

@@ -2,7 +2,7 @@ from IPython import embed
 
 from cabin_booking.databases.booking_db import BookingDB
 from cabin_booking.databases.user_db import UserDB
-from cabin_booking.exception import InvalidCabinIDException, InvalidUserException
+from cabin_booking.exception import InvalidCabinIDException, InvalidUserException, UniqueConstraintException
 from cabin_booking.responses.cabin_confirm_slots_response import ConfirmSlotResponse
 
 
@@ -12,7 +12,7 @@ class ConfirmSlotInteractor:
         self.response = response
         self.user_db_storage = user_db_storage
 
-    def confirm_slot_interactor(self, cabin_id, start_date, end_date, purpose, user_id):
+    def confirm_slot_interactor(self, cabin_id, start_date, end_date, purpose, user_id, time_slots):
         try:
             self.storage.validate_cabin_id(cabin_id)
         except InvalidCabinIDException:
@@ -21,6 +21,8 @@ class ConfirmSlotInteractor:
             self.user_db_storage.validate_user_id(user_id)
         except InvalidUserException:
             return self.response.invalid_user_id_response()
-        self.storage.create_cabin_slots(cabin_id, start_date, end_date, purpose, user_id)
+        except UniqueConstraintException as e:
+            return self.response.uniques_constraint_response(e)
+        self.storage.create_cabin_slots(cabin_id, start_date, end_date, purpose, user_id, time_slots)
 
         return self.response.create_confirm_slots_success_response()

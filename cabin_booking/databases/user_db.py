@@ -1,6 +1,6 @@
-from cabin_booking.databases.dtos import UserPasswordUpdateDTO, ProfileDTO
-from cabin_booking.exception import InvalidUserException, InvalidPasswordException, UserAlreadyExistsException, \
-    UniqueConstraintException, InvalidUsernameException, InvalidUserDetailsException, InvalidEmailException
+from cabin_booking.databases.dtos import ProfileDTO
+from cabin_booking.exception import InvalidUserException, UserAlreadyExistsException, \
+    UniqueConstraintException, InvalidUserDetailsException, InvalidEmailException
 from cabin_booking.models import *
 
 

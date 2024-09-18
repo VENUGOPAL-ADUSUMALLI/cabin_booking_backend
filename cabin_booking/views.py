@@ -111,6 +111,7 @@ def get_cabin_wise_slots_view(request):
 @api_view(["POST"])
 def get_cabin_confirm_slot_view(request):
     cabin_id = request.data.get('cabin_id')
+    time_slots = request.data.get('time_slots')
     user_id = request.user.user_id
     start_date = request.data.get('start_date')
     end_date = request.data.get('end_date')
@@ -120,7 +121,7 @@ def get_cabin_confirm_slot_view(request):
         cabin_id=cabin_id,
         start_date=start_date,
         end_date=end_date, purpose=purpose,
-        user_id=user_id)
+        user_id=user_id, time_slots=time_slots)
     return response
 
 

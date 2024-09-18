@@ -1,11 +1,11 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import List
 
 from django.utils import timezone
 
 from cabin_booking.databases.dtos import CabinTimeSlotsDTO, ProfileDTO
 from cabin_booking.databases.user_db import UserDB
-from cabin_booking.exception import InvalidCabinIDException
+from cabin_booking.exception import InvalidCabinIDException, UniqueConstraintException
 from cabin_booking.models import BookingSlot, Cabin, Booking, CabinBooking
 
 
@@ -28,14 +28,32 @@ class BookingDB:
                 )
             cabin_id_wise_slots_dict[cabin_id].time_slots.append(each_cabin_slot.start_date_time.time())
         return list(cabin_id_wise_slots_dict.values())
+
     @staticmethod
-    def create_cabin_slots(cabin_id, start_date, end_date, purpose, user_id):
-        start_date = timezone.make_aware(datetime.strptime(start_date, "%Y-%m-%d %H:%M"))
-        end_date = timezone.make_aware(datetime.strptime(end_date, "%Y-%m-%d %H:%M"))
-        create_user_booking = Booking.objects.create(user_id=user_id, purpose=purpose)
-        create_cabin_bookings = CabinBooking.objects.create(cabin_id=cabin_id, booking=create_user_booking)
-        create_time_slot = BookingSlot.objects.create(start_date_time=start_date, end_date_time=end_date,
-                                                      cabin_booking=create_cabin_bookings)
+    def create_cabin_slots(cabin_id, start_date, end_date, purpose, user_id, time_slots):
+        try:
+            start_date = timezone.make_aware(datetime.strptime(start_date, "%Y-%m-%d"))
+            end_date = timezone.make_aware(datetime.strptime(end_date, "%Y-%m-%d"))
+            start_date_day = start_date.date()
+            end_date_day = end_date.date()
+            create_user_booking = Booking.objects.create(user_id=user_id, purpose=purpose)
+            create_cabin_bookings = CabinBooking.objects.create(cabin_id=cabin_id, booking=create_user_booking)
+            # for date in range(int(start_date_day),int(end_date_day))
+            for date in range((end_date_day - start_date_day).days + 1):
+                current_date = start_date_day + timedelta(days=date)
+                for each_slot in time_slots:
+                    combined_date = f"{current_date.strftime('%Y-%m-%d')} {each_slot}"
+                    start_date_time = timezone.make_aware(datetime.strptime(combined_date, "%Y-%m-%d %H:%M"))
+                    end_date_time = start_date_time + timedelta(hours=1)
+
+                    create_time_slot = BookingSlot.objects.create(start_date_time=start_date_time,
+                                                                  end_date_time=end_date_time,
+                                                                  cabin_booking=create_cabin_bookings)
+        except Exception as e:
+            raise UniqueConstraintException(e)
+
+
+
     @staticmethod
     def validate_cabin_id_for_cabin_slots(cabin_ids):
         all_cabins = []
@@ -45,6 +63,7 @@ class BookingDB:
         for each_cabin in cabin_ids:
             if each_cabin not in all_cabins:
                 raise InvalidCabinIDException()
+
     @staticmethod
     def validate_cabin_id(cabin_id):
         try:
@@ -54,12 +73,13 @@ class BookingDB:
 
     def validate_user_id(self, user_id):
         self.storage.validate_user_id(user_id)
+
     @staticmethod
-    def get_user_booked_slot(cabin_id,start_date_time,end_date_time):
+    def get_user_booked_slot(cabin_id, start_date_time, end_date_time):
         start_date_time = timezone.make_aware(datetime.strptime(start_date_time, "%Y-%m-%d %H:%M"))
         end_date_time = timezone.make_aware(datetime.strptime(end_date_time, "%Y-%m-%d %H:%M"))
         cabin_slot_details = BookingSlot.objects.filter(start_date_time=start_date_time, end_date_time=end_date_time,
-                                                 cabin_booking__cabin_id=cabin_id)
+                                                        cabin_booking__cabin_id=cabin_id)
         user_slot_details = []
         for each_details in cabin_slot_details:
             user_details_dto = ProfileDTO(
@@ -69,12 +89,7 @@ class BookingDB:
                 username=each_details.cabin_booking.booking.user.username,
                 team_name=each_details.cabin_booking.booking.user.team_name,
                 contact_number=each_details.cabin_booking.booking.user.contact_number,
-                purpose= each_details.cabin_booking.booking.purpose
+                purpose=each_details.cabin_booking.booking.purpose
             )
             user_slot_details.append(user_details_dto)
         return user_slot_details
-
-
-
-
-
