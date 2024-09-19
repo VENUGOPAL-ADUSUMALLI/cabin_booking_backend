@@ -24,8 +24,8 @@ class ConfirmSlotResponse:
         }),status=200)
 
     @staticmethod
-    def uniques_constraint_response(e):
+    def uniques_constraint_response():
         return HttpResponse(json.dumps({
-            "error_message": str(e),
+            "error_message": "slot already Booked",
             "status": 400
         }), status=400)

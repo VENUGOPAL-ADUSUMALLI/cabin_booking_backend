@@ -46,5 +46,5 @@ class ConfirmSlotInteractor:
             self.storage.create_cabin_slots(cabin_id, purpose, user_id, list_start_end_date_time_dto)
 
             return self.response.create_confirm_slots_success_response()
-        except UniqueConstraintException as e:
-            return self.response.uniques_constraint_response(e)
+        except UniqueConstraintException:
+            return self.response.uniques_constraint_response()

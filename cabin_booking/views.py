@@ -18,6 +18,7 @@ from cabin_booking.responses.cabin_confirm_slots_response import ConfirmSlotResp
 from cabin_booking.responses.cabin_details_response import CabinDetailsResponse
 from cabin_booking.responses.get_cabins_slots_response import CabinSlotsDetailsResponse
 from cabin_booking.responses.login_interactor_response import LoginInteractorResponse
+from cabin_booking.responses.my_bookings_response import MyBookingsResponse
 from cabin_booking.responses.profile_interactor_response import ProfileInteractorResponse
 from cabin_booking.responses.signup_interactor_response import SignupInteractorResponse
 from cabin_booking.responses.update_password_response import UpdatePasswordResponse
@@ -153,6 +154,6 @@ def update_user_profile_view(request):
 @api_view(["GET"])
 def get_user_my_bookings_view(request):
     user_id = request.user.user_id
-    response = MyBookingsInteractor(storage=BookingDB(user_db_storage=UserDB())).get_user_my_bookings_interactor(
+    response = MyBookingsInteractor(storage=BookingDB(user_db_storage=UserDB()),response=MyBookingsResponse()).get_user_my_bookings_interactor(
         user_id=user_id)
     return response

@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta
+from enum import unique
 from typing import List
 
 from django.db import transaction
@@ -41,8 +42,8 @@ class BookingDB:
                     BookingSlot.objects.create(start_date_time=dto.start_date_time,
                                                end_date_time=dto.end_date_time,
                                                cabin_booking=create_cabin_bookings)
-        except Exception as e:
-            raise UniqueConstraintException(e)
+        except:
+            raise UniqueConstraintException()
 
     @staticmethod
     def validate_cabin_id_for_cabin_slots(cabin_ids):
@@ -62,7 +63,7 @@ class BookingDB:
             raise InvalidCabinIDException()
 
     def validate_user_id(self, user_id):
-        self.storage.validate_user_id(user_id)
+        self.user_db_storage.validate_user_id(user_id)
 
     @staticmethod
     def get_user_booked_slot(cabin_id, start_date_time, end_date_time):
@@ -86,17 +87,34 @@ class BookingDB:
 
     @staticmethod
     def get_user_bookings(user_id):
-        booking_ids = []
-        user_bookings_dto = []
-        user_booking_details = Booking.objects.filter(user_id=user_id).prefetch_related("cabins__floor")
-        for cabin_details in user_booking_details:
-            for each_cabin in cabin_details.all():
+        bookings_details_dto = []
+        user_booking_details = Booking.objects.filter(user_id=user_id).prefetch_related(
+            "cabinbooking_set__bookingslot_set", "cabinbooking_set__cabin__floor"
+        )
+
+        for booking in user_booking_details:
+            for cabin_booking in booking.cabinbooking_set.all():
+
+                time_slots = set()
+                start_dates = []
+                end_dates = []
+
+                # Collect time slots for the current booking
+                for booking_slot in cabin_booking.bookingslot_set.all():
+                    start_dates.append(booking_slot.start_date_time.date())
+                    end_dates.append(booking_slot.end_date_time.date())
+                    time_slots.add(booking_slot.start_date_time.time())
+
+                unique_time_slots = sorted(set(time_slots))
+
                 cabin_details_dto = UserBookingDetails(
-                    floor_name=each_cabin.floor.name,
-                    cabin_name=each_cabin.name,
-                    booking_id=cabin_details.id
+                    floor_name=cabin_booking.cabin.floor.name,
+                    cabin_name=cabin_booking.cabin.name,
+                    booking_id=booking.id,
+                    start_date=min(start_dates),
+                    end_date=max(end_dates),
+                    time_slots=unique_time_slots
                 )
-                booking_ids.append(cabin_details.id)
-        booking_time_details = BookingSlot.objects.filter(cabin_booking__booking_id__in=booking_ids)
-        for each in booking_time_details:
-            print(each)
+                bookings_details_dto.append(cabin_details_dto)
+
+        return bookings_details_dto

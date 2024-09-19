@@ -19,7 +19,7 @@ from django.urls import path
 
 from cabin_booking.views import get_login_interactor_view, get_signup_interactor_view, get_user_profile_api_view, \
     get_update_password_view, get_cabin_details_view, get_cabin_wise_slots_view, get_cabin_confirm_slot_view, \
-    get_user_booked_slots_view, update_user_profile_view
+    get_user_booked_slots_view, update_user_profile_view, get_user_my_bookings_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -30,6 +30,7 @@ urlpatterns = [
     path('get/cabin_details/v1', get_cabin_details_view),
     path('get/cabin_slots/v1', get_cabin_wise_slots_view),
     path('confirm_slots/v1', get_cabin_confirm_slot_view),
-    path('user/booked_slots/v1',get_user_booked_slots_view),
-    path('user/profile_update/v1',update_user_profile_view)
+    path('user/booked_slots/v1', get_user_booked_slots_view),
+    path('user/profile_update/v1', update_user_profile_view),
+    path("user/my_bookings/v1", get_user_my_bookings_view)
 ]

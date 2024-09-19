@@ -60,13 +60,19 @@ class CabinTimeSlotsDTO:
     cabin_id: str
     time_slots: List[datetime.time]
 
+
 @dataclass
 class TimeDTO:
     start_date: datetime.date
     end_date: datetime.date
     time_slots: List[datetime.time]
+
+
 @dataclass
 class UserBookingDetails:
     floor_name: str
     cabin_name: str
     booking_id: str
+    start_date: datetime.date
+    end_date: datetime.date
+    time_slots: List[datetime.time]
