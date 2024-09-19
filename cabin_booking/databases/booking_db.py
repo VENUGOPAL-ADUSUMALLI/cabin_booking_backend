@@ -4,7 +4,7 @@ from typing import List
 from django.db import transaction
 from django.utils import timezone
 
-from cabin_booking.databases.dtos import CabinTimeSlotsDTO, ProfileDTO
+from cabin_booking.databases.dtos import CabinTimeSlotsDTO, ProfileDTO, UserBookingDetails
 from cabin_booking.databases.user_db import UserDB
 from cabin_booking.exception import InvalidCabinIDException, UniqueConstraintException
 from cabin_booking.models import BookingSlot, Cabin, Booking, CabinBooking
@@ -16,7 +16,8 @@ class BookingDB:
 
     @staticmethod
     def get_cabin_slots(cabin_ids, start_date, end_date) -> List[CabinTimeSlotsDTO]:
-        cabin_slots = BookingSlot.objects.filter(start_date_time__gte=start_date, end_date_time__lte=end_date,
+        cabin_slots = BookingSlot.objects.filter(start_date_time__date__gte=start_date,
+                                                 end_date_time__date__lte=end_date,
                                                  cabin_booking__cabin_id__in=cabin_ids)
 
         cabin_id_wise_slots_dict = {}
@@ -31,15 +32,15 @@ class BookingDB:
         return list(cabin_id_wise_slots_dict.values())
 
     @staticmethod
-    def create_cabin_slots(cabin_id,purpose, user_id,list_start_end_date_time_dto):
+    def create_cabin_slots(cabin_id, purpose, user_id, list_start_end_date_time_dto):
         try:
             with transaction.atomic():
                 create_user_booking = Booking.objects.create(user_id=user_id, purpose=purpose)
                 create_cabin_bookings = CabinBooking.objects.create(cabin_id=cabin_id, booking=create_user_booking)
                 for dto in list_start_end_date_time_dto:
                     BookingSlot.objects.create(start_date_time=dto.start_date_time,
-                                                                      end_date_time=dto.end_date_time,
-                                                                      cabin_booking=create_cabin_bookings)
+                                               end_date_time=dto.end_date_time,
+                                               cabin_booking=create_cabin_bookings)
         except Exception as e:
             raise UniqueConstraintException(e)
 
@@ -82,3 +83,20 @@ class BookingDB:
             )
             user_slot_details.append(user_details_dto)
         return user_slot_details
+
+    @staticmethod
+    def get_user_bookings(user_id):
+        booking_ids = []
+        user_bookings_dto = []
+        user_booking_details = Booking.objects.filter(user_id=user_id).prefetch_related("cabins__floor")
+        for cabin_details in user_booking_details:
+            for each_cabin in cabin_details.all():
+                cabin_details_dto = UserBookingDetails(
+                    floor_name=each_cabin.floor.name,
+                    cabin_name=each_cabin.name,
+                    booking_id=cabin_details.id
+                )
+                booking_ids.append(cabin_details.id)
+        booking_time_details = BookingSlot.objects.filter(cabin_booking__booking_id__in=booking_ids)
+        for each in booking_time_details:
+            print(each)

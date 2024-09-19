@@ -168,3 +168,19 @@ def validate_cabin_id_foe_cabin_slots(cabin_ids):
     for each_cabin in cabin_ids:
         if each_cabin not in all_cabins:
             raise InvalidCabinIDException()
+def validate_cabins(user_id):
+    booking_id = []
+    user_booking_details = Booking.objects.filter(user_id=user_id).prefetch_related("cabins__floor")
+    for each in user_booking_details:
+        for cabin in each.cabins.all():
+            print(cabin.floor.name)
+            print(cabin.name)
+            booking_id.append(each.id)
+    print(booking_id)
+    booking_time_details = BookingSlot.objects.filter(cabin_booking__booking_id__in =booking_id)
+    for each in booking_time_details:
+        print(each.start_date_time)
+        print(each.end_date_time)
+        # print(each.cabins.floor.name)
+        # print(each.cabins.name)
+# dc927863-3890-422e-b8d6-038a1e0eab00

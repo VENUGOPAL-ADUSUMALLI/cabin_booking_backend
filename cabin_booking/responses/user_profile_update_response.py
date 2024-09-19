@@ -5,9 +5,9 @@ from django.http import HttpResponse
 
 class UserProfileUpdateResponse:
     @staticmethod
-    def invalid_email_exception():
+    def invalid_user_exception():
         return HttpResponse(json.dumps({
-            "error_message": "Invalid email ",
+            "error_message": "Invalid user ",
             "error_code": "400"
         }), status=400)
     #

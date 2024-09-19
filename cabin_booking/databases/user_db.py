@@ -97,11 +97,10 @@ class UserDB:
             raise InvalidUserDetailsException()
 
     @staticmethod
-    def update_user_profile(username, first_name, last_name, contact_number, team_name, email):
-        user_profile_update = User.objects.filter(email=email).update(
+    def update_user_profile(username, first_name, last_name, contact_number, team_name, user_id):
+        user_profile_update = User.objects.filter(user_id=user_id).update(
             username=username,
             first_name=first_name,
             last_name=last_name,
             contact_number=contact_number, team_name=team_name)
         return user_profile_update
-

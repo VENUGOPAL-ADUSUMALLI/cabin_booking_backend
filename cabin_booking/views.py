@@ -8,6 +8,7 @@ from cabin_booking.interactors.cabin_confirm_slots_interactor import ConfirmSlot
 from cabin_booking.interactors.cabins_details_interactor import CabinDetailsInteractor
 from cabin_booking.interactors.get_cabin_wise_slots_interactor import CabinWiseSlotsInteractor
 from cabin_booking.interactors.login_interactors import LoginInteractor
+from cabin_booking.interactors.my_bookings_interactor import MyBookingsInteractor
 from cabin_booking.interactors.profile_interactor import ProfileInteractor
 from cabin_booking.interactors.signup_interactor import SignupInteractor
 from cabin_booking.interactors.update_password_interactor import UpdatePasswordInteractor
@@ -133,10 +134,10 @@ def get_user_booked_slots_view(request):
     return response
 
 
-@api_view(['GET'])
+@api_view(['POST'])
 def update_user_profile_view(request):
     username = request.data.get('username')
-    email = request.data.get('email')
+    user_id = request.user.user_id
     first_name = request.data.get('firstname')
     last_name = request.data.get('lastname')
     team_name = request.data.get('team_name')
@@ -145,5 +146,13 @@ def update_user_profile_view(request):
         username=username,
         first_name=first_name,
         last_name=last_name, team_name=team_name,
-        contact_number=contact_number, email=email)
+        contact_number=contact_number, user_id=user_id)
+    return response
+
+
+@api_view(["GET"])
+def get_user_my_bookings_view(request):
+    user_id = request.user.user_id
+    response = MyBookingsInteractor(storage=BookingDB(user_db_storage=UserDB())).get_user_my_bookings_interactor(
+        user_id=user_id)
     return response

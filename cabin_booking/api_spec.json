@@ -218,9 +218,6 @@
       "schema": {
         "type": "object",
         "properties": {
-          "email": {
-            "type": "string"
-          },
           "username": {
             "type": "string"
           },
