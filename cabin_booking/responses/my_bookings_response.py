@@ -20,4 +20,11 @@ class MyBookingsResponse:
                 "time_slots": time_slots
             }
             bookings_list.append(user_bookings)
-        return HttpResponse(json.dumps(bookings_list,indent=4), status=200)
+        return HttpResponse(json.dumps(bookings_list, indent=4), status=200)
+
+    @staticmethod
+    def no_bookings_exception():
+        return HttpResponse(json.dumps({
+            "error_code": "400",
+            "error_message": "No Bookings"
+        }), status=400)

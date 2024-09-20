@@ -1,6 +1,6 @@
 from cabin_booking.databases.booking_db import BookingDB
 from cabin_booking.databases.dtos import UserBookingDetails
-from cabin_booking.exception import InvalidUserException
+from cabin_booking.exception import InvalidUserException, NoBookingsException
 from cabin_booking.responses.my_bookings_response import MyBookingsResponse
 
 
@@ -15,7 +15,10 @@ class MyBookingsInteractor:
         except InvalidUserException:
             raise InvalidUserException()
         user_bookings_dto = []
-        user_bookings_details = self.storage.get_user_bookings(user_id)
+        try:
+            user_bookings_details = self.storage.get_user_bookings(user_id)
+        except NoBookingsException:
+            return self.response.no_bookings_exception()
         for each in user_bookings_details:
             user_details_dto = UserBookingDetails(
                 floor_name=each.floor_name,

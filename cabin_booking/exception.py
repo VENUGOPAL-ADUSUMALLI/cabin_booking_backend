@@ -27,3 +27,5 @@ class InvalidUsernameException(Exception):
     pass
 class InvalidUserDetailsException(Exception):
     pass
+class NoBookingsException(Exception):
+    pass

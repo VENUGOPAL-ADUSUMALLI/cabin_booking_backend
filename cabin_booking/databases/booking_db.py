@@ -7,7 +7,7 @@ from django.utils import timezone
 
 from cabin_booking.databases.dtos import CabinTimeSlotsDTO, ProfileDTO, UserBookingDetails
 from cabin_booking.databases.user_db import UserDB
-from cabin_booking.exception import InvalidCabinIDException, UniqueConstraintException
+from cabin_booking.exception import InvalidCabinIDException, UniqueConstraintException, NoBookingsException
 from cabin_booking.models import BookingSlot, Cabin, Booking, CabinBooking
 
 
@@ -96,13 +96,12 @@ class BookingDB:
         user_booking_details = Booking.objects.filter(user_id=user_id).prefetch_related(
             "cabinbooking_set__bookingslot_set", "cabinbooking_set__cabin__floor"
         )
-
+        if not user_booking_details.exists():
+            raise NoBookingsException()
         for booking in user_booking_details:
             for cabin_booking in booking.cabinbooking_set.all():
-
                 time_slots = set()
                 start_date_list = []
-
                 for booking_slot in cabin_booking.bookingslot_set.all():
                     start_date_list.append(booking_slot.start_date_time.date())
                     time_slots.add(booking_slot.start_date_time.time())
@@ -115,6 +114,8 @@ class BookingDB:
                     end_date=start_date_list[-1],
                     time_slots=unique_time_slots
                 )
+                if not start_date_list:
+                    raise NoBookingsException()
                 bookings_details_dto.append(cabin_details_dto)
 
         return bookings_details_dto
