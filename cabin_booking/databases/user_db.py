@@ -1,3 +1,5 @@
+from django.contrib.auth.hashers import make_password
+
 from cabin_booking.databases.dtos import ProfileDTO
 from cabin_booking.exception import InvalidUserException, UserAlreadyExistsException, \
     UniqueConstraintException, InvalidUserDetailsException, InvalidEmailException
@@ -31,12 +33,11 @@ class UserDB:
     def create_user_for_signup(email, password, username, first_name, last_name, team_name, contact_number):
         if User.objects.filter(email=email).exists():
             raise UserAlreadyExistsException()
-        try:
-            user = User.objects.create_user(email=email, password=password, username=username, first_name=first_name,
-                                            last_name=last_name, team_name=team_name, contact_number=contact_number)
 
-        except Exception as e:
-            raise UniqueConstraintException(message=e)
+        hashed_password = make_password(password)
+        user = User.objects.create(email=email, password=hashed_password, username=username, first_name=first_name,
+                                   last_name=last_name, team_name=team_name, contact_number=contact_number)
+
         user_dto = ProfileDTO(
             email=user.email,
             first_name=user.first_name,
@@ -63,8 +64,8 @@ class UserDB:
     @staticmethod
     def setup_newpassword(user_id, new_password):
         user = User.objects.get(user_id=user_id)
-        print(new_password)
-        user.set_password(new_password)
+        hashed_password = make_password(new_password)
+        user.password = hashed_password
         user.save()
         user_dto = ProfileDTO(
             email=user.email,

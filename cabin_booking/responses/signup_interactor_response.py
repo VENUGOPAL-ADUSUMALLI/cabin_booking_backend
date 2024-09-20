@@ -11,12 +11,6 @@ class SignupInteractorResponse:
             "status": 400
         }), status=400)
     @staticmethod
-    def uniques_constraint_response(e):
-        return HttpResponse(json.dumps({
-            "error_message": str(e),
-            "status": 400
-        }), status=400)
-    @staticmethod
     def user_signup_dto_response(user_signup_dto):
         response_dict = {
             "access_token": str(user_signup_dto.access_token),

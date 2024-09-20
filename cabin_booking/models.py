@@ -1,7 +1,7 @@
 from datetime import datetime
 import uuid
 from django.db import models
-from django.contrib.auth.models import  AbstractUser
+from django.contrib.auth.models import AbstractUser
 from django.core.exceptions import ValidationError
 
 from cabin_booking.constants.enums import CabinChoicesEnum
@@ -15,8 +15,9 @@ class CreateUpdateTimeDetails(models.Model):
         abstract = True
 
 
-class User(AbstractUser,CreateUpdateTimeDetails):
+class User(AbstractUser, CreateUpdateTimeDetails):
     user_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    username = models.CharField(max_length=50, null=True ,unique=True)
     email = models.EmailField(unique=True)
     team_name = models.CharField(max_length=20)
     contact_number = models.CharField(max_length=10, null=True, blank=True)
@@ -31,6 +32,7 @@ class Floor(CreateUpdateTimeDetails):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     order = models.IntegerField()
     name = models.CharField(max_length=100)
+
     def __str__(self):
         return f"{self.name}"
 
@@ -44,7 +46,7 @@ class Cabin(CreateUpdateTimeDetails):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     floor = models.ForeignKey(Floor, on_delete=models.CASCADE)
     name = models.CharField(max_length=50)
-    type = models.CharField(max_length=50, validators=[Validate_cabin_type],null=True,blank=True)
+    type = models.CharField(max_length=50, validators=[Validate_cabin_type], null=True, blank=True)
     description = models.TextField()
     is_available = models.BooleanField(default=True)
 

@@ -71,11 +71,11 @@ def get_user_profile_api_view(request):
 @api_view(['POST'])
 def get_update_password_view(request):
     email = request.data.get("email")
-    password = request.data.get('password')
+    old_password = request.data.get('old_password')
     new_password = request.data.get('new_password')
     response = UpdatePasswordInteractor(storage=UserDB(),
                                         response=UpdatePasswordResponse()).update_password_interactor(email=email,
-                                                                                                      password=password,
+                                                                                                      old_password=old_password,
                                                                                                       new_password=new_password)
     return response
 
@@ -154,6 +154,7 @@ def update_user_profile_view(request):
 @api_view(["GET"])
 def get_user_my_bookings_view(request):
     user_id = request.user.user_id
-    response = MyBookingsInteractor(storage=BookingDB(user_db_storage=UserDB()),response=MyBookingsResponse()).get_user_my_bookings_interactor(
+    response = MyBookingsInteractor(storage=BookingDB(user_db_storage=UserDB()),
+                                    response=MyBookingsResponse()).get_user_my_bookings_interactor(
         user_id=user_id)
     return response

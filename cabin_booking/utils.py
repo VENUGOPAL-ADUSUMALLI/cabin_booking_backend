@@ -5,8 +5,9 @@ from cabin_booking.constants.time_slots_constant import SLOT_BOOKING_START_TIME,
 from cabin_booking.databases.cabin_db import CabinDB
 # from cabin_booking.databases.user_authentication_db import
 from cabin_booking.exception import InvalidPasswordException, \
-    InvalidEmailException, InvalidCabinIDException
+    InvalidEmailException, InvalidCabinIDException, InvalidUserException
 from cabin_booking.models import *
+from django.contrib.auth.hashers import make_password
 
 
 def get_user_id():
@@ -156,8 +157,7 @@ def user_details(cabin_id, start_date_time, end_date_time):
     for each in cabin_slots:
         print(each.cabin_booking.booking.user.first_name)
         print(each.cabin_booking.booking.purpose)
-        print(each.start_date_time,each.end_date_time)
-
+        print(each.start_date_time, each.end_date_time)
 
 
 def validate_cabin_id_foe_cabin_slots(cabin_ids):
@@ -168,6 +168,8 @@ def validate_cabin_id_foe_cabin_slots(cabin_ids):
     for each_cabin in cabin_ids:
         if each_cabin not in all_cabins:
             raise InvalidCabinIDException()
+
+
 def validate_cabins(user_id):
     booking_id = []
     user_booking_details = Booking.objects.filter(user_id=user_id).prefetch_related("cabins__floor")
@@ -177,10 +179,37 @@ def validate_cabins(user_id):
             print(cabin.name)
             booking_id.append(each.id)
     print(booking_id)
-    booking_time_details = BookingSlot.objects.filter(cabin_booking__booking_id__in =booking_id)
+    booking_time_details = BookingSlot.objects.filter(cabin_booking__booking_id__in=booking_id)
     for each in booking_time_details:
         print(each.start_date_time)
         print(each.end_date_time)
         # print(each.cabins.floor.name)
         # print(each.cabins.name)
+
+
 # dc927863-3890-422e-b8d6-038a1e0eab00
+def create_user_for_signup(email, password, user_name, first_name, last_name, team_name, contact_number):
+    hashed_password = make_password(password)
+    create_user_signup = User.objects.create(email=email, password=hashed_password, first_name=first_name,
+                                             last_name=last_name, team_name=team_name, contact_number=contact_number,
+                                             username=user_name)
+    print(create_user_signup)
+
+
+# def update_password(email,old_password,new_password):
+def check_password(email, password):
+    get_user_obj = User.objects.get(email=email)
+    if not get_user:
+        raise InvalidUserException()
+    check_user_password = get_user_obj.check_password(password)
+    return check_user_password
+
+
+def update_password(email, old_password, new_password):
+    user = User.objects.get(email=email)
+    validate_old_password = check_password(email, old_password)
+    if validate_old_password:
+        new_password = make_password(new_password)
+        user.password = new_password
+        user.save()
+        print("password updated successfully")

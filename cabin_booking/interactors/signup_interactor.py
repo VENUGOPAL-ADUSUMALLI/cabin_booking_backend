@@ -20,8 +20,6 @@ class SignupInteractor:
                                                 team_name, contact_number)
         except UserAlreadyExistsException:
             return self.response.user_already_exists_response()
-        except UniqueConstraintException as e:
-            return self.response.uniques_constraint_response(e)
         user_id = self.storage.get_user_id(email)
         access_token = UserAuthentication().create_access_token(user_id)
         refresh_token = UserAuthentication().create_refresh_token(access_token, user_id)

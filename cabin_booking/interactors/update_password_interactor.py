@@ -9,9 +9,9 @@ class UpdatePasswordInteractor:
         self.storage = storage
         self.response = response
 
-    def update_password_interactor(self, email, password, new_password):
+    def update_password_interactor(self, email, old_password, new_password):
         try:
-            is_correct_password = self.storage.validate_password(email, password)
+            is_correct_password = self.storage.validate_password(email, old_password)
             if is_correct_password is False:
                 return self.response.invalid_password_response()
         except InvalidUserException:
