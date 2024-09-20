@@ -101,23 +101,18 @@ class BookingDB:
             for cabin_booking in booking.cabinbooking_set.all():
 
                 time_slots = set()
-                start_dates = []
-                end_dates = []
+                start_date_list = []
 
-                # Collect time slots for the current booking
                 for booking_slot in cabin_booking.bookingslot_set.all():
-                    start_dates.append(booking_slot.start_date_time.date())
-                    end_dates.append(booking_slot.end_date_time.date())
+                    start_date_list.append(booking_slot.start_date_time.date())
                     time_slots.add(booking_slot.start_date_time.time())
-
                 unique_time_slots = sorted(set(time_slots))
-
                 cabin_details_dto = UserBookingDetails(
                     floor_name=cabin_booking.cabin.floor.name,
                     cabin_name=cabin_booking.cabin.name,
                     booking_id=booking.id,
-                    start_date=min(start_dates),
-                    end_date=max(end_dates),
+                    start_date=start_date_list[0],
+                    end_date=start_date_list[-1],
                     time_slots=unique_time_slots
                 )
                 bookings_details_dto.append(cabin_details_dto)
