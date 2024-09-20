@@ -18,7 +18,7 @@ class BookingDB:
     @staticmethod
     def get_cabin_slots(cabin_ids, start_date, end_date) -> List[CabinTimeSlotsDTO]:
         cabin_slots = BookingSlot.objects.filter(start_date_time__date__gte=start_date,
-                                                 end_date_time__date__lte=end_date,
+                                                 start_date_time__date__lte=end_date,
                                                  cabin_booking__cabin_id__in=cabin_ids)
 
         cabin_id_wise_slots_dict = {}
@@ -34,16 +34,13 @@ class BookingDB:
 
     @staticmethod
     def create_cabin_slots(cabin_id, purpose, user_id, list_start_end_date_time_dto):
-        try:
-            with transaction.atomic():
-                create_user_booking = Booking.objects.create(user_id=user_id, purpose=purpose)
-                create_cabin_bookings = CabinBooking.objects.create(cabin_id=cabin_id, booking=create_user_booking)
-                for dto in list_start_end_date_time_dto:
-                    BookingSlot.objects.create(start_date_time=dto.start_date_time,
-                                               end_date_time=dto.end_date_time,
-                                               cabin_booking=create_cabin_bookings)
-        except:
-            raise UniqueConstraintException()
+
+        create_user_booking = Booking.objects.create(user_id=user_id, purpose=purpose)
+        create_cabin_bookings = CabinBooking.objects.create(cabin_id=cabin_id, booking=create_user_booking)
+        for dto in list_start_end_date_time_dto:
+            BookingSlot.objects.create(start_date_time=dto.start_date_time,
+                                       end_date_time=dto.end_date_time,
+                                       cabin_booking=create_cabin_bookings)
 
     @staticmethod
     def validate_cabin_id_for_cabin_slots(cabin_ids):
@@ -64,6 +61,14 @@ class BookingDB:
 
     def validate_user_id(self, user_id):
         self.user_db_storage.validate_user_id(user_id)
+
+    @staticmethod
+    def check_user_already_booked_slots(cabin_id, convert_start_date, convert_end_date, converted_time_slots):
+        check_slots = BookingSlot.objects.filter(start_date_time__date__gte=convert_start_date,
+                                                 end_date_time__date__lte=convert_end_date,
+                                                 start_date_time__time__in=converted_time_slots,
+                                                 cabin_booking__cabin_id=cabin_id)
+        return check_slots.exists()
 
     @staticmethod
     def get_user_booked_slot(cabin_id, start_date_time, end_date_time):

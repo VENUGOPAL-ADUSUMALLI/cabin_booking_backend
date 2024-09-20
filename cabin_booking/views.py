@@ -61,7 +61,7 @@ def get_signup_interactor_view(request):
 
 @api_view(['GET'])
 def get_user_profile_api_view(request):
-    user_id = request.data.get('user_id')
+    user_id = request.user.user_id
     user_profile_dto = ProfileInteractor(storage=UserDB(),
                                          response=ProfileInteractorResponse()).get_user_details_profile_interactor(
         user_id=str(user_id))
