@@ -1,19 +1,16 @@
-import logging
-from collections import defaultdict
-from os import access
-
-from django.core.exceptions import MultipleObjectsReturned
-from oauth2_provider.models import Application
-from rest_framework_simplejwt.tokens import RefreshToken
-from django.conf import settings
-from oauth2_provider.models import AccessToken, RefreshToken
-from oauth2_provider.settings import oauth2_settings
-from django.utils import timezone
 from datetime import timedelta
-import uuid
+
+from django.conf import settings
+from django.db import transaction
+from django.utils import timezone
+from oauth2_provider.models import Application
+from oauth2_provider.models import RefreshToken, AccessToken
+from oauth2_provider.settings import oauth2_settings
+from pycparser.ply.yacc import token
+
+from cabin_booking.exception import RefreshTokenExpiredException, InvalidRefreshTokenException, \
+    InvalidAccessTokenException
 from cabin_booking.models import *
-from cabin_booking.databases.user_db import UserDB
-from cabin_booking_backend.asgi import application
 
 
 class UserAuthentication:
@@ -45,10 +42,39 @@ class UserAuthentication:
         app = Application.objects.filter(name=settings.APPLICATION_NAME, user_id=user_id).first()
         if not app:
             app = self.create_application(user_id)
+        expire_date = timezone.now() + timedelta(days=1)
         refresh_token = RefreshToken.objects.create(
             user_id=user_id,
             token=uuid.uuid4().hex,
             application=app,
             access_token=access_token
         )
+        refresh_token.revoked = expire_date
+        refresh_token.save()
         return refresh_token
+
+    def create_refresh_access_token(self, refresh_token, user_id):
+        try:
+            refresh_token_obj = RefreshToken.objects.get(token=refresh_token)
+            if refresh_token_obj.revoked < timezone.now():
+                raise RefreshTokenExpiredException()
+            new_access_token = self.create_access_token(user_id)
+            refresh_token_obj.access_token = new_access_token
+            refresh_token_obj.save()
+            return refresh_token_obj
+        except RefreshToken.DoesNotExist:
+            raise InvalidRefreshTokenException()
+
+    def expire_access_token_refresh_token(self, access_token, refresh_token):
+        try:
+            with transaction.atomic():
+                refresh_token_obj = RefreshToken.objects.get(token=refresh_token)
+                refresh_token_obj.revoked = timezone.now()
+                refresh_token_obj.save()
+                access_token_obj = AccessToken.objects.get(token=access_token)
+                access_token_obj.expires = timezone.now()
+                access_token_obj.save()
+        except RefreshToken.DoesNotExist:
+            raise InvalidRefreshTokenException()
+        except AccessToken.DoesNotExist:
+            raise InvalidAccessTokenException()

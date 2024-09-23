@@ -1,13 +1,7 @@
-import json
-from http.client import responses
-
-from django.contrib.auth.handlers.modwsgi import check_password
-from django.http import HttpResponse
-
 from cabin_booking.databases.dtos import LoginResponseDTO
 from cabin_booking.databases.user_authentication_db import UserAuthentication
 from cabin_booking.databases.user_db import UserDB
-from cabin_booking.exception import InvalidPasswordException, InvalidUserException
+from cabin_booking.exception import InvalidUserException
 from cabin_booking.responses.login_interactor_response import LoginInteractorResponse
 
 

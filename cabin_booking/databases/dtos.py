@@ -76,3 +76,6 @@ class UserBookingDetails:
     start_date: datetime.date
     end_date: datetime.date
     time_slots: List[datetime.time]
+@dataclass
+class CreateRefreshTokenDTO:
+    access_token: str

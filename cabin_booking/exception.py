@@ -21,11 +21,30 @@ class UniqueConstraintException(Exception):
 class SomethingWentWrongException(Exception):
     pass
 
+
 class InvalidCabinIDException(Exception):
     pass
+
+
 class InvalidUsernameException(Exception):
     pass
+
+
 class InvalidUserDetailsException(Exception):
     pass
+
+
 class NoBookingsException(Exception):
+    pass
+
+
+class InvalidRefreshTokenException(Exception):
+    pass
+
+
+class RefreshTokenExpiredException(Exception):
+    pass
+
+
+class InvalidAccessTokenException(Exception):
     pass

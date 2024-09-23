@@ -6,6 +6,7 @@ from cabin_booking.databases.user_authentication_db import UserAuthentication
 from cabin_booking.databases.user_db import UserDB
 from cabin_booking.interactors.cabin_confirm_slots_interactor import ConfirmSlotInteractor
 from cabin_booking.interactors.cabins_details_interactor import CabinDetailsInteractor
+from cabin_booking.interactors.create_refresh_access_token import CreateRefreshAccessToken
 from cabin_booking.interactors.get_cabin_wise_slots_interactor import CabinWiseSlotsInteractor
 from cabin_booking.interactors.login_interactors import LoginInteractor
 from cabin_booking.interactors.my_bookings_interactor import MyBookingsInteractor
@@ -16,6 +17,7 @@ from cabin_booking.interactors.user_booked_slots_interactor import UserBookedSlo
 from cabin_booking.interactors.user_profile_update_interactor import UserProfileUpdate
 from cabin_booking.responses.cabin_confirm_slots_response import ConfirmSlotResponse
 from cabin_booking.responses.cabin_details_response import CabinDetailsResponse
+from cabin_booking.responses.create_refresh_access_token_response import CreateRefreshAccessTokensResponse
 from cabin_booking.responses.get_cabins_slots_response import CabinSlotsDetailsResponse
 from cabin_booking.responses.login_interactor_response import LoginInteractorResponse
 from cabin_booking.responses.my_bookings_response import MyBookingsResponse
@@ -35,6 +37,23 @@ def get_login_interactor_view(request):
     response = LoginInteractor(storage=UserDB(), response=LoginInteractorResponse(),
                                authentication=UserAuthentication()).login_interactor(email, password)
     return response
+
+
+@api_view(["POST"])
+def refresh_access_token_view(request):
+    refresh_token = request.data.get('refresh_token')
+    user_id = request.user.user_id
+    response = CreateRefreshAccessToken(storage=UserDB(),
+                                        authentication=UserAuthentication(),
+                                        response=CreateRefreshAccessTokensResponse()).refresh_access_token_interactor(
+        refresh_token=refresh_token, user_id=str(user_id))
+    return response
+
+
+@api_view(["POST"])
+def user_logout(request):
+    access_token = request.data.get("access_token")
+    refresh_token = request.data.get("refresh_token")
 
 
 @api_view(['POST'])
