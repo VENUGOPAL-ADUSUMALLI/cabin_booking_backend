@@ -19,7 +19,8 @@ from django.urls import path
 from django.contrib.auth import views as auth_views
 from cabin_booking.views import get_login_interactor_view, get_signup_interactor_view, get_user_profile_api_view, \
     get_update_password_view, get_cabin_details_view, get_cabin_wise_slots_view, get_cabin_confirm_slot_view, \
-    get_user_booked_slots_view, update_user_profile_view, get_user_my_bookings_view, refresh_access_token_view
+    get_user_booked_slots_view, update_user_profile_view, get_user_my_bookings_view, refresh_access_token_view, \
+    user_logout_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -33,6 +34,6 @@ urlpatterns = [
     path('user/booked_slots/v1', get_user_booked_slots_view),
     path('user/profile_update/v1', update_user_profile_view),
     path("user/my_bookings/v1", get_user_my_bookings_view),
-    path('user_account/logout/v1', auth_views.LogoutView.as_view(), name='logout'),
+    path('user_account/logout/v1', user_logout_view),
     path('user_account/refresh_access_tokens/v1', refresh_access_token_view)
 ]

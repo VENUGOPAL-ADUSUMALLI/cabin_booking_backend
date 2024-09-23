@@ -9,6 +9,7 @@ from cabin_booking.interactors.cabins_details_interactor import CabinDetailsInte
 from cabin_booking.interactors.create_refresh_access_token import CreateRefreshAccessToken
 from cabin_booking.interactors.get_cabin_wise_slots_interactor import CabinWiseSlotsInteractor
 from cabin_booking.interactors.login_interactors import LoginInteractor
+from cabin_booking.interactors.logout_interactor import LogoutInteractor
 from cabin_booking.interactors.my_bookings_interactor import MyBookingsInteractor
 from cabin_booking.interactors.profile_interactor import ProfileInteractor
 from cabin_booking.interactors.signup_interactor import SignupInteractor
@@ -20,6 +21,7 @@ from cabin_booking.responses.cabin_details_response import CabinDetailsResponse
 from cabin_booking.responses.create_refresh_access_token_response import CreateRefreshAccessTokensResponse
 from cabin_booking.responses.get_cabins_slots_response import CabinSlotsDetailsResponse
 from cabin_booking.responses.login_interactor_response import LoginInteractorResponse
+from cabin_booking.responses.logout_responses import LogoutResponse
 from cabin_booking.responses.my_bookings_response import MyBookingsResponse
 from cabin_booking.responses.profile_interactor_response import ProfileInteractorResponse
 from cabin_booking.responses.signup_interactor_response import SignupInteractorResponse
@@ -51,9 +53,14 @@ def refresh_access_token_view(request):
 
 
 @api_view(["POST"])
-def user_logout(request):
+@authentication_classes([])
+@permission_classes([])
+def user_logout_view(request):
     access_token = request.data.get("access_token")
     refresh_token = request.data.get("refresh_token")
+    response = LogoutInteractor(authentication=UserAuthentication(), response=LogoutResponse()).logout_interactor(
+        access_token, refresh_token)
+    return response
 
 
 @api_view(['POST'])
