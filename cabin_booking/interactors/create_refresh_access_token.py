@@ -1,8 +1,8 @@
-from cabin_booking.databases.dtos import CreateRefreshTokenDTO
-from cabin_booking.databases.user_authentication_db import UserAuthentication
-from cabin_booking.databases.user_db import UserDB
+from cabin_booking.storage.dtos import CreateRefreshTokenDTO
+from cabin_booking.storage.user_authentication_db import UserAuthentication
+from cabin_booking.storage.user_db import UserDB
 from cabin_booking.exception import InvalidUserException, InvalidRefreshTokenException, RefreshTokenExpiredException
-from cabin_booking.responses.create_refresh_access_token_response import CreateRefreshAccessTokensResponse
+from cabin_booking.presenter.create_refresh_access_token_response import CreateRefreshAccessTokensResponse
 
 
 class CreateRefreshAccessToken:

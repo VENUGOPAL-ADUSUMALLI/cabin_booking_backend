@@ -1,7 +1,7 @@
-from cabin_booking.databases.booking_db import BookingDB
-from cabin_booking.databases.dtos import ProfileDTO
+from cabin_booking.storage.booking_db import BookingDB
+from cabin_booking.storage.dtos import ProfileDTO
 from cabin_booking.exception import InvalidCabinIDException
-from cabin_booking.responses.user_booked_slots_response import UserBookedSlotResponse
+from cabin_booking.presenter.user_booked_slots_response import UserBookedSlotResponse
 from cabin_booking.utils import user_details
 
 

@@ -1,6 +1,6 @@
-from cabin_booking.databases.user_db import UserDB
+from cabin_booking.storage.user_db import UserDB
 from cabin_booking.exception import InvalidUsernameException, InvalidUserDetailsException, InvalidUserException
-from cabin_booking.responses.user_profile_update_response import UserProfileUpdateResponse
+from cabin_booking.presenter.user_profile_update_response import UserProfileUpdateResponse
 
 
 class UserProfileUpdate:

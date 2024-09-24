@@ -2,11 +2,11 @@ import json
 
 from django.http import HttpResponse
 
-from cabin_booking.databases.dtos import SignupResponseDTO
-from cabin_booking.databases.user_authentication_db import UserAuthentication
-from cabin_booking.databases.user_db import UserDB
+from cabin_booking.storage.dtos import SignupResponseDTO
+from cabin_booking.storage.user_authentication_db import UserAuthentication
+from cabin_booking.storage.user_db import UserDB
 from cabin_booking.exception import UserAlreadyExistsException, UniqueConstraintException
-from cabin_booking.responses.signup_interactor_response import SignupInteractorResponse
+from cabin_booking.presenter.signup_interactor_response import SignupInteractorResponse
 
 
 class SignupInteractor:

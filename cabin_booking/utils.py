@@ -2,8 +2,8 @@ from datetime import time
 
 from cabin_booking.constants.config import order_types
 from cabin_booking.constants.time_slots_constant import SLOT_BOOKING_START_TIME, SLOT_BOOKING_END_TIME
-from cabin_booking.databases.cabin_db import CabinDB
-# from cabin_booking.databases.user_authentication_db import
+from cabin_booking.storage.cabin_db import CabinDB
+# from cabin_booking.storage.user_authentication_db import
 from cabin_booking.exception import InvalidPasswordException, \
     InvalidEmailException, InvalidCabinIDException, InvalidUserException
 from cabin_booking.models import *

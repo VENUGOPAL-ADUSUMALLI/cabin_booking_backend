@@ -2,11 +2,11 @@ from datetime import datetime, timedelta
 
 from django.utils import timezone
 
-from cabin_booking.databases.booking_db import BookingDB
-from cabin_booking.databases.user_db import UserDB
+from cabin_booking.storage.booking_db import BookingDB
+from cabin_booking.storage.user_db import UserDB
 from cabin_booking.exception import InvalidCabinIDException, InvalidUserException, UniqueConstraintException
 from cabin_booking.interactors.dtos import StartEndDateTimeDTO
-from cabin_booking.responses.cabin_confirm_slots_response import ConfirmSlotResponse
+from cabin_booking.presenter.cabin_confirm_slots_response import ConfirmSlotResponse
 
 
 class ConfirmSlotInteractor:

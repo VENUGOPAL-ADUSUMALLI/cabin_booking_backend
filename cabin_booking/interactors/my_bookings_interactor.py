@@ -1,7 +1,7 @@
-from cabin_booking.databases.booking_db import BookingDB
-from cabin_booking.databases.dtos import UserBookingDetails
+from cabin_booking.storage.booking_db import BookingDB
+from cabin_booking.storage.dtos import UserBookingDetails
 from cabin_booking.exception import InvalidUserException, NoBookingsException
-from cabin_booking.responses.my_bookings_response import MyBookingsResponse
+from cabin_booking.presenter.my_bookings_response import MyBookingsResponse
 
 
 class MyBookingsInteractor:

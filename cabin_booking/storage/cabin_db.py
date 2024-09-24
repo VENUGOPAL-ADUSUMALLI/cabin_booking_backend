@@ -1,5 +1,5 @@
 from typing import List
-from cabin_booking.databases.dtos import FloorWiseCabinDetailsDTO, CabinDetailsDTO
+from cabin_booking.storage.dtos import FloorWiseCabinDetailsDTO, CabinDetailsDTO
 from cabin_booking.exception import SomethingWentWrongException
 from cabin_booking.models import Cabin
 

@@ -1,8 +1,8 @@
 from cabin_booking.constants.config import order_types
-from cabin_booking.databases.cabin_db import CabinDB
-from cabin_booking.databases.dtos import FloorWiseCabinDetailsDTO
+from cabin_booking.storage.cabin_db import CabinDB
+from cabin_booking.storage.dtos import FloorWiseCabinDetailsDTO
 from cabin_booking.exception import SomethingWentWrongException
-from cabin_booking.responses.cabin_details_response import CabinDetailsResponse
+from cabin_booking.presenter.cabin_details_response import CabinDetailsResponse
 
 
 class CabinDetailsInteractor:

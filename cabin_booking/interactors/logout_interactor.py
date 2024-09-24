@@ -1,6 +1,6 @@
-from cabin_booking.databases.user_authentication_db import UserAuthentication
+from cabin_booking.storage.user_authentication_db import UserAuthentication
 from cabin_booking.exception import InvalidRefreshTokenException, InvalidAccessTokenException
-from cabin_booking.responses.logout_responses import LogoutResponse
+from cabin_booking.presenter.logout_responses import LogoutResponse
 
 
 class LogoutInteractor:

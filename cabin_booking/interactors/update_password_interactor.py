@@ -1,6 +1,6 @@
-from cabin_booking.databases.user_db import UserDB
+from cabin_booking.storage.user_db import UserDB
 from cabin_booking.exception import InvalidUserException
-from cabin_booking.responses.update_password_response import UpdatePasswordResponse
+from cabin_booking.presenter.update_password_response import UpdatePasswordResponse
 from cabin_booking.models import User
 
 

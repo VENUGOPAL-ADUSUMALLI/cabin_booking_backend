@@ -5,8 +5,8 @@ from typing import List
 from django.db import transaction
 from django.utils import timezone
 
-from cabin_booking.databases.dtos import CabinTimeSlotsDTO, ProfileDTO, UserBookingDetails
-from cabin_booking.databases.user_db import UserDB
+from cabin_booking.storage.dtos import CabinTimeSlotsDTO, ProfileDTO, UserBookingDetails
+from cabin_booking.storage.user_db import UserDB
 from cabin_booking.exception import InvalidCabinIDException, UniqueConstraintException, NoBookingsException
 from cabin_booking.models import BookingSlot, Cabin, Booking, CabinBooking
 

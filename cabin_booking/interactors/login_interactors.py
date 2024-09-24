@@ -1,8 +1,8 @@
-from cabin_booking.databases.dtos import LoginResponseDTO
-from cabin_booking.databases.user_authentication_db import UserAuthentication
-from cabin_booking.databases.user_db import UserDB
+from cabin_booking.storage.dtos import LoginResponseDTO
+from cabin_booking.storage.user_authentication_db import UserAuthentication
+from cabin_booking.storage.user_db import UserDB
 from cabin_booking.exception import InvalidUserException
-from cabin_booking.responses.login_interactor_response import LoginInteractorResponse
+from cabin_booking.presenter.login_interactor_response import LoginInteractorResponse
 
 
 class LoginInteractor:

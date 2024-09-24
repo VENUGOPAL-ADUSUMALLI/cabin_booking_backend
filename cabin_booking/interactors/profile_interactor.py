@@ -2,10 +2,10 @@ import json
 
 from django.http import HttpResponse
 
-from cabin_booking.databases.dtos import ProfileDTO
-from cabin_booking.databases.user_db import UserDB
+from cabin_booking.storage.dtos import ProfileDTO
+from cabin_booking.storage.user_db import UserDB
 from cabin_booking.exception import InvalidUserException
-from cabin_booking.responses.profile_interactor_response import ProfileInteractorResponse
+from cabin_booking.presenter.profile_interactor_response import ProfileInteractorResponse
 
 
 class ProfileInteractor:

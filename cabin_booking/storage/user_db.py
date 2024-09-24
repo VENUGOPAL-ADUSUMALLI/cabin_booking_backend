@@ -1,6 +1,6 @@
 from django.contrib.auth.hashers import make_password
 
-from cabin_booking.databases.dtos import ProfileDTO
+from cabin_booking.storage.dtos import ProfileDTO
 from cabin_booking.exception import InvalidUserException, UserAlreadyExistsException, \
     UniqueConstraintException, InvalidUserDetailsException, InvalidEmailException
 from cabin_booking.models import *
@@ -12,21 +12,15 @@ class UserDB:
 
     @staticmethod
     def get_user_id(email):
-        try:
-            user = User.objects.get(email=email)
-            return str(user.user_id)
-            # print(user.user_id)
-
-        except User.DoesNotExist:
-            raise InvalidUserException()
+        user = User.objects.get(email=email)
+        return str(user.user_id)
 
     @staticmethod
     def validate_password(email, password):
         try:
             user = User.objects.get(email=email)
         except User.DoesNotExist:
-            raise InvalidUserException()
-
+            raise InvalidUserException
         return user.check_password(password)
 
     @staticmethod
