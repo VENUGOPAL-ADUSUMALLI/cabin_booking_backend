@@ -252,6 +252,36 @@
           }
         }
       }
+    },
+    "createAccessTokens": {
+      "name": "Access Token",
+      "in": "body",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "refresh_token": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "refresh_token"
+        ]
+      }
+    },
+    "CreateUserLogout": {
+      "name": "create user logout Parameter",
+      "in": "body",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "access_token": {
+            "type": "string"
+          },
+          "refresh_token": {
+            "type": "string"
+          }
+        }
+      }
     }
   },
   "responses": {
@@ -471,6 +501,17 @@
           }
         }
       }
+    },
+    "CreateAccessTokenResponse": {
+      "description": "Create AccessTokens using Refresh Token",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "access_token": {
+            "type": "string"
+          }
+        }
+      }
     }
   },
   "paths": {
@@ -647,6 +688,44 @@
         "responses": {
           "200": {
             "$ref": "#/responses/createMyBookingResponse"
+          },
+          "400": {
+            "$ref": "#/responses/error"
+          }
+        }
+      }
+    },
+    "/user/refresh_access_token/v1": {
+      "post": {
+        "summary": "Get access tokens using refresh tokens",
+        "operationId": "get_refresh_access_tokens",
+        "parameters": [
+          {
+            "$ref": "#/parameters/createAccessTokens"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/CreateAccessTokenResponse"
+          },
+          "400": {
+            "$ref": "#/responses/error"
+          }
+        }
+      }
+    },
+    "/user_account/logout/v1": {
+      "post": {
+        "summary": "User accounts logout",
+        "operationId": "use_logout",
+        "parameters": [
+          {
+            "$ref": "#/parameters/CreateUserLogout"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User logged out successfully"
           },
           "400": {
             "$ref": "#/responses/error"

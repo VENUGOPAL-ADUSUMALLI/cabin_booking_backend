@@ -42,13 +42,14 @@ def get_login_interactor_view(request):
 
 
 @api_view(["POST"])
+@authentication_classes([])
+@permission_classes([])
 def refresh_access_token_view(request):
     refresh_token = request.data.get('refresh_token')
-    user_id = request.user.user_id
     response = CreateRefreshAccessToken(storage=UserDB(),
                                         authentication=UserAuthentication(),
                                         response=CreateRefreshAccessTokensResponse()).refresh_access_token_interactor(
-        refresh_token=refresh_token, user_id=str(user_id))
+        refresh_token=refresh_token)
     return response
 
 

@@ -12,10 +12,10 @@ class CreateRefreshAccessToken:
         self.authentication = authentication
         self.response = response
 
-    def refresh_access_token_interactor(self, refresh_token,user_id):
+    def refresh_access_token_interactor(self, refresh_token):
         try:
             get_refresh_token = self.authentication.create_refresh_access_token(
-                refresh_token,user_id)
+                refresh_token)
         except InvalidRefreshTokenException:
             return self.response.invalid_refresh_token_response()
         except RefreshTokenExpiredException:

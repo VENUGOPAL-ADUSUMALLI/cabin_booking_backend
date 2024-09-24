@@ -8,6 +8,7 @@ from oauth2_provider.models import RefreshToken, AccessToken
 from oauth2_provider.settings import oauth2_settings
 from pycparser.ply.yacc import token
 
+from cabin_booking.constants.time_slots_constant import REFRESH_TOKEN_EXPIRE_TIME
 from cabin_booking.exception import RefreshTokenExpiredException, InvalidRefreshTokenException, \
     InvalidAccessTokenException
 from cabin_booking.models import *
@@ -42,7 +43,7 @@ class UserAuthentication:
         app = Application.objects.filter(name=settings.APPLICATION_NAME, user_id=user_id).first()
         if not app:
             app = self.create_application(user_id)
-        expire_date = timezone.now() + timedelta(days=1)
+        expire_date = timezone.now() + timedelta(days=REFRESH_TOKEN_EXPIRE_TIME)
         refresh_token = RefreshToken.objects.create(
             user_id=user_id,
             token=uuid.uuid4().hex,
@@ -53,12 +54,12 @@ class UserAuthentication:
         refresh_token.save()
         return refresh_token
 
-    def create_refresh_access_token(self, refresh_token, user_id):
+    def create_refresh_access_token(self, refresh_token):
         try:
             refresh_token_obj = RefreshToken.objects.get(token=refresh_token)
             if refresh_token_obj.revoked < timezone.now():
                 raise RefreshTokenExpiredException()
-            new_access_token = self.create_access_token(user_id)
+            new_access_token = self.create_access_token(refresh_token_obj.user_id)
             refresh_token_obj.access_token = new_access_token
             refresh_token_obj.save()
             return refresh_token_obj
