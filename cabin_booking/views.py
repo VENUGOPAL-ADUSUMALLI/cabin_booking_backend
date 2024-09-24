@@ -76,7 +76,8 @@ def get_signup_interactor_view(request):
     contact_number = request.data.get("contact_number")
     team_name = request.data.get("team_name")
 
-    response = SignupInteractor(storage=UserDB(), response=SignupInteractorResponse()).signup_interactor(
+    response = SignupInteractor(storage=UserDB(), response=SignupInteractorResponse(),
+                                authentication=UserAuthentication()).signup_interactor(
         email=email, password=password,
         username=username, first_name=first_name,
         last_name=last_name,

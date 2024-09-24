@@ -74,6 +74,7 @@ class TestLoginInteractor:
         login_interactor_response_mock.user_login_dto_response.return_value = excepted_response
         response = interactor.login_interactor(email, password)
         user_db_mock.validate_password.assert_called_once_with(email, password)
+        user_db_mock.get_user_id.assert_called_once_with(email)
         user_authentication_mock.create_access_token.assert_called_once_with(user_id)
         user_authentication_mock.create_refresh_token.assert_called_once_with(expected_access_token, user_id)
         assert response == excepted_response

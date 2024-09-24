@@ -10,13 +10,11 @@ class SignupInteractorResponse:
             "error_message": "User Already exist",
             "status": 400
         }), status=400)
+
     @staticmethod
     def user_signup_dto_response(user_signup_dto):
-        response_dict = {
+        user_signup_dict = {
             "access_token": str(user_signup_dto.access_token),
             "refresh_token": str(user_signup_dto.refresh_token)
         }
-        return HttpResponse(json.dumps(response_dict),
-                            status=200)
-
-
+        return HttpResponse(json.dumps(user_signup_dict), status=200)
