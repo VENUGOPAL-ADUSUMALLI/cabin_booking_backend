@@ -4,20 +4,14 @@ from cabin_booking.presenter.user_profile_update_response import UserProfileUpda
 
 
 class UserProfileUpdate:
-    def __init__(self,storage:UserDB,response:UserProfileUpdateResponse):
+    def __init__(self, storage: UserDB, response: UserProfileUpdateResponse):
         self.storage = storage
         self.response = response
-    def update_user_profile_interactor(self,username,first_name,last_name,contact_number,team_name,user_id):
+
+    def update_user_profile_interactor(self, username, first_name, last_name, contact_number, team_name, user_id):
         try:
             self.storage.validate_user_id(user_id)
         except InvalidUserException:
             return self.response.invalid_user_exception()
-        # try:
-        #     self.storage.validate_user_first_name(first_name,last_name,contact_number)
-        # except InvalidUserDetailsException:
-        #     return self.response.invalid_user_details_exception()
-        self.storage.update_user_profile(username,first_name, last_name, contact_number,team_name,user_id)
+        self.storage.update_user_profile(username, first_name, last_name, contact_number, team_name, user_id)
         return self.response.update_user_profile_success_response()
-
-
-

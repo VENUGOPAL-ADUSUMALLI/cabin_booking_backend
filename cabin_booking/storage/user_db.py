@@ -2,7 +2,7 @@ from django.contrib.auth.hashers import make_password
 
 from cabin_booking.storage.dtos import ProfileDTO
 from cabin_booking.exception import InvalidUserException, UserAlreadyExistsException, \
-    UniqueConstraintException, InvalidUserDetailsException, InvalidEmailException
+    UniqueConstraintException, InvalidUserDetailsException, InvalidEmailException, InvalidUsernameException
 from cabin_booking.models import *
 
 
@@ -100,4 +100,5 @@ class UserDB:
             first_name=first_name,
             last_name=last_name,
             contact_number=contact_number, team_name=team_name)
+        # it returns the number of rows that updated
         return user_profile_update

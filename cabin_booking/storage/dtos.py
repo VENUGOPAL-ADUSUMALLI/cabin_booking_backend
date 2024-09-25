@@ -91,3 +91,11 @@ class UserBookingDetails:
 @dataclass
 class CreateRefreshTokenDTO:
     access_token: str
+
+
+@dataclass
+class UpdateProfileDTO:
+    username: str
+    first_name: str
+    last_name: str
+    contact_number: str

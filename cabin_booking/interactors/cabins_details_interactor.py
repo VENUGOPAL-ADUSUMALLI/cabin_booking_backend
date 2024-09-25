@@ -20,4 +20,3 @@ class CabinDetailsInteractor:
             each_dto.cabin = sorted_cabin_details_dto
         response = self.response.cabin_details_success_response(floor_wise_cabins_details_dtos)
         return response
-
