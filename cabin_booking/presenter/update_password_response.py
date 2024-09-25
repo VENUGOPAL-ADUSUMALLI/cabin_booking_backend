@@ -8,7 +8,7 @@ class UpdatePasswordResponse:
     def invalid_user_response():
         return HttpResponse(json.dumps({
             "error_code": "400",
-            "error_message": "invalid user"
+            "error_message": "invalid email id"
         }), status=400)
 
     @staticmethod

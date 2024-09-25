@@ -1,14 +1,12 @@
-from datetime import datetime, timedelta
-from enum import unique
+from datetime import datetime
 from typing import List
 
-from django.db import transaction
 from django.utils import timezone
 
-from cabin_booking.storage.dtos import CabinTimeSlotsDTO, ProfileDTO, UserBookingDetails
-from cabin_booking.storage.user_db import UserDB
-from cabin_booking.exception import InvalidCabinIDException, UniqueConstraintException, NoBookingsException
+from cabin_booking.exception import InvalidCabinIDException, NoBookingsException
 from cabin_booking.models import BookingSlot, Cabin, Booking, CabinBooking
+from cabin_booking.storage.dtos import CabinTimeSlotsDTO, UserBookingDetails, BookingProfileDTO
+from cabin_booking.storage.user_db import UserDB
 
 
 class BookingDB:
@@ -78,7 +76,7 @@ class BookingDB:
                                                         cabin_booking__cabin_id=cabin_id)
         user_slot_details = []
         for each_details in cabin_slot_details:
-            user_details_dto = ProfileDTO(
+            user_details_dto = BookingProfileDTO(
                 email=each_details.cabin_booking.booking.user.email,
                 first_name=each_details.cabin_booking.booking.user.first_name,
                 last_name=each_details.cabin_booking.booking.user.last_name,

@@ -31,7 +31,9 @@ class TestSignupInteractor:
             authentication=user_authentication_mock
         )
 
-    def test_user_already_exception(self, interactor, user_db_mock, signup_interactor_response_mock):
+    def test_user_already_exception(self, interactor, user_db_mock, signup_interactor_response_mock,
+                                    user_authentication_mock):
+        # Arrange
         email = "sprite@gmail.com"
         password = "87654321"
         username = "sprite"
@@ -42,15 +44,20 @@ class TestSignupInteractor:
         user_db_mock.create_user_for_signup.side_effect = UserAlreadyExistsException
         expected_response = "User Already exist"
         signup_interactor_response_mock.user_already_exists_response.return_value = expected_response
+        # Act
         response = interactor.signup_interactor(email, username, password, first_name, last_name, team_name,
                                                 contact_number)
+        # Assert
         user_db_mock.create_user_for_signup.assert_called_once_with(email, password, username, first_name, last_name,
                                                                     team_name, contact_number)
         signup_interactor_response_mock.user_already_exists_response.assert_called_once_with()
+        user_db_mock.get_user_id.assert_not_called()
+        user_authentication_mock.create_access_token.assert_not_called()
         assert response == expected_response
 
     def test_create_user_success(self, interactor, user_db_mock, signup_interactor_response_mock,
                                  user_authentication_mock):
+        # Arrange
         email = "maaza@gmail.com"
         password = "87654321"
         username = "Maaza"
@@ -80,11 +87,14 @@ class TestSignupInteractor:
             "refresh_token": expected_refresh_token
         }
         signup_interactor_response_mock.user_signup_dto_response.return_value = expected_response
+        # Act
         response = interactor.signup_interactor(email, password, username, first_name, last_name, team_name,
                                                 contact_number)
+        # Assert
         user_db_mock.create_user_for_signup.assert_called_once_with(email, username, password, first_name, username,
                                                                     team_name, contact_number)
         user_db_mock.get_user_id.assert_called_once_with(email)
         user_authentication_mock.create_access_token.assert_called_once_with(user_id)
         user_authentication_mock.create_refresh_token.assert_called_once_with(expected_access_token, user_id)
+        signup_interactor_response_mock.user_signup_dto_response(user_account_dto_response)
         assert response == expected_response

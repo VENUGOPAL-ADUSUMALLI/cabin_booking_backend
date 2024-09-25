@@ -21,6 +21,17 @@ class SignupResponseDTO:
 
 
 @dataclass
+class BookingProfileDTO:
+    email: str
+    username: str
+    first_name: str
+    last_name: str
+    team_name: str
+    contact_number: str
+    purpose: str
+
+
+@dataclass
 class ProfileDTO:
     email: str
     username: str
@@ -28,7 +39,6 @@ class ProfileDTO:
     last_name: str
     team_name: str
     contact_number: str
-    purpose: str = ""
 
 
 @dataclass
@@ -76,6 +86,8 @@ class UserBookingDetails:
     start_date: datetime.date
     end_date: datetime.date
     time_slots: List[datetime.time]
+
+
 @dataclass
 class CreateRefreshTokenDTO:
     access_token: str

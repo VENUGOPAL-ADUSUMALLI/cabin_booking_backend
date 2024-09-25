@@ -1,7 +1,6 @@
-from cabin_booking.storage.user_db import UserDB
 from cabin_booking.exception import InvalidUserException
 from cabin_booking.presenter.update_password_response import UpdatePasswordResponse
-from cabin_booking.models import User
+from cabin_booking.storage.user_db import UserDB
 
 
 class UpdatePasswordInteractor:
@@ -19,4 +18,3 @@ class UpdatePasswordInteractor:
         user_id = self.storage.get_user_id(email)
         self.storage.setup_newpassword(user_id, new_password)
         return self.response.password_update_successfull_response()
-

@@ -32,7 +32,7 @@ class UserDB:
         user = User.objects.create(email=email, password=hashed_password, username=username, first_name=first_name,
                                    last_name=last_name, team_name=team_name, contact_number=contact_number)
 
-        user_dto = ProfileDTO(
+        user_profile_dto = ProfileDTO(
             email=user.email,
             first_name=user.first_name,
             last_name=user.last_name,
@@ -40,11 +40,13 @@ class UserDB:
             team_name=user.team_name,
             contact_number=user.contact_number
         )
-        return user_dto
+        return user_profile_dto
 
     @staticmethod
     def profile(user_id):
         user_details = User.objects.get(user_id=user_id)
+        if not user_details:
+            raise InvalidUserException()
         user_dto = ProfileDTO(
             email=user_details.email,
             first_name=user_details.first_name,

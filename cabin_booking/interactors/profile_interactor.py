@@ -14,8 +14,9 @@ class ProfileInteractor:
         self.response = response
 
     def get_user_details_profile_interactor(self, user_id):
-        user_details = self.storage.profile(user_id)
-        if not user_details:
+        try:
+            user_details = self.storage.profile(user_id)
+        except InvalidUserException:
             return self.response.invalid_user_response()
         user_dto = ProfileDTO(
             email=user_details.email,
@@ -25,5 +26,5 @@ class ProfileInteractor:
             team_name=user_details.team_name,
             contact_number=user_details.contact_number
         )
-        user_details_response = ProfileInteractorResponse().user_details_dto_response(user_dto)
+        user_details_response = self.response.user_details_dto_response(user_dto)
         return user_details_response
