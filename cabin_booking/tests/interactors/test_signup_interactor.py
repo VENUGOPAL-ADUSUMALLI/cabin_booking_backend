@@ -50,7 +50,7 @@ class TestSignupInteractor:
         # Assert
         user_db_mock.create_user_for_signup.assert_called_once_with(email, password, username, first_name, last_name,
                                                                     team_name, contact_number)
-        signup_interactor_response_mock.user_already_exists_response.assert_called_once_with()
+        signup_interactor_response_mock.user_already_exists_response.assert_called_once()
         user_db_mock.get_user_id.assert_not_called()
         user_authentication_mock.create_access_token.assert_not_called()
         assert response == expected_response
