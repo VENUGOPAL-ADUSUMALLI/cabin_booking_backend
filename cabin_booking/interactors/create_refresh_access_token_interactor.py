@@ -6,9 +6,8 @@ from cabin_booking.presenter.create_refresh_access_token_response import CreateR
 
 
 class CreateRefreshAccessToken:
-    def __init__(self, storage: UserDB, authentication: UserAuthentication,
+    def __init__(self, authentication: UserAuthentication,
                  response: CreateRefreshAccessTokensResponse):
-        self.storage = storage
         self.authentication = authentication
         self.response = response
 
@@ -21,7 +20,7 @@ class CreateRefreshAccessToken:
         except RefreshTokenExpiredException:
             return self.response.token_expired_response()
         refresh_access_token_dto = CreateRefreshTokenDTO(
-            access_token=get_refresh_token
+            access_token=get_refresh_token.access_token
         )
         response = self.response.get_refresh_access_token_success_response(refresh_access_token_dto)
         return response

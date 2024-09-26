@@ -6,7 +6,7 @@ from cabin_booking.storage.user_authentication_db import UserAuthentication
 from cabin_booking.storage.user_db import UserDB
 from cabin_booking.interactors.cabin_confirm_slots_interactor import ConfirmSlotInteractor
 from cabin_booking.interactors.cabins_details_interactor import CabinDetailsInteractor
-from cabin_booking.interactors.create_refresh_access_token import CreateRefreshAccessToken
+from cabin_booking.interactors.create_refresh_access_token_interactor import CreateRefreshAccessToken
 from cabin_booking.interactors.get_cabin_wise_slots_interactor import CabinWiseSlotsInteractor
 from cabin_booking.interactors.login_interactors import LoginInteractor
 from cabin_booking.interactors.logout_interactor import LogoutInteractor
@@ -46,8 +46,7 @@ def get_login_interactor_view(request):
 @permission_classes([])
 def refresh_access_token_view(request):
     refresh_token = request.data.get('refresh_token')
-    response = CreateRefreshAccessToken(storage=UserDB(),
-                                        authentication=UserAuthentication(),
+    response = CreateRefreshAccessToken(authentication=UserAuthentication(),
                                         response=CreateRefreshAccessTokensResponse()).refresh_access_token_interactor(
         refresh_token=refresh_token)
     return response

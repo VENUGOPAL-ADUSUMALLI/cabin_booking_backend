@@ -12,6 +12,7 @@ from cabin_booking.constants.time_slots_constant import REFRESH_TOKEN_EXPIRE_TIM
 from cabin_booking.exception import RefreshTokenExpiredException, InvalidRefreshTokenException, \
     InvalidAccessTokenException
 from cabin_booking.models import *
+from cabin_booking.storage.dtos import CreateRefreshTokenDTO
 
 
 class UserAuthentication:
@@ -62,7 +63,10 @@ class UserAuthentication:
             new_access_token = self.create_access_token(refresh_token_obj.user_id)
             refresh_token_obj.access_token = new_access_token
             refresh_token_obj.save()
-            return refresh_token_obj
+            access_token_dto = CreateRefreshTokenDTO(
+                access_token=refresh_token_obj.access_token
+            )
+            return access_token_dto
         except RefreshToken.DoesNotExist:
             raise InvalidRefreshTokenException()
 

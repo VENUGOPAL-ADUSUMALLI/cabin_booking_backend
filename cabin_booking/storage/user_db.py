@@ -1,9 +1,9 @@
 from django.contrib.auth.hashers import make_password
 
-from cabin_booking.storage.dtos import ProfileDTO
 from cabin_booking.exception import InvalidUserException, UserAlreadyExistsException, \
-    UniqueConstraintException, InvalidUserDetailsException, InvalidEmailException, InvalidUsernameException
+    InvalidUserDetailsException, InvalidEmailException
 from cabin_booking.models import *
+from cabin_booking.storage.dtos import ProfileDTO
 
 
 class UserDB:

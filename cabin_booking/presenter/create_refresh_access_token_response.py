@@ -7,13 +7,6 @@ from django.http import HttpResponse
 
 class CreateRefreshAccessTokensResponse:
     @staticmethod
-    def invalid_user_response():
-        return HttpResponse(json.dumps({
-            "error_code": "400",
-            "error_message": "Invalid user"
-        }), status=400)
-
-    @staticmethod
     def invalid_refresh_token_response():
         return HttpResponse(json.dumps(
             {
