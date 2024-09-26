@@ -13,7 +13,7 @@ class MyBookingsInteractor:
         try:
             self.storage.validate_user_id(user_id)
         except InvalidUserException:
-            raise InvalidUserException()
+            return self.response.invalid_user_exception()
         user_bookings_dto = []
         try:
             user_bookings_details = self.storage.get_user_bookings(user_id)

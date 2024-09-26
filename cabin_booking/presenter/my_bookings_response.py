@@ -5,6 +5,15 @@ from django.http import HttpResponse
 
 class MyBookingsResponse:
     @staticmethod
+    def invalid_user_exception():
+        return HttpResponse(json.dumps(
+            {
+                "error_code": "400",
+                "error_message": "Invalid User"
+            }
+        ), status=400)
+
+    @staticmethod
     def my_bookings_success_response(user_bookings_dto):
         bookings_list = []
         for each in user_bookings_dto:
@@ -24,7 +33,9 @@ class MyBookingsResponse:
 
     @staticmethod
     def no_bookings_exception():
-        return HttpResponse(json.dumps({
-            "error_code": "400",
-            "error_message": "No Bookings"
-        }), status=400)
+        return HttpResponse(json.dumps(
+            {
+                "error_code": "400",
+                "error_message": "No Bookings"
+            }
+        ), status=400)
