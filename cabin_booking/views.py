@@ -157,7 +157,7 @@ def get_user_booked_slots_view(request):
     start_date_time = request.data.get('start_date_time')
     end_date_time = request.data.get('end_date_time')
     response = UserBookedSlotsInteractor(storage=BookingDB(user_db_storage=UserDB()),
-                                         response=UserBookedSlotResponse()).user_booked_slot(
+                                         response=UserBookedSlotResponse()).user_booked_slot_interactor(
         cabin_id=cabin_id, start_date_time=start_date_time, end_date_time=end_date_time)
     return response
 

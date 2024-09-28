@@ -48,3 +48,7 @@ class RefreshTokenExpiredException(Exception):
 
 class InvalidAccessTokenException(Exception):
     pass
+
+
+class InvalidDateRangeException(Exception):
+    pass

@@ -9,8 +9,17 @@ class CabinSlotsDetailsResponse:
     def invalid_cabin_id_exception():
         return HttpResponse(json.dumps({
             "error_message": " Invalid Cabin Id",
-            "error_code":"400"
-        }),status=400)
+            "error_code": "400"
+        }), status=400)
+
+    @staticmethod
+    def invalid_date_range_exception():
+        return HttpResponse(json.dumps(
+            {
+                "error_message": "Invalid Date",
+                "error_code": "400"
+            }
+        ), status=400)
 
     @staticmethod
     def get_cabin_slot_details_success_response(cabin_id_available_slot_dtos):
@@ -24,15 +33,10 @@ class CabinSlotsDetailsResponse:
                     "availability": time_slot_dto.availability
                 }
                 time_slots.append(time_slot_dict)
-            cabin= {
+            cabin = {
                 "cabin_id": cabin_id,
                 "time_slots": time_slots
             }
             cabins.append(cabin)
 
         return HttpResponse(json.dumps(cabins, indent=4), status=200)
-
-
-
-
-

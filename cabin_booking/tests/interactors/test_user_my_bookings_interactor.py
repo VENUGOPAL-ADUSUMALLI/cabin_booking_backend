@@ -6,7 +6,7 @@ from cabin_booking.exception import InvalidUserException, NoBookingsException
 from cabin_booking.interactors.my_bookings_interactor import MyBookingsInteractor
 from cabin_booking.presenter.my_bookings_response import MyBookingsResponse
 from cabin_booking.storage.booking_db import BookingDB
-from cabin_booking.storage.dtos import UserBookingDetails
+from cabin_booking.storage.dtos import UserBookingDetailsDTO
 from cabin_booking.storage.user_db import UserDB
 
 
@@ -64,7 +64,7 @@ class TestUserMyBookingsInteractor:
     def test_user_bookings_success_response(self, interactor, bookings_db_mock, my_bookings_response_mock):
         # Arrange
         user_id = "cf408174-f8d8-4ca9-ad5d-e2bd2fb68617"
-        booking_db_dto = [UserBookingDetails(
+        booking_db_dto = [UserBookingDetailsDTO(
             floor_name='Fourth Floor',
             cabin_name='Call pod 3b',
             booking_id='215e37da-b01c-4fae-b262-faa986984056',

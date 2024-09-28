@@ -3,9 +3,9 @@ from typing import List
 
 from django.utils import timezone
 
-from cabin_booking.exception import InvalidCabinIDException, NoBookingsException
+from cabin_booking.exception import InvalidCabinIDException, NoBookingsException, InvalidDateRangeException
 from cabin_booking.models import BookingSlot, Cabin, Booking, CabinBooking
-from cabin_booking.storage.dtos import CabinTimeSlotsDTO, UserBookingDetails, BookingProfileDTO
+from cabin_booking.storage.dtos import CabinTimeSlotsDTO, UserBookingDetailsDTO, BookingProfileDTO
 from cabin_booking.storage.user_db import UserDB
 
 
@@ -18,7 +18,6 @@ class BookingDB:
         cabin_slots = BookingSlot.objects.filter(start_date_time__date__gte=start_date,
                                                  start_date_time__date__lte=end_date,
                                                  cabin_booking__cabin_id__in=cabin_ids)
-
         cabin_id_wise_slots_dict = {}
         for each_cabin_slot in cabin_slots:
             cabin_id = each_cabin_slot.cabin_booking.cabin.id
@@ -29,6 +28,11 @@ class BookingDB:
                 )
             cabin_id_wise_slots_dict[cabin_id].time_slots.append(each_cabin_slot.start_date_time.time())
         return list(cabin_id_wise_slots_dict.values())
+
+    @staticmethod
+    def validate_start_and_end_dates(start_date, end_date):
+        if start_date > end_date:
+            raise InvalidDateRangeException()
 
     @staticmethod
     def create_cabin_slots(cabin_id, purpose, user_id, list_start_end_date_time_dto):
@@ -74,7 +78,6 @@ class BookingDB:
         end_date_time = timezone.make_aware(datetime.strptime(end_date_time, "%Y-%m-%d %H:%M"))
         cabin_slot_details = BookingSlot.objects.filter(start_date_time=start_date_time, end_date_time=end_date_time,
                                                         cabin_booking__cabin_id=cabin_id)
-        user_slot_details = []
         for each_details in cabin_slot_details:
             user_details_dto = BookingProfileDTO(
                 email=each_details.cabin_booking.booking.user.email,
@@ -85,8 +88,7 @@ class BookingDB:
                 contact_number=each_details.cabin_booking.booking.user.contact_number,
                 purpose=each_details.cabin_booking.booking.purpose
             )
-            user_slot_details.append(user_details_dto)
-        return user_slot_details
+            return user_details_dto
 
     @staticmethod
     def get_user_bookings(user_id):
@@ -104,7 +106,7 @@ class BookingDB:
                     start_date_list.append(booking_slot.start_date_time.date())
                     time_slots.add(booking_slot.start_date_time.time())
                 unique_time_slots = sorted(set(time_slots))
-                cabin_details_dto = UserBookingDetails(
+                cabin_details_dto = UserBookingDetailsDTO(
                     floor_name=cabin_booking.cabin.floor.name,
                     cabin_name=cabin_booking.cabin.name,
                     booking_id=booking.id,

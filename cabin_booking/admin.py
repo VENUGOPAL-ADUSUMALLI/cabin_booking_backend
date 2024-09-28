@@ -7,7 +7,7 @@ from .models import *
 
 class UserModelDisplay(UserAdmin):
     list_display = ['username', 'user_id', "email"
-        , 'first_name', "last_name", "team_name"]
+        , 'first_name', "last_name", "team_name", 'contact_number']
     search_fields = ["user_id", "email"]
     list_per_page = 25
 
@@ -25,7 +25,7 @@ class CabinModelDisplay(admin.ModelAdmin):
 
 
 class BookingModelDisplay(admin.ModelAdmin):
-    list_display = ["id", "user", "purpose","created_time"]
+    list_display = ["id", "user", "purpose", "created_time"]
     search_fields = ["id", "user__id"]
     list_per_page = 25
 
@@ -38,7 +38,7 @@ class CabinBookingModelDisplay(admin.ModelAdmin):
 
 class BookingSlotModelDisplay(admin.ModelAdmin):
     list_display = ["id", "start_date_time", "end_date_time", "cabin_booking__id"]
-    search_fields = ["id", "start_date_time", "end_date_time","cabin_booking__id"]
+    search_fields = ["id", "start_date_time", "end_date_time", "cabin_booking__id"]
 
 
 admin.site.register(User, UserModelDisplay)

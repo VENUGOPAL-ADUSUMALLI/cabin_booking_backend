@@ -29,10 +29,9 @@ class ConfirmSlotInteractor:
         converted_time_slots = []
         for each_slot in time_slots:
             converted_time_slots.append(datetime.strptime(each_slot, "%H:%M"))
-
-        user_booked_slots = self.storage.check_user_already_booked_slots(cabin_id, convert_start_date, convert_end_date,
+        user_already_booked_slots = self.storage.check_user_already_booked_slots(cabin_id, convert_start_date, convert_end_date,
                                                                          converted_time_slots)
-        if user_booked_slots:
+        if user_already_booked_slots:
             return self.response.uniques_constraint_response()
 
         start_date = timezone.make_aware(datetime.strptime(start_date, "%Y-%m-%d"))

@@ -79,7 +79,7 @@ class TimeDTO:
 
 
 @dataclass
-class UserBookingDetails:
+class UserBookingDetailsDTO:
     floor_name: str
     cabin_name: str
     booking_id: str
