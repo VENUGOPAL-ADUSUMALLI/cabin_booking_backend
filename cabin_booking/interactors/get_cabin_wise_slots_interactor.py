@@ -1,10 +1,10 @@
 from datetime import time
 
 from cabin_booking.constants.time_slots_constant import SLOT_BOOKING_START_TIME, SLOT_BOOKING_END_TIME
-from cabin_booking.storage.booking_db import BookingDB
 from cabin_booking.exception import InvalidCabinIDException, InvalidDateRangeException
 from cabin_booking.interactors.dtos import CabinTimeSlotsAvailabilityDTO, TimeSlotsDTO
 from cabin_booking.presenter.get_cabins_slots_response import CabinSlotsDetailsResponse
+from cabin_booking.storage.booking_db import BookingDB
 
 
 class CabinWiseSlotsInteractor:
@@ -28,7 +28,6 @@ class CabinWiseSlotsInteractor:
         fixed_time_slots = []
         for each_hour in range(SLOT_BOOKING_START_TIME, SLOT_BOOKING_END_TIME):
             fixed_time_slots.append(time(each_hour, 0))
-
         cabin_id_available_slot_dtos = []
         for cabin_id in cabin_ids:
             time_slot_dtos = []

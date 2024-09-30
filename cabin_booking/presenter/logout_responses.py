@@ -11,7 +11,7 @@ class LogoutResponse:
                 "error_code": "400",
                 "error_message": "Invalid refresh token"
             }
-        ), status=400)
+            , indent=4), status=400)
 
     @staticmethod
     def invalid_access_token_response():
@@ -20,7 +20,7 @@ class LogoutResponse:
                 "error_code": "400",
                 "error_message": "Invalid Access token"
             }
-        ), status=400)
+            , indent=4), status=400)
 
     @staticmethod
     def logout_success_response():
@@ -29,4 +29,4 @@ class LogoutResponse:
                 "error_code": "200",
                 "error_message": "logged out successfully"
             }
-        ), status=200)
+            , indent=4), status=200)

@@ -10,8 +10,8 @@ class MyBookingsResponse:
             {
                 "error_code": "400",
                 "error_message": "Invalid User"
-            }
-        ), status=400)
+            },
+            indent=4), status=400)
 
     @staticmethod
     def my_bookings_success_response(user_bookings_dto):
@@ -37,5 +37,5 @@ class MyBookingsResponse:
             {
                 "error_code": "400",
                 "error_message": "No Bookings"
-            }
-        ), status=400)
+            },
+            indent=4), status=400)

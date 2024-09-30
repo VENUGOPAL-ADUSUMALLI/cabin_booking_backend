@@ -24,8 +24,8 @@ class ConfirmSlotInteractor:
             self.user_db_storage.validate_user_id(user_id)
         except InvalidUserException:
             return self.response.invalid_user_id_response()
-        convert_start_date = timezone.make_aware(datetime.strptime(start_date, "%Y-%m-%d"))
-        convert_end_date = timezone.make_aware(datetime.strptime(end_date, "%Y-%m-%d"))
+        convert_start_date = datetime.strptime(start_date, "%Y-%m-%d")
+        convert_end_date = datetime.strptime(end_date, "%Y-%m-%d")
         converted_time_slots = []
         for each_slot in time_slots:
             converted_time_slots.append(datetime.strptime(each_slot, "%H:%M"))
@@ -34,8 +34,8 @@ class ConfirmSlotInteractor:
         if user_already_booked_slots:
             return self.response.uniques_constraint_response()
 
-        start_date = timezone.make_aware(datetime.strptime(start_date, "%Y-%m-%d"))
-        end_date = timezone.make_aware(datetime.strptime(end_date, "%Y-%m-%d"))
+        start_date = datetime.strptime(start_date, "%Y-%m-%d")
+        end_date = datetime.strptime(end_date, "%Y-%m-%d")
         start_date_day = start_date.date()
         end_date_day = end_date.date()
         list_start_end_date_time_dto = []
@@ -43,7 +43,7 @@ class ConfirmSlotInteractor:
             current_day = start_date + timedelta(days=date)
             for each_slot in time_slots:
                 time = datetime.strptime(each_slot, "%H:%M").time()
-                start_date_time = timezone.make_aware(datetime.combine(current_day, time))
+                start_date_time = datetime.combine(current_day, time)
                 end_date_time = start_date_time + timedelta(hours=1)
                 start_end_date_time_dto = StartEndDateTimeDTO(
                     start_date_time=start_date_time,

@@ -9,7 +9,8 @@ class ProfileInteractorResponse:
         return HttpResponse(json.dumps({
             "error_code": 400,
             "error_message": "Invalid User"
-        }), status=400)
+        }, indent=4), status=400)
+
     @staticmethod
     def user_details_dto_response(user_dto):
         user_profile_dict = {
@@ -21,4 +22,4 @@ class ProfileInteractorResponse:
             "contact_number": user_dto.contact_number
 
         }
-        return HttpResponse(json.dumps(user_profile_dict), status=200)
+        return HttpResponse(json.dumps(user_profile_dict), indent=4, status=200)

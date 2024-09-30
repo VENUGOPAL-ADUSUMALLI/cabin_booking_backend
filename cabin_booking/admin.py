@@ -31,7 +31,7 @@ class BookingModelDisplay(admin.ModelAdmin):
 
 
 class CabinBookingModelDisplay(admin.ModelAdmin):
-    list_display = ["id", "cabin", "booking__id"]
+    list_display = ["id", "cabin", "booking__id", "cabin__id"]
     search_fields = ["id", "cabin", "booking__id"]
     list_per_page = 25
 

@@ -1,6 +1,7 @@
 from datetime import datetime
 from typing import List
 
+from django.db.models import Q
 from django.utils import timezone
 
 from cabin_booking.exception import InvalidCabinIDException, NoBookingsException, InvalidDateRangeException
@@ -74,10 +75,11 @@ class BookingDB:
 
     @staticmethod
     def get_user_booked_slot(cabin_id, start_date_time, end_date_time):
-        start_date_time = timezone.make_aware(datetime.strptime(start_date_time, "%Y-%m-%d %H:%M"))
-        end_date_time = timezone.make_aware(datetime.strptime(end_date_time, "%Y-%m-%d %H:%M"))
-        cabin_slot_details = BookingSlot.objects.filter(start_date_time=start_date_time, end_date_time=end_date_time,
-                                                        cabin_booking__cabin_id=cabin_id)
+        start_date_time = datetime.strptime(start_date_time, "%Y-%m-%d %H:%M")
+        end_date_time = datetime.strptime(end_date_time, "%Y-%m-%d %H:%M")
+        cabin_slot_details = BookingSlot.objects.filter(
+            Q(start_date_time=start_date_time) | Q(end_date_time=end_date_time),
+            cabin_booking__cabin_id=cabin_id)
         for each_details in cabin_slot_details:
             user_details_dto = BookingProfileDTO(
                 email=each_details.cabin_booking.booking.user.email,

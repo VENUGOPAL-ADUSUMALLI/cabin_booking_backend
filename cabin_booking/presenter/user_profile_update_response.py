@@ -9,11 +9,11 @@ class UserProfileUpdateResponse:
         return HttpResponse(json.dumps({
             "error_message": "Invalid user",
             "error_code": "400"
-        }), status=400)
+        }, indent=4), status=400)
 
     @staticmethod
     def update_user_profile_success_response():
         return HttpResponse(json.dumps({
             "error_message": "Profile Updated Successfully",
             "error_code": "200"
-        }), status=200)
+        }, indent=4), status=200)

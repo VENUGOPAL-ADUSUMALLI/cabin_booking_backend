@@ -1,5 +1,6 @@
 import json
 from http.client import responses
+from xml.etree.ElementTree import indent
 
 from django.http import HttpResponse
 
@@ -10,7 +11,7 @@ class CabinSlotsDetailsResponse:
         return HttpResponse(json.dumps({
             "error_message": " Invalid Cabin Id",
             "error_code": "400"
-        }), status=400)
+        }, indent=4), status=400)
 
     @staticmethod
     def invalid_date_range_exception():
@@ -18,7 +19,7 @@ class CabinSlotsDetailsResponse:
             {
                 "error_message": "Invalid Date",
                 "error_code": "400"
-            }
+            }, indent=4
         ), status=400)
 
     @staticmethod

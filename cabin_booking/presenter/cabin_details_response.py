@@ -9,7 +9,7 @@ class CabinDetailsResponse:
         return HttpResponse(json.dumps({
             "error_code": "400",
             "error_message": "something went wrong"
-        }), status=400)
+        }, indent=4), status=400)
 
     @staticmethod
     def cabin_details_success_response(floor_wise_cabins_details_dtos):
@@ -30,4 +30,4 @@ class CabinDetailsResponse:
                 }
                 get_floor_wise_cabins_dict[floor_name]["cabins"].append(cabin_dict)
         response = list(get_floor_wise_cabins_dict.values())
-        return HttpResponse(json.dumps(response,indent=4), status=200)
+        return HttpResponse(json.dumps(response, indent=4), status=200)
