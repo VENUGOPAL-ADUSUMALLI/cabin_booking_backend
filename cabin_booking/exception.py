@@ -52,3 +52,7 @@ class InvalidAccessTokenException(Exception):
 
 class InvalidDateRangeException(Exception):
     pass
+
+
+class InvalidDetailsException(Exception):
+    pass

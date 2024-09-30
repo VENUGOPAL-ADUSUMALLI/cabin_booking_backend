@@ -15,7 +15,7 @@ class ConfirmSlotResponse:
     def invalid_user_id_response():
         return HttpResponse(json.dumps({
             "error_code": "400",
-            "error_message": "Invalid Canin Id"
+            "error_message": "Invalid User Id"
         }, indent=4), status=400)
 
     @staticmethod

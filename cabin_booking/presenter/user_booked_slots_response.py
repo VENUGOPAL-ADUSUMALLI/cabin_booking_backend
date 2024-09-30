@@ -13,7 +13,7 @@ class UserBookedSlotResponse:
         }, indent=4), status=400)
 
     @staticmethod
-    def InvalidDateRangeException():
+    def invalid_details_exception():
         return HttpResponse(json.dumps(
             {
                 "error_code": "400",
@@ -29,6 +29,7 @@ class UserBookedSlotResponse:
             "first_name": user_details_dto.first_name,
             "last_name": user_details_dto.last_name,
             "team_name": user_details_dto.team_name,
-            "contact_number": user_details_dto.contact_number
+            "contact_number": user_details_dto.contact_number,
+            "purpose": user_details_dto.purpose
         }
         return HttpResponse(json.dumps(user_details_dict, indent=4), status=200)
