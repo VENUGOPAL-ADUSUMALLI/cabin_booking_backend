@@ -1,6 +1,5 @@
-from datetime import datetime, time
+from datetime import time
 from unittest import mock
-from uuid import UUID
 
 import pytest
 

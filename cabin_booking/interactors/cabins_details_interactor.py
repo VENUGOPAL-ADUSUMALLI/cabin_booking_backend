@@ -11,8 +11,9 @@ class CabinDetailsInteractor:
         self.response = response
 
     def get_floor_wise_cabins_list(self):
-        floor_wise_cabins_details_dtos = self.storage.get_cabins_details()
-        if not floor_wise_cabins_details_dtos:
+        try:
+            floor_wise_cabins_details_dtos = self.storage.get_cabins_details()
+        except SomethingWentWrongException:
             return self.response.something_went_wrong_exception()
         for each_dto in floor_wise_cabins_details_dtos:
             cabin_details_dto = each_dto.cabin
