@@ -213,3 +213,62 @@ def update_password(email, old_password, new_password):
         user.password = new_password
         user.save()
         print("password updated successfully")
+# This is the expected final response in dictionary format
+        final_response = [
+            {
+                "cabin_id": "b2ff1c68-5009-4d20-9103-01db46d76342",
+                "time_slots": [
+                    {"slot": "09:00:00", "availability": True},
+                    {"slot": "10:00:00", "availability": True},
+                    {"slot": "11:00:00", "availability": True},
+                    {"slot": "12:00:00", "availability": True},
+                    {"slot": "13:00:00", "availability": True},
+                    {"slot": "14:00:00", "availability": True},
+                    {"slot": "15:00:00", "availability": True},
+                    {"slot": "16:00:00", "availability": True},
+                    {"slot": "17:00:00", "availability": True},
+                    {"slot": "18:00:00", "availability": False},
+                    {"slot": "19:00:00", "availability": True},
+                    {"slot": "20:00:00", "availability": False},
+                    {"slot": "21:00:00", "availability": True},
+                    {"slot": "22:00:00", "availability": True},
+                    {"slot": "23:00:00", "availability": True},
+                ]
+            }
+        ]
+
+        cabin_id_available_dtos = [
+            CabinTimeSlotsAvailabilityDTO(
+                cabin_id='b2ff1c68-5009-4d20-9103-01db46d76342',
+                time_slots=[
+                    TimeSlotsDTO(slot=time(9, 0), availability=True),
+                    TimeSlotsDTO(slot=time(10, 0), availability=True),
+                    TimeSlotsDTO(slot=time(11, 0), availability=True),
+                    TimeSlotsDTO(slot=time(12, 0), availability=True),
+                    TimeSlotsDTO(slot=time(13, 0), availability=True),
+                    TimeSlotsDTO(slot=time(14, 0), availability=True),
+                    TimeSlotsDTO(slot=time(15, 0), availability=True),
+                    TimeSlotsDTO(slot=time(16, 0), availability=True),
+                    TimeSlotsDTO(slot=time(17, 0), availability=True),
+                    TimeSlotsDTO(slot=time(18, 0), availability=False),
+                    TimeSlotsDTO(slot=time(19, 0), availability=True),
+                    TimeSlotsDTO(slot=time(20, 0), availability=False),
+                    TimeSlotsDTO(slot=time(21, 0), availability=True),
+                    TimeSlotsDTO(slot=time(22, 0), availability=True),
+                    TimeSlotsDTO(slot=time(23, 0), availability=True),
+                ]
+            )
+        ]
+
+        # Mock the database response and response handler
+        booking_db_mock.get_cabin_slots.return_value = cabin_id_available_dtos
+        cabin_slots_response_mock.get_cabin_slot_details_success_response.return_value = final_response
+
+        # Act
+        response = interactor.get_cabin_slots_interactor(cabin_ids, start_date, end_date)
+
+        # Assert
+        booking_db_mock.get_cabin_slots.assert_called_once_with(cabin_ids, start_date, end_date)
+        cabin_slots_response_mock.get_cabin_slot_details_success_response.assert_called_once_with(
+            cabin_id_available_dtos)
+        assert response == final_response  # Now comparing two dictionaries

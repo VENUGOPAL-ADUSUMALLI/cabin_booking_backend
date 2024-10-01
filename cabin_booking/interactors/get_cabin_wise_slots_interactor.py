@@ -17,11 +17,11 @@ class CabinWiseSlotsInteractor:
             self.storage.validate_cabin_id_for_cabin_slots(cabin_ids)
         except InvalidCabinIDException:
             return self.response.invalid_cabin_id_exception()
-        cabin_slot_details_dtos = self.storage.get_cabin_slots(cabin_ids, start_date, end_date)
         try:
             self.storage.validate_start_and_end_dates(start_date, end_date)
         except InvalidDateRangeException:
             return self.response.invalid_date_range_exception()
+        cabin_slot_details_dtos = self.storage.get_cabin_slots(cabin_ids, start_date, end_date)
         cabin_id_wise_booked_slots = {}
         for dto in cabin_slot_details_dtos:
             cabin_id_wise_booked_slots[str(dto.cabin_id)] = dto.time_slots
@@ -49,5 +49,4 @@ class CabinWiseSlotsInteractor:
                     time_slots=time_slot_dtos
                 )
             )
-
         return self.response.get_cabin_slot_details_success_response(cabin_id_available_slot_dtos)

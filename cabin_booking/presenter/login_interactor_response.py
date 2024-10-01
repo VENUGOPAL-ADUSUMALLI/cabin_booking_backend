@@ -1,4 +1,5 @@
 import json
+from textwrap import indent
 
 from django.http import HttpResponse
 
@@ -25,4 +26,4 @@ class LoginInteractorResponse:
             "access_token": str(user_login_dto.access_token),
             "refresh_token": str(user_login_dto.refresh_token)
         }
-        return HttpResponse(json.dumps(user_login_dict), indent=4, status=200)
+        return HttpResponse(json.dumps(user_login_dict, indent=4), status=200)
