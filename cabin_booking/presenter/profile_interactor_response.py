@@ -22,4 +22,4 @@ class ProfileInteractorResponse:
             "contact_number": user_dto.contact_number
 
         }
-        return HttpResponse(json.dumps(user_profile_dict), indent=4, status=200)
+        return HttpResponse(json.dumps(user_profile_dict,indent=4), status=200)

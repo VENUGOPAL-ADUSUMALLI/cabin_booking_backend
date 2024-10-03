@@ -44,8 +44,9 @@ class UserDB:
 
     @staticmethod
     def profile(user_id):
-        user_details = User.objects.get(user_id=user_id)
-        if not user_details:
+        try:
+            user_details = User.objects.get(user_id=user_id)
+        except User.DoesNotExist:
             raise InvalidUserException()
         user_dto = ProfileDTO(
             email=user_details.email,
@@ -75,23 +76,11 @@ class UserDB:
 
     @staticmethod
     def validate_user_id(user_id):
-        get_user = User.objects.get(user_id=user_id)
-        if not get_user:
+        try:
+            User.objects.get(user_id=user_id)
+        except User.DoesNotExist:
             raise InvalidUserException()
 
-    @staticmethod
-    def validate_user_email(email):
-        try:
-            User.objects.get(email=email)
-        except User.DoesNotExist:
-            raise InvalidEmailException()
-
-    @staticmethod
-    def validate_user_first_name(first_name, last_name, contact_number):
-        try:
-            User.objects.get(first_name=first_name, last_name=last_name, contact_number=contact_number)
-        except User.DoesNotExist:
-            raise InvalidUserDetailsException()
 
     @staticmethod
     def update_user_profile(username, first_name, last_name, contact_number, team_name, user_id):

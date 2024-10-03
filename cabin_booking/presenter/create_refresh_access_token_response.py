@@ -1,6 +1,7 @@
 import json
 from dataclasses import dataclass
 from http.client import HTTPResponse
+from textwrap import indent
 
 from django.http import HttpResponse
 
@@ -29,4 +30,4 @@ class CreateRefreshAccessTokensResponse:
         refresh_access_token_dict = {
             "access_token": str(refresh_access_token_dto.access_token)
         }
-        return HttpResponse(json.dumps(refresh_access_token_dict), indent=4, status=200)
+        return HttpResponse(json.dumps(refresh_access_token_dict, indent=4), status=200)

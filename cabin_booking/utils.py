@@ -197,12 +197,6 @@ def create_user_for_signup(email, password, user_name, first_name, last_name, te
 
 
 # def update_password(email,old_password,new_password):
-def check_password(email, password):
-    get_user_obj = User.objects.get(email=email)
-    if not get_user:
-        raise InvalidUserException()
-    check_user_password = get_user_obj.check_password(password)
-    return check_user_password
 
 
 def update_password(email, old_password, new_password):
