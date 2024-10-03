@@ -26,4 +26,4 @@ class CabinDB:
                 floor_wise_cabin_details[floor_name].cabin.append(cabin_dict)
             return list(floor_wise_cabin_details.values())
         except Cabin.DoesNotExist:
-            raise  SomethingWentWrongException()
+            raise SomethingWentWrongException()
