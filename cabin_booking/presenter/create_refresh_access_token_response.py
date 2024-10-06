@@ -1,7 +1,4 @@
 import json
-from dataclasses import dataclass
-from http.client import HTTPResponse
-from textwrap import indent
 
 from django.http import HttpResponse
 

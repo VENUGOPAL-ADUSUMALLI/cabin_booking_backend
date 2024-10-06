@@ -182,6 +182,7 @@ def update_user_profile_view(request):
 def get_user_my_bookings_view(request):
     user_id = request.user.user_id
     response = MyBookingsInteractor(storage=BookingDB(user_db_storage=UserDB()),
-                                    response=MyBookingsResponse()).get_user_my_bookings_interactor(
+                                    response=MyBookingsResponse(),
+                                    user_db_storage=UserDB()).get_user_my_bookings_interactor(
         user_id=user_id)
     return response

@@ -62,9 +62,6 @@ class BookingDB:
         except Cabin.DoesNotExist:
             raise InvalidCabinIDException()
 
-    def validate_user_id(self, user_id):
-        self.user_db_storage.validate_user_id(user_id)
-
     @staticmethod
     def check_user_already_booked_slots(cabin_id, convert_start_date, convert_end_date, converted_time_slots):
         check_slots = BookingSlot.objects.filter(start_date_time__date__gte=convert_start_date,
@@ -104,8 +101,10 @@ class BookingDB:
             for cabin_booking in booking.cabinbooking_set.all():
                 time_slots = set()
                 start_date_list = []
+                end_date_list = []
                 for booking_slot in cabin_booking.bookingslot_set.all():
                     start_date_list.append(booking_slot.start_date_time.date())
+                    end_date_list.append(booking_slot.end_date_time.date())
                     time_slots.add(booking_slot.start_date_time.time())
                 unique_time_slots = sorted(set(time_slots))
                 cabin_details_dto = UserBookingDetailsDTO(
@@ -113,7 +112,7 @@ class BookingDB:
                     cabin_name=cabin_booking.cabin.name,
                     booking_id=booking.id,
                     start_date=start_date_list[0],
-                    end_date=start_date_list[-1],
+                    end_date=end_date_list[-1],
                     time_slots=unique_time_slots
                 )
                 if not start_date_list:

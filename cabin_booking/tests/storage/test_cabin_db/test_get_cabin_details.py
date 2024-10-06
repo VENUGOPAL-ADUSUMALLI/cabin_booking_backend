@@ -115,15 +115,10 @@ class TestGetCabinDetails:
             )
         ]
         assert response == expected_dto
+
+
     def test_cabin_does_not_exist(self):
         storage = CabinDB()
-        def get_mock_cabin_exception():
-            try:
-                raise Cabin.DoesNotExist
-            except Cabin.DoesNotExist:
-                raise SomethingWentWrongException()
-
-        storage.get_cabins_details = get_mock_cabin_exception
-        with pytest.raises(SomethingWentWrongException):
-            storage.get_cabins_details()
+        response = storage.get_cabins_details()
+        assert response == []
 

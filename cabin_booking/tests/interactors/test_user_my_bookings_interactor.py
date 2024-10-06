@@ -28,19 +28,21 @@ class TestUserMyBookingsInteractor:
         bookings_db_mock.user_db_storage = user_db_mock
         return MyBookingsInteractor(
             storage=bookings_db_mock,
-            response=my_bookings_response_mock
+            response=my_bookings_response_mock,
+            user_db_storage=user_db_mock
+
         )
 
-    def test_invalid_user_exception(self, interactor, bookings_db_mock, my_bookings_response_mock):
+    def test_invalid_user_exception(self, interactor, bookings_db_mock, my_bookings_response_mock, user_db_mock):
         # Arrange
         user_id = "cf408174-f8d8-4ca9-ad5d-e2bd2fb68617"
-        bookings_db_mock.validate_user_id.side_effect = InvalidUserException
+        user_db_mock.validate_user_id.side_effect = InvalidUserException
         expected_response = "Invalid User"
         my_bookings_response_mock.invalid_user_exception.return_value = expected_response
         # Act
         response = interactor.get_user_my_bookings_interactor(user_id)
         # Assert
-        bookings_db_mock.validate_user_id.assert_called_once_with(user_id)
+        user_db_mock.validate_user_id.assert_called_once_with(user_id)
         my_bookings_response_mock.invalid_user_exception.assert_called_once()
         bookings_db_mock.get_user_bookings.assert_not_called()
         my_bookings_response_mock.no_bookings_exception.assert_not_called()

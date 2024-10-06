@@ -77,10 +77,9 @@ class UserDB:
     @staticmethod
     def validate_user_id(user_id):
         try:
-            User.objects.get(user_id=user_id)
+            User.objects.get(user_id=str(user_id))
         except User.DoesNotExist:
             raise InvalidUserException()
-
 
     @staticmethod
     def update_user_profile(username, first_name, last_name, contact_number, team_name, user_id):

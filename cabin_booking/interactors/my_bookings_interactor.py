@@ -2,16 +2,18 @@ from cabin_booking.storage.booking_db import BookingDB
 from cabin_booking.storage.dtos import UserBookingDetailsDTO
 from cabin_booking.exception import InvalidUserException, NoBookingsException
 from cabin_booking.presenter.my_bookings_response import MyBookingsResponse
+from cabin_booking.storage.user_db import UserDB
 
 
 class MyBookingsInteractor:
-    def __init__(self, storage: BookingDB, response: MyBookingsResponse):
+    def __init__(self, storage: BookingDB, response: MyBookingsResponse, user_db_storage: UserDB):
         self.storage = storage
         self.response = response
+        self.user_db_storage = user_db_storage
 
-    def get_user_my_bookings_interactor(self, user_id, ):
+    def get_user_my_bookings_interactor(self, user_id):
         try:
-            self.storage.validate_user_id(user_id)
+            self.user_db_storage.validate_user_id(user_id)
         except InvalidUserException:
             return self.response.invalid_user_exception()
         user_bookings_dto = []

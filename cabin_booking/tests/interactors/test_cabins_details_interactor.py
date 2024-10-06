@@ -27,7 +27,7 @@ class TestCabinDetails:
 
     def test_some_went_wrong_exception(self, interactor, cabin_db_mock, cabins_details_response_mock):
         # Arrange
-        cabin_db_mock.get_cabins_details.side_effect = SomethingWentWrongException
+        cabin_db_mock.get_cabins_details.return_value = None
         expected_response = "something went wrong"
         cabins_details_response_mock.something_went_wrong_exception.return_value = expected_response
         # Act
