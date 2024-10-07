@@ -1,0 +1,13 @@
+[
+    {
+        "Floor_name": "Fourth Floor",
+        "cabin_name": "Call pod 3b",
+        "Booking_id": "215e37da-b01c-4fae-b262-faa986984056",
+        "start_date": "2024-09-23",
+        "end_date": "2024-09-25",
+        "time_slots": [
+            "11:00",
+            "13:00"
+        ]
+    }
+]

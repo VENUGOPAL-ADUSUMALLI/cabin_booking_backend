@@ -1,0 +1,67 @@
+[
+    {
+        "cabin_id": "b2ff1c68-5009-4d20-9103-01db46d763420",
+        "time_slots": [
+            {
+                "slot": "09:00:00",
+                "availability": true
+            },
+            {
+                "slot": "10:00:00",
+                "availability": true
+            },
+            {
+                "slot": "11:00:00",
+                "availability": true
+            },
+            {
+                "slot": "12:00:00",
+                "availability": true
+            },
+            {
+                "slot": "13:00:00",
+                "availability": true
+            },
+            {
+                "slot": "14:00:00",
+                "availability": true
+            },
+            {
+                "slot": "15:00:00",
+                "availability": true
+            },
+            {
+                "slot": "16:00:00",
+                "availability": true
+            },
+            {
+                "slot": "17:00:00",
+                "availability": true
+            },
+            {
+                "slot": "18:00:00",
+                "availability": false
+            },
+            {
+                "slot": "19:00:00",
+                "availability": true
+            },
+            {
+                "slot": "20:00:00",
+                "availability": false
+            },
+            {
+                "slot": "21:00:00",
+                "availability": true
+            },
+            {
+                "slot": "22:00:00",
+                "availability": true
+            },
+            {
+                "slot": "23:00:00",
+                "availability": true
+            }
+        ]
+    }
+]

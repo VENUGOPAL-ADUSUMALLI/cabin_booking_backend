@@ -17,7 +17,7 @@ class CreateUpdateTimeDetails(models.Model):
 
 class User(AbstractUser, CreateUpdateTimeDetails):
     user_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    username = models.CharField(max_length=50, null=True ,unique=True)
+    username = models.CharField(max_length=50, null=True, unique=True)
     email = models.EmailField(unique=True)
     team_name = models.CharField(max_length=20)
     contact_number = models.CharField(max_length=10, null=True, blank=True)
@@ -81,3 +81,6 @@ class BookingSlot(CreateUpdateTimeDetails):
     start_date_time = models.DateTimeField()
     end_date_time = models.DateTimeField()
     cabin_booking = models.ForeignKey(CabinBooking, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"start_date_time = {self.start_date_time} , end_date_time = {self.end_date_time},cabin_booking = {self.cabin_booking}"

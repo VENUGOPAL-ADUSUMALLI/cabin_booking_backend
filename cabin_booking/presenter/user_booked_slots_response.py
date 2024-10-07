@@ -1,5 +1,4 @@
 import json
-from xml.etree.ElementTree import indent
 
 from django.http import HttpResponse
 

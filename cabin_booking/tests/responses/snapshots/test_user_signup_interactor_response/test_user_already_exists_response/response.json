@@ -1,0 +1,4 @@
+{
+    "error_message": "User Already exist",
+    "status": 400
+}
