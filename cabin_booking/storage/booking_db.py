@@ -2,12 +2,11 @@ from datetime import datetime
 from typing import List
 
 from django.db.models import Q
-from django.utils import timezone
 
 from cabin_booking.exception import InvalidCabinIDException, NoBookingsException, InvalidDateRangeException, \
     InvalidBookingIDException
 from cabin_booking.models import BookingSlot, Cabin, Booking, CabinBooking
-from cabin_booking.storage.dtos import CabinTimeSlotsDTO, UserBookingDetailsDTO, BookingProfileDTO, ProfileDTO
+from cabin_booking.storage.dtos import CabinTimeSlotsDTO, UserBookingDetailsDTO, BookingProfileDTO
 from cabin_booking.storage.user_db import UserDB
 
 
@@ -108,6 +107,8 @@ class BookingDB:
                     end_date_list.append(booking_slot.end_date_time.date())
                     time_slots.add(booking_slot.start_date_time.time())
                 unique_time_slots = sorted(set(time_slots))
+                if not start_date_list:
+                    raise NoBookingsException()
                 cabin_details_dto = UserBookingDetailsDTO(
                     floor_name=cabin_booking.cabin.floor.name,
                     cabin_name=cabin_booking.cabin.name,
@@ -116,8 +117,6 @@ class BookingDB:
                     end_date=end_date_list[-1],
                     time_slots=unique_time_slots
                 )
-                if not start_date_list:
-                    raise NoBookingsException()
                 bookings_details_dto.append(cabin_details_dto)
 
         return bookings_details_dto

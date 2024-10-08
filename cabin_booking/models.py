@@ -73,7 +73,7 @@ class CabinBooking(CreateUpdateTimeDetails):
         unique_together = ('cabin', 'booking')
 
     def __str__(self):
-        return f"{self.cabin} "
+        return f"{self.cabin} {self.booking} "
 
 
 class BookingSlot(CreateUpdateTimeDetails):
