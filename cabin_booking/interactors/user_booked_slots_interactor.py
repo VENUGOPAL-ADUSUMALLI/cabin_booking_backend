@@ -1,5 +1,6 @@
-from cabin_booking.exception import InvalidCabinIDException, InvalidUserException, InvalidDateRangeException, \
-    SomethingWentWrongException, InvalidDetailsException
+from django.http import HttpResponse
+
+from cabin_booking.exception import InvalidCabinIDException, InvalidDetailsException
 from cabin_booking.presenter.user_booked_slots_response import UserBookedSlotResponse
 from cabin_booking.storage.booking_db import BookingDB
 from cabin_booking.storage.dtos import BookingProfileDTO
@@ -10,7 +11,7 @@ class UserBookedSlotsInteractor:
         self.storage = storage
         self.response = response
 
-    def user_booked_slot_interactor(self, cabin_id, start_date_time, end_date_time):
+    def user_booked_slot_interactor(self, cabin_id, start_date_time, end_date_time) -> HttpResponse:
         try:
             self.storage.validate_cabin_id(cabin_id)
         except InvalidCabinIDException:

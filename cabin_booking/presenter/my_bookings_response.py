@@ -5,7 +5,7 @@ from django.http import HttpResponse
 
 class MyBookingsResponse:
     @staticmethod
-    def invalid_user_exception():
+    def invalid_user_exception() -> HttpResponse:
         return HttpResponse(json.dumps(
             {
                 "error_code": "400",
@@ -14,7 +14,7 @@ class MyBookingsResponse:
             indent=4), status=400)
 
     @staticmethod
-    def my_bookings_success_response(user_bookings_dto):
+    def my_bookings_success_response(user_bookings_dto) -> HttpResponse:
         bookings_list = []
         for each in user_bookings_dto:
             time_slots = []
@@ -32,7 +32,7 @@ class MyBookingsResponse:
         return HttpResponse(json.dumps(bookings_list, indent=4), status=200)
 
     @staticmethod
-    def no_bookings_exception():
+    def no_bookings_exception() -> HttpResponse:
         return HttpResponse(json.dumps(
             {
                 "error_code": "400",

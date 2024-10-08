@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 
+from django.http import HttpResponse
 from django.utils import timezone
 
 from cabin_booking.storage.booking_db import BookingDB
@@ -15,7 +16,7 @@ class ConfirmSlotInteractor:
         self.response = response
         self.user_db_storage = user_db_storage
 
-    def confirm_slot_interactor(self, cabin_id, start_date, end_date, purpose, user_id, time_slots):
+    def confirm_slot_interactor(self, cabin_id, start_date, end_date, purpose, user_id, time_slots) ->HttpResponse:
         try:
             self.storage.validate_cabin_id(cabin_id)
         except InvalidCabinIDException:

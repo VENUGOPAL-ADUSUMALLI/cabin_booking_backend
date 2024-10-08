@@ -16,7 +16,7 @@ from cabin_booking.storage.dtos import CreateRefreshTokenDTO, AccessTokenDTO, Re
 
 class UserAuthentication:
     @staticmethod
-    def _create_application(user_id):
+    def _create_application(user_id) -> Application:
         app = Application.objects.create(
             name=settings.APPLICATION_NAME,
             client_type=Application.CLIENT_CONFIDENTIAL,
@@ -25,7 +25,7 @@ class UserAuthentication:
         )
         return app
 
-    def _create_access_token_private_method(self, user_id):
+    def _create_access_token_private_method(self, user_id) -> AccessToken:
         app = Application.objects.filter(name=settings.APPLICATION_NAME, user_id=user_id).first()
         if not app:
             app = self._create_application(user_id)
@@ -39,7 +39,7 @@ class UserAuthentication:
         )
         return access_token
 
-    def create_access_token(self, user_id):
+    def create_access_token(self, user_id) -> AccessTokenDTO:
         access_token = self._create_access_token_private_method(user_id)
         access_token_dto = AccessTokenDTO(
             user_id=str(access_token.user_id),
@@ -47,7 +47,7 @@ class UserAuthentication:
         )
         return access_token_dto
 
-    def create_refresh_token(self, access_token, user_id):
+    def create_refresh_token(self, access_token, user_id) -> RefreshTokenDTO:
         app = Application.objects.filter(name=settings.APPLICATION_NAME, user_id=user_id).first()
         if not app:
             app = self._create_application(user_id)
@@ -67,7 +67,7 @@ class UserAuthentication:
         )
         return refresh_token_dto
 
-    def create_refresh_access_token(self, refresh_token):
+    def create_refresh_access_token(self, refresh_token) -> CreateRefreshTokenDTO:
         try:
             refresh_token_obj = RefreshToken.objects.get(token=refresh_token)
             if refresh_token_obj.revoked < timezone.now():
@@ -76,13 +76,13 @@ class UserAuthentication:
             refresh_token_obj.access_token = new_access_token
             refresh_token_obj.save()
             access_token_dto = CreateRefreshTokenDTO(
-                access_token=refresh_token_obj.access_token
+                access_token=str(refresh_token_obj.access_token)
             )
             return access_token_dto
         except RefreshToken.DoesNotExist:
             raise InvalidRefreshTokenException()
 
-    def expire_access_token_refresh_token(self, access_token, refresh_token):
+    def expire_access_token_refresh_token(self, access_token, refresh_token) -> None:
         try:
             with transaction.atomic():
                 refresh_token_obj = RefreshToken.objects.get(token=refresh_token)

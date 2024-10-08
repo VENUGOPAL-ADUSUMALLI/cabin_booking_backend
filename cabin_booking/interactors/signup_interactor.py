@@ -1,12 +1,10 @@
-import json
-
 from django.http import HttpResponse
 
+from cabin_booking.exception import UserAlreadyExistsException
+from cabin_booking.presenter.signup_interactor_response import SignupInteractorResponse
 from cabin_booking.storage.dtos import SignupResponseDTO
 from cabin_booking.storage.user_authentication_db import UserAuthentication
 from cabin_booking.storage.user_db import UserDB
-from cabin_booking.exception import UserAlreadyExistsException, UniqueConstraintException
-from cabin_booking.presenter.signup_interactor_response import SignupInteractorResponse
 
 
 class SignupInteractor:
@@ -15,7 +13,8 @@ class SignupInteractor:
         self.response = response
         self.authentication = authentication
 
-    def signup_interactor(self, email, username, password, first_name, last_name, team_name, contact_number):
+    def signup_interactor(self, email, username, password, first_name, last_name, team_name,
+                          contact_number) -> HttpResponse:
         try:
             self.storage.create_user_for_signup(email, password, username, first_name, last_name,
                                                 team_name, contact_number)

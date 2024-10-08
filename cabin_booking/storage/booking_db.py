@@ -31,12 +31,12 @@ class BookingDB:
         return list(cabin_id_wise_slots_dict.values())
 
     @staticmethod
-    def validate_start_and_end_dates(start_date, end_date):
+    def validate_start_and_end_dates(start_date, end_date) -> None:
         if start_date > end_date:
             raise InvalidDateRangeException()
 
     @staticmethod
-    def create_cabin_slots(cabin_id, purpose, user_id, list_start_end_date_time_dto):
+    def create_cabin_slots(cabin_id, purpose, user_id, list_start_end_date_time_dto) -> None:
 
         create_user_booking = Booking.objects.create(user_id=user_id, purpose=purpose)
         create_cabin_bookings = CabinBooking.objects.create(cabin_id=cabin_id, booking=create_user_booking)
@@ -46,7 +46,7 @@ class BookingDB:
                                        cabin_booking=create_cabin_bookings)
 
     @staticmethod
-    def validate_cabin_id_for_cabin_slots(cabin_ids):
+    def validate_cabin_id_for_cabin_slots(cabin_ids) -> None:
         all_cabins = []
         cabins = Cabin.objects.all()
         for each_cabin in cabins:
@@ -56,14 +56,14 @@ class BookingDB:
                 raise InvalidCabinIDException()
 
     @staticmethod
-    def validate_cabin_id(cabin_id):
+    def validate_cabin_id(cabin_id) -> None:
         try:
             Cabin.objects.get(id=cabin_id)
         except Cabin.DoesNotExist:
             raise InvalidCabinIDException()
 
     @staticmethod
-    def check_user_already_booked_slots(cabin_id, convert_start_date, convert_end_date, converted_time_slots):
+    def check_user_already_booked_slots(cabin_id, convert_start_date, convert_end_date, converted_time_slots) -> bool:
         check_slots = BookingSlot.objects.filter(start_date_time__date__gte=convert_start_date,
                                                  end_date_time__date__lte=convert_end_date,
                                                  start_date_time__time__in=converted_time_slots,
@@ -71,7 +71,7 @@ class BookingDB:
         return check_slots.exists()
 
     @staticmethod
-    def get_user_booked_slot(cabin_id, start_date_time, end_date_time):
+    def get_user_booked_slot(cabin_id, start_date_time, end_date_time) -> BookingProfileDTO:
         start_date_time = datetime.strptime(start_date_time, "%Y-%m-%d %H:%M")
         end_date_time = datetime.strptime(end_date_time, "%Y-%m-%d %H:%M")
         cabin_slot_details = BookingSlot.objects.filter(
@@ -90,7 +90,7 @@ class BookingDB:
             return user_details_dto
 
     @staticmethod
-    def get_user_bookings(user_id):
+    def get_user_bookings(user_id) -> List[UserBookingDetailsDTO]:
         bookings_details_dto = []
         user_booking_details = Booking.objects.filter(user_id=user_id).prefetch_related(
             "cabinbooking_set__bookingslot_set", "cabinbooking_set__cabin__floor"
@@ -122,7 +122,7 @@ class BookingDB:
         return bookings_details_dto
 
     @staticmethod
-    def delete_user_bookings_db(booking_id):
+    def delete_user_bookings_db(booking_id) -> None:
         try:
             booking_obj = Booking.objects.get(id=booking_id)
             booking_obj.delete()

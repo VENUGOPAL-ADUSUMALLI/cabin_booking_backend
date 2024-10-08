@@ -5,14 +5,14 @@ from django.http import HttpResponse
 
 class CabinDetailsResponse:
     @staticmethod
-    def something_went_wrong_exception():
+    def something_went_wrong_exception()->HttpResponse:
         return HttpResponse(json.dumps({
             "error_code": "400",
             "error_message": "something went wrong"
         }, indent=4), status=400)
 
     @staticmethod
-    def cabin_details_success_response(floor_wise_cabins_details_dtos):
+    def cabin_details_success_response(floor_wise_cabins_details_dtos)->HttpResponse:
         get_floor_wise_cabins_dict = {}
         for each in floor_wise_cabins_details_dtos:
             floor_name = each.floor

@@ -1,3 +1,5 @@
+from django.http import HttpResponse
+
 from cabin_booking.exception import InvalidUserException
 from cabin_booking.presenter.update_password_response import UpdatePasswordResponse
 from cabin_booking.storage.user_db import UserDB
@@ -8,7 +10,7 @@ class UpdatePasswordInteractor:
         self.storage = storage
         self.response = response
 
-    def update_password_interactor(self, email, old_password, new_password):
+    def update_password_interactor(self, email, old_password, new_password) -> HttpResponse:
         try:
             is_correct_password = self.storage.validate_password(email, old_password)
             if is_correct_password is False:

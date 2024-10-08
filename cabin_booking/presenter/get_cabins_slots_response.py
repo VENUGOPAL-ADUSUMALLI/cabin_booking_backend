@@ -5,14 +5,14 @@ from django.http import HttpResponse
 
 class CabinSlotsDetailsResponse:
     @staticmethod
-    def invalid_cabin_id_exception():
+    def invalid_cabin_id_exception() -> HttpResponse:
         return HttpResponse(json.dumps({
             "error_message": " Invalid Cabin Id",
             "error_code": "400"
         }, indent=4), status=400)
 
     @staticmethod
-    def invalid_date_range_exception():
+    def invalid_date_range_exception() -> HttpResponse:
         return HttpResponse(json.dumps(
             {
                 "error_message": "Invalid Date",
@@ -21,7 +21,7 @@ class CabinSlotsDetailsResponse:
         ), status=400)
 
     @staticmethod
-    def get_cabin_slot_details_success_response(cabin_id_available_slot_dtos):
+    def get_cabin_slot_details_success_response(cabin_id_available_slot_dtos) -> HttpResponse:
         cabins = []
         for each_time_slot in cabin_id_available_slot_dtos:
             cabin_id = each_time_slot.cabin_id

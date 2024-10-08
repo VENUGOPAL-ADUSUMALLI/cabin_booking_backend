@@ -1,8 +1,8 @@
+from django.http import HttpResponse
+
 from cabin_booking.constants.config import order_types
-from cabin_booking.storage.cabin_db import CabinDB
-from cabin_booking.storage.dtos import FloorWiseCabinDetailsDTO
-from cabin_booking.exception import SomethingWentWrongException
 from cabin_booking.presenter.cabin_details_response import CabinDetailsResponse
+from cabin_booking.storage.cabin_db import CabinDB
 
 
 class CabinDetailsInteractor:
@@ -10,7 +10,7 @@ class CabinDetailsInteractor:
         self.storage = storage
         self.response = response
 
-    def get_floor_wise_cabins_list(self):
+    def get_floor_wise_cabins_list(self) ->HttpResponse:
         floor_wise_cabins_details_dtos = self.storage.get_cabins_details()
         if not floor_wise_cabins_details_dtos:
             return self.response.something_went_wrong_exception()

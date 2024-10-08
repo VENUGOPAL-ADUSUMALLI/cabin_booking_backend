@@ -1,6 +1,8 @@
-from cabin_booking.storage.user_authentication_db import UserAuthentication
+from django.http import HttpResponse
+
 from cabin_booking.exception import InvalidRefreshTokenException, InvalidAccessTokenException
 from cabin_booking.presenter.logout_responses import LogoutResponse
+from cabin_booking.storage.user_authentication_db import UserAuthentication
 
 
 class LogoutInteractor:
@@ -8,7 +10,7 @@ class LogoutInteractor:
         self.authentication = authentication
         self.response = response
 
-    def logout_interactor(self, access_token, refresh_token):
+    def logout_interactor(self, access_token, refresh_token) -> HttpResponse:
         try:
             self.authentication.expire_access_token_refresh_token(access_token, refresh_token)
             return self.response.logout_success_response()

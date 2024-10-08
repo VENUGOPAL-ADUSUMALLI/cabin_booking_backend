@@ -1,3 +1,5 @@
+from django.http import HttpResponse
+
 from cabin_booking.exception import InvalidUserException
 from cabin_booking.presenter.login_interactor_response import LoginInteractorResponse
 from cabin_booking.storage.dtos import LoginResponseDTO
@@ -11,7 +13,7 @@ class LoginInteractor:
         self.response = response
         self.authentication = authentication
 
-    def login_interactor(self, email, password):
+    def login_interactor(self, email, password) -> HttpResponse:
         try:
             user_login = self.storage.validate_password(email, password)
             if user_login is False:

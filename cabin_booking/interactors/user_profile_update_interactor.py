@@ -1,6 +1,8 @@
-from cabin_booking.storage.user_db import UserDB
-from cabin_booking.exception import InvalidUsernameException, InvalidUserDetailsException, InvalidUserException
+from django.http import HttpResponse
+
+from cabin_booking.exception import InvalidUserException
 from cabin_booking.presenter.user_profile_update_response import UserProfileUpdateResponse
+from cabin_booking.storage.user_db import UserDB
 
 
 class UserProfileUpdate:
@@ -8,7 +10,8 @@ class UserProfileUpdate:
         self.storage = storage
         self.response = response
 
-    def update_user_profile_interactor(self, username, first_name, last_name, contact_number, team_name, user_id):
+    def update_user_profile_interactor(self, username, first_name, last_name, contact_number, team_name,
+                                       user_id) -> HttpResponse:
         try:
             self.storage.validate_user_id(user_id)
         except InvalidUserException:

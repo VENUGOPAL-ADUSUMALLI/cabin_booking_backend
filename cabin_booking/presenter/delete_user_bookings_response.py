@@ -5,7 +5,7 @@ from django.http import HttpResponse
 
 class DeleteUserBookingsResponse:
     @staticmethod
-    def invalid_booking_exception():
+    def invalid_booking_exception()-> HttpResponse:
         return HttpResponse(json.dumps(
             {
                 "error_code": "400",
@@ -14,7 +14,7 @@ class DeleteUserBookingsResponse:
             , indent=4), status=400)
 
     @staticmethod
-    def slot_delete_success_response():
+    def slot_delete_success_response()-> HttpResponse:
         return HttpResponse(json.dumps(
             {
                 "error_code": "200",

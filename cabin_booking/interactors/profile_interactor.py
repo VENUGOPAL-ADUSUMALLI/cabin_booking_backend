@@ -1,11 +1,9 @@
-import json
-
 from django.http import HttpResponse
 
-from cabin_booking.storage.dtos import ProfileDTO
-from cabin_booking.storage.user_db import UserDB
 from cabin_booking.exception import InvalidUserException
 from cabin_booking.presenter.profile_interactor_response import ProfileInteractorResponse
+from cabin_booking.storage.dtos import ProfileDTO
+from cabin_booking.storage.user_db import UserDB
 
 
 class ProfileInteractor:
@@ -13,7 +11,7 @@ class ProfileInteractor:
         self.storage = storage
         self.response = response
 
-    def get_user_details_profile_interactor(self, user_id):
+    def get_user_details_profile_interactor(self, user_id) -> HttpResponse:
         try:
             user_details = self.storage.profile(user_id)
         except InvalidUserException:

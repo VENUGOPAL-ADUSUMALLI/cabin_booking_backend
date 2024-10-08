@@ -1,8 +1,9 @@
+from django.http import HttpResponse
+
+from cabin_booking.exception import InvalidRefreshTokenException, RefreshTokenExpiredException
+from cabin_booking.presenter.create_refresh_access_token_response import CreateRefreshAccessTokensResponse
 from cabin_booking.storage.dtos import CreateRefreshTokenDTO
 from cabin_booking.storage.user_authentication_db import UserAuthentication
-from cabin_booking.storage.user_db import UserDB
-from cabin_booking.exception import InvalidUserException, InvalidRefreshTokenException, RefreshTokenExpiredException
-from cabin_booking.presenter.create_refresh_access_token_response import CreateRefreshAccessTokensResponse
 
 
 class CreateRefreshAccessToken:
@@ -11,7 +12,7 @@ class CreateRefreshAccessToken:
         self.authentication = authentication
         self.response = response
 
-    def refresh_access_token_interactor(self, refresh_token):
+    def refresh_access_token_interactor(self, refresh_token) -> HttpResponse:
         try:
             get_refresh_token = self.authentication.create_refresh_access_token(
                 refresh_token)

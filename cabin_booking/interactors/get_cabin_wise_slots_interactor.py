@@ -1,5 +1,7 @@
 from datetime import time
 
+from django.http import HttpResponse
+
 from cabin_booking.constants.time_slots_constant import SLOT_BOOKING_START_TIME, SLOT_BOOKING_END_TIME
 from cabin_booking.exception import InvalidCabinIDException, InvalidDateRangeException
 from cabin_booking.interactors.dtos import CabinTimeSlotsAvailabilityDTO, TimeSlotsDTO
@@ -12,7 +14,7 @@ class CabinWiseSlotsInteractor:
         self.storage = storage
         self.response = response
 
-    def get_cabin_slots_interactor(self, cabin_ids, start_date, end_date):
+    def get_cabin_slots_interactor(self, cabin_ids, start_date, end_date)->HttpResponse:
         try:
             self.storage.validate_cabin_id_for_cabin_slots(cabin_ids)
         except InvalidCabinIDException:

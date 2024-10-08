@@ -5,7 +5,7 @@ from django.http import HttpResponse
 
 class LogoutResponse:
     @staticmethod
-    def invalid_refresh_token_response():
+    def invalid_refresh_token_response() -> HttpResponse:
         return HttpResponse(json.dumps(
             {
                 "error_code": "400",
@@ -14,7 +14,7 @@ class LogoutResponse:
             , indent=4), status=400)
 
     @staticmethod
-    def invalid_access_token_response():
+    def invalid_access_token_response() -> HttpResponse:
         return HttpResponse(json.dumps(
             {
                 "error_code": "400",
@@ -23,7 +23,7 @@ class LogoutResponse:
             , indent=4), status=400)
 
     @staticmethod
-    def logout_success_response():
+    def logout_success_response() -> HttpResponse:
         return HttpResponse(json.dumps(
             {
                 "error_code": "200",
