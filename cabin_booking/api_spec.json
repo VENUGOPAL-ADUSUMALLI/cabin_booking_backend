@@ -282,6 +282,18 @@
           }
         }
       }
+    },
+    "DeleteUserBookings": {
+      "name": "delete user bookings",
+      "in": "body",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "booking_id": {
+            "type": "string"
+          }
+        }
+      }
     }
   },
   "responses": {
@@ -726,6 +738,25 @@
         "responses": {
           "200": {
             "description": "User logged out successfully"
+          },
+          "400": {
+            "$ref": "#/responses/error"
+          }
+        }
+      }
+    },
+    "/user_account/delete_slot/v1": {
+      "post": {
+        "summary": "Delete user booked slots",
+        "operationId": "deleted_user_bookings",
+        "parameters": [
+          {
+            "$ref": "#/parameters/DeleteUserBookings"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Your Bookings has beem deleted"
           },
           "400": {
             "$ref": "#/responses/error"

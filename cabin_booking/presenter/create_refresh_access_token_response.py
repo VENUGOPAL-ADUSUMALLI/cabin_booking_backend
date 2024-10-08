@@ -27,5 +27,4 @@ class CreateRefreshAccessTokensResponse:
         refresh_access_token_dict = {
             "access_token": str(refresh_access_token_dto.access_token)
         }
-        print(refresh_access_token_dict)
         return HttpResponse(json.dumps(refresh_access_token_dict, indent=4), status=200)

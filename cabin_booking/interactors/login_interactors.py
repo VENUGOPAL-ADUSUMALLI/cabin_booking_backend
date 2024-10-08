@@ -1,8 +1,8 @@
+from cabin_booking.exception import InvalidUserException
+from cabin_booking.presenter.login_interactor_response import LoginInteractorResponse
 from cabin_booking.storage.dtos import LoginResponseDTO
 from cabin_booking.storage.user_authentication_db import UserAuthentication
 from cabin_booking.storage.user_db import UserDB
-from cabin_booking.exception import InvalidUserException
-from cabin_booking.presenter.login_interactor_response import LoginInteractorResponse
 
 
 class LoginInteractor:
@@ -23,8 +23,8 @@ class LoginInteractor:
         access_token = self.authentication.create_access_token(user_id)
         refresh_token = self.authentication.create_refresh_token(access_token, user_id)
         user_login_dto = LoginResponseDTO(
-            access_token=access_token,
-            refresh_token=refresh_token
+            access_token=access_token.access_token,
+            refresh_token=refresh_token.refresh_token
         )
         user_response = self.response.user_login_dto_response(user_login_dto)
         return user_response

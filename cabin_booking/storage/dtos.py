@@ -1,3 +1,4 @@
+import uuid
 from dataclasses import dataclass
 from datetime import datetime
 from typing import List
@@ -100,34 +101,19 @@ class UpdateProfileDTO:
     last_name: str
     contact_number: str
 
-    # def get_user_bookings_interactor(self, user_id):
-    #     try:
-    #         self.storage.validate_user_id(user_id)
-    #     except InvalidUserException:
-    #         return self.response.invalid_user_exception()
-    #     user_bookings_dto = []
-    #     try:
-    #         user_bookings_details = self.storage.get_user_bookings(user_id)
-    #     except NoBookingsException:
-    #         return self.response.no_bookings_exception()
-    #     for booking in user_bookings_details:
-    #         for cabin_booking in booking.cabinbooking_set.all():
-    #             time_slots = set()
-    #             start_date_list = []
-    #             for booking_slot in cabin_booking.bookingslot_set.all():
-    #                 start_date_list.append(booking_slot.start_date_time.date())
-    #                 time_slots.add(booking_slot.start_date_time.time())
-    #                 unique_time_slots = sorted(set(time_slots))
-    #                 cabin_details_dto = UserBookingDetails(
-    #                     floor_name=cabin_booking.cabin.floor.name,
-    #                     cabin_name=cabin_booking.cabin.name,
-    #                     booking_id=booking.id,
-    #                     start_date=start_date_list[0],
-    #                     end_date=start_date_list[-1],
-    #                     time_slots=unique_time_slots
-    #                 )
-    #                 if not start_date_list:
-    #                     raise NoBookingsException()
-    #                 user_bookings_dto.append(cabin_details_dto)
-    #
-    #     return user_bookings_dto
+
+@dataclass
+class UserIdDTO:
+    user_id: uuid.UUID
+
+
+@dataclass
+class AccessTokenDTO:
+    user_id: str
+    access_token: str
+
+
+@dataclass
+class RefreshTokenDTO:
+    user_id: str
+    refresh_token: str

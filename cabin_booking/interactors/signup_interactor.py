@@ -25,8 +25,8 @@ class SignupInteractor:
         access_token = self.authentication.create_access_token(user_id)
         refresh_token = self.authentication.create_refresh_token(access_token, user_id)
         user_signup_dto = SignupResponseDTO(
-            access_token=access_token,
-            refresh_token=refresh_token
+            access_token=access_token.access_token,
+            refresh_token=refresh_token.refresh_token
         )
         response = self.response.user_signup_dto_response(user_signup_dto)
         return response

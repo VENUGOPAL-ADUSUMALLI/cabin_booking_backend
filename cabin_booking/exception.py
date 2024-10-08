@@ -56,3 +56,7 @@ class InvalidDateRangeException(Exception):
 
 class InvalidDetailsException(Exception):
     pass
+
+
+class InvalidBookingIDException(Exception):
+    pass

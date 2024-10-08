@@ -4,9 +4,10 @@ from typing import List
 from django.db.models import Q
 from django.utils import timezone
 
-from cabin_booking.exception import InvalidCabinIDException, NoBookingsException, InvalidDateRangeException
+from cabin_booking.exception import InvalidCabinIDException, NoBookingsException, InvalidDateRangeException, \
+    InvalidBookingIDException
 from cabin_booking.models import BookingSlot, Cabin, Booking, CabinBooking
-from cabin_booking.storage.dtos import CabinTimeSlotsDTO, UserBookingDetailsDTO, BookingProfileDTO
+from cabin_booking.storage.dtos import CabinTimeSlotsDTO, UserBookingDetailsDTO, BookingProfileDTO, ProfileDTO
 from cabin_booking.storage.user_db import UserDB
 
 
@@ -120,3 +121,11 @@ class BookingDB:
                 bookings_details_dto.append(cabin_details_dto)
 
         return bookings_details_dto
+
+    @staticmethod
+    def delete_user_bookings_db(booking_id):
+        try:
+            booking_obj = Booking.objects.get(id=booking_id)
+            booking_obj.delete()
+        except Booking.DoesNotExist:
+            raise InvalidBookingIDException()

@@ -5,7 +5,7 @@ import pytest
 from cabin_booking.exception import UserAlreadyExistsException
 from cabin_booking.interactors.signup_interactor import SignupInteractor
 from cabin_booking.presenter.signup_interactor_response import SignupInteractorResponse
-from cabin_booking.storage.dtos import ProfileDTO
+from cabin_booking.storage.dtos import ProfileDTO, AccessTokenDTO, RefreshTokenDTO
 from cabin_booking.storage.user_authentication_db import UserAuthentication
 from cabin_booking.storage.user_db import UserDB
 
@@ -80,8 +80,16 @@ class TestSignupInteractor:
         user_db_mock.get_user_id.return_value = expected_user_id
         expected_access_token = "133319343d9946bb8f15d6833e4eab90"
         expected_refresh_token = "71ca7c8528e24b3eaf689cc597064179"
-        user_authentication_mock.create_access_token.return_value = expected_access_token
-        user_authentication_mock.create_refresh_token.return_value = expected_refresh_token
+        access_token_dto = AccessTokenDTO(
+            user_id=user_id,
+            access_token=expected_access_token
+        )
+        refresh_token_dto = RefreshTokenDTO(
+            user_id=user_id,
+            refresh_token=expected_refresh_token
+        )
+        user_authentication_mock.create_access_token.return_value = access_token_dto
+        user_authentication_mock.create_refresh_token.return_value = refresh_token_dto
         expected_response = {
             "access_token": expected_access_token,
             "refresh_token": expected_refresh_token
@@ -95,6 +103,6 @@ class TestSignupInteractor:
                                                                     team_name, contact_number)
         user_db_mock.get_user_id.assert_called_once_with(email)
         user_authentication_mock.create_access_token.assert_called_once_with(user_id)
-        user_authentication_mock.create_refresh_token.assert_called_once_with(expected_access_token, user_id)
+        user_authentication_mock.create_refresh_token.assert_called_once_with(access_token_dto, user_id)
         signup_interactor_response_mock.user_signup_dto_response(user_account_dto_response)
         assert response == expected_response

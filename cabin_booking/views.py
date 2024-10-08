@@ -1,5 +1,7 @@
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
 
+from cabin_booking.interactors.delete_user_bookings_interactor import DeleteUserBookings
+from cabin_booking.presenter.delete_user_bookings_response import DeleteUserBookingsResponse
 from cabin_booking.storage.booking_db import BookingDB
 from cabin_booking.storage.cabin_db import CabinDB
 from cabin_booking.storage.user_authentication_db import UserAuthentication
@@ -185,4 +187,13 @@ def get_user_my_bookings_view(request):
                                     response=MyBookingsResponse(),
                                     user_db_storage=UserDB()).get_user_my_bookings_interactor(
         user_id=user_id)
+    return response
+
+
+@api_view(["POST"])
+def delete_user_bookings_view(request):
+    booking_id = request.data.get('booking_id')
+    response = DeleteUserBookings(storage=BookingDB(user_db_storage=UserDB()),
+                                  user_db_storage=UserDB(),
+                                  response=DeleteUserBookingsResponse()).delete_user_bookings_interactor(booking_id)
     return response
