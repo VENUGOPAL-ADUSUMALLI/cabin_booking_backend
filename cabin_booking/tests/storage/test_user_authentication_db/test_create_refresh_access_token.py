@@ -28,7 +28,7 @@ class TestCreateRefreshToken:
         )
         refresh_token = storage.create_refresh_token(user_id=user.user_id, access_token=access_token_dto)
         response = storage.create_refresh_access_token(refresh_token.refresh_token)
-        assert len(response.access_token.token) == 32
+        assert len(response.access_token) == 32
 
     def test_refresh_token_exception(self):
         refresh_token = "f8028c4da6914db7a387d2bb87c02dba"
