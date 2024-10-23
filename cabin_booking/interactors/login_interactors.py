@@ -18,7 +18,6 @@ class LoginInteractor:
             user_login = self.storage.validate_password(email, password)
             if user_login is False:
                 return self.response.invalid_password_exception_response()
-
         except InvalidUserException:
             return self.response.invalid_user_response()
         user_id = self.storage.get_user_id(email)

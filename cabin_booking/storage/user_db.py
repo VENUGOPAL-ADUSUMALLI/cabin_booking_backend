@@ -45,6 +45,7 @@ class UserDB:
     @staticmethod
     def profile(user_id) -> ProfileDTO:
         try:
+
             user_details = User.objects.get(user_id=user_id)
         except User.DoesNotExist:
             raise InvalidUserException()

@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     'corsheaders',
+    'django_s3_storage'
 ]
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -91,8 +92,12 @@ WSGI_APPLICATION = 'cabin_booking_backend.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'beta_db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'cabin_booking_backend',
+        'USER': 'venugopal',
+        'PASSWORD': 'venu@12345',
+        'HOST': 'localhost',
+        'PORT': '',
     }
 }
 
@@ -132,8 +137,6 @@ USE_TZ = False
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = 'static/'
-
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
@@ -146,3 +149,19 @@ ACCESS_TOKEN_EXPIRE_SECONDS = 3600
 REFRESH_TOKEN_EXPIRE_SECONDS = 86400
 CORS_ALLOW_ALL_ORIGINS = True
 # curl -X POST -d "grant_type=password&username=<your-username>&password=<your-password>&client_id=s8o4OHGhpZDdHnSwirlyCIhr1HYafB4UsOTtnAVnj&client_secret=ZjL7Mo8pL3XZUi2V1u26lL8Wh1Z6ZX7JoVV3O8MPsxwmwQXW4lR9CEom3j3d9onyxbiffEleTwig9areLEDy9PqsC9OjJNDI7HTL6IEtiALAWleGxTumBdQuipXo" http://<your-domain>/o/token/
+
+PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
+STATIC_ROOT = os.path.join(PROJECT_DIR, 'static')  # Use the name of your staging environment (e.g. production)
+WHITENOISE_STATIC_PREFIX = '/static/'
+YOUR_S3_BUCKET = "zappa-static"
+
+STATICFILES_STORAGE = "django_s3_storage.storage.StaticS3Storage"
+AWS_S3_BUCKET_NAME_STATIC = YOUR_S3_BUCKET
+
+# These next two lines will serve the static files directly
+# from the s3 bucket
+AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % YOUR_S3_BUCKET
+STATIC_URL = "https://%s/" % AWS_S3_CUSTOM_DOMAIN
+
+# OR...if you create a fancy custom domain for your static files use:
+# AWS_S3_PUBLIC_URL_STATIC = "https://static.zappaguide.com/"

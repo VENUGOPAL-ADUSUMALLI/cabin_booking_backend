@@ -32,7 +32,7 @@ from cabin_booking.presenter.user_booked_slots_response import UserBookedSlotRes
 from cabin_booking.presenter.user_profile_update_response import UserProfileUpdateResponse
 
 
-@api_view(['GET'])
+@api_view(['POST'])
 @authentication_classes([])
 @permission_classes([])
 def get_login_interactor_view(request):
