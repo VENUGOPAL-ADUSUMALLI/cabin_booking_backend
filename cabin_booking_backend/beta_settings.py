@@ -165,3 +165,17 @@ STATIC_URL = "https://%s/" % AWS_S3_CUSTOM_DOMAIN
 
 # OR...if you create a fancy custom domain for your static files use:
 # AWS_S3_PUBLIC_URL_STATIC = "https://static.zappaguide.com/"
+import sentry_sdk
+
+sentry_sdk.init(
+    dsn="https://50cb9481338759ed65ec5b6572452fe5@o4508176376856576.ingest.us.sentry.io/4508176382951425",
+    # Set traces_sample_rate to 1.0 to capture 100%
+    # of transactions for tracing.
+    traces_sample_rate=1.0,
+    _experiments={
+        # Set continuous_profiling_auto_start to True
+        # to automatically start the profiler on when
+        # possible.
+        "continuous_profiling_auto_start": True,
+    },
+)
