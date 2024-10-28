@@ -23,7 +23,7 @@ SECRET_KEY = 'django-insecure-df)(vrdzh)z!8n)d*lyjy37ywq5_3oh^^&7)l)l-b0@qm_09fv
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
-ALLOWED_HOSTS = ['https://onbwa7m4cf.execute-api.ap-south-1.amazonaws.com/beta','127.0.0.1']
+ALLOWED_HOSTS = ['https://onbwa7m4cf.execute-api.ap-south-1.amazonaws.com/beta', '127.0.0.1']
 
 # Application definition
 
@@ -131,7 +131,7 @@ USE_TZ = False
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = 'static/'
+import os
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
@@ -145,3 +145,15 @@ ACCESS_TOKEN_EXPIRE_SECONDS = 3600
 REFRESH_TOKEN_EXPIRE_SECONDS = 86400
 CORS_ALLOW_ALL_ORIGINS = True
 # curl -X POST -d "grant_type=password&username=<your-username>&password=<your-password>&client_id=s8o4OHGhpZDdHnSwirlyCIhr1HYafB4UsOTtnAVnj&client_secret=ZjL7Mo8pL3XZUi2V1u26lL8Wh1Z6ZX7JoVV3O8MPsxwmwQXW4lR9CEom3j3d9onyxbiffEleTwig9areLEDy9PqsC9OjJNDI7HTL6IEtiALAWleGxTumBdQuipXo" http://<your-domain>/o/token/
+AWS_S3_REGION_NAME = os.environ.get("OBJECT_STORAGE_REGION", "ap-south-1")
+AWS_S3_ENDPOINT_URL = f"https://s3.{AWS_S3_REGION_NAME}.amazonaws.com"
+AWS_S3_USE_SSL = True
+AWS_STORAGE_BUCKET_NAME = os.environ.get("OBJECT_STORAGE_BUCKET_NAME", "your-bucket-name")
+AWS_ACCESS_KEY_ID = os.environ.get("OBJECT_STORAGE_ACCESS_KEY")
+AWS_SECRET_ACCESS_KEY = os.environ.get("OBJECT_STORAGE_SECRET_KEY")
+AWS_DEFAULT_ACL = "public-read"
+
+# Static files (CSS, JavaScript, Images)
+STATIC_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/static/'
+STATICFILES_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # Local collection point for static files
