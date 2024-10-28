@@ -14,6 +14,7 @@ class LoginInteractor:
         self.authentication = authentication
 
     def login_interactor(self, email, password) -> HttpResponse:
+        result = 1/0
         try:
             user_login = self.storage.validate_password(email, password)
             if user_login is False:

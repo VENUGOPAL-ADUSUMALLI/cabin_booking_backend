@@ -24,8 +24,7 @@ SECRET_KEY = 'django-insecure-df)(vrdzh)z!8n)d*lyjy37ywq5_3oh^^&7)l)l-b0@qm_09fv
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['*']
-
+ALLOWED_HOSTS = ['https://onbwa7m4cf.execute-api.ap-south-1.amazonaws.com/beta', '127.0.0.1']
 # Application definition
 
 INSTALLED_APPS = [
@@ -89,15 +88,19 @@ WSGI_APPLICATION = 'cabin_booking_backend.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
+import pymysql
+
+pymysql.install_as_MySQLdb()
+import os
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'cabin_booking_backend',
-        'USER': 'venugopal',
-        'PASSWORD': 'venu@12345',
-        'HOST': 'localhost',
-        'PORT': '',
+        'NAME': os.environ.get('DB_NAME'),
+        'USER': os.environ.get('DB_USER'),
+        'PASSWORD': os.environ.get('DB_PASSWORD'),
+        'HOST': 'localhost',  # Or wherever your database is hosted
+        'PORT': '3306',  # Default MySQL port
     }
 }
 
@@ -153,7 +156,7 @@ CORS_ALLOW_ALL_ORIGINS = True
 PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 STATIC_ROOT = os.path.join(PROJECT_DIR, 'static')  # Use the name of your staging environment (e.g. production)
 WHITENOISE_STATIC_PREFIX = '/static/'
-YOUR_S3_BUCKET = "zappa-static"
+YOUR_S3_BUCKET = "zappa-cabin-booking-staticfile"
 
 STATICFILES_STORAGE = "django_s3_storage.storage.StaticS3Storage"
 AWS_S3_BUCKET_NAME_STATIC = YOUR_S3_BUCKET
