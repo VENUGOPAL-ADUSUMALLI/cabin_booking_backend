@@ -161,15 +161,12 @@ sentry_sdk.init(
     },
 )
 
-AWS_S3_REGION_NAME = os.environ.get("OBJECT_STORAGE_REGION", "ap-south-1")
-AWS_S3_ENDPOINT_URL = f"https://s3.{AWS_S3_REGION_NAME}.amazonaws.com"
-AWS_S3_USE_SSL = True
-AWS_STORAGE_BUCKET_NAME = os.environ.get("OBJECT_STORAGE_BUCKET_NAME", "your-bucket-name")
-AWS_ACCESS_KEY_ID = os.environ.get("OBJECT_STORAGE_ACCESS_KEY")
-AWS_SECRET_ACCESS_KEY = os.environ.get("OBJECT_STORAGE_SECRET_KEY")
-AWS_DEFAULT_ACL = "public-read"
-
-# Static files (CSS, JavaScript, Images)
-STATIC_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/static/'
+STATICFILES_DIRS = [BASE_DIR / "static"]
+STATIC_ROOT = BASE_DIR / "staticfiles"
 STATICFILES_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # Local collection point for static files
+AWS_STORAGE_BUCKET_NAME = "zappa-cabin-booking-staticfile"
+AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
+STATIC_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/static/"
+STATICFILES_LOCATION = "static"
+
+

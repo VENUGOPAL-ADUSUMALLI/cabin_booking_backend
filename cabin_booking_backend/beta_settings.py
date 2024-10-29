@@ -16,7 +16,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY SETTINGS
 SECRET_KEY = 'django-insecure-df)(vrdzh)z!8n)d*lyjy37ywq5_3oh^^&7)l)l-b0@qm_09fv'
 DEBUG = False
-ALLOWED_HOSTS = ['https://onbwa7m4cf.execute-api.ap-south-1.amazonaws.com/beta', '127.0.0.1']
+ALLOWED_HOSTS = ['onbwa7m4cf.execute-api.ap-south-1.amazonaws.com', '127.0.0.1']
 
 # Application definition
 INSTALLED_APPS = [
@@ -61,7 +61,6 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 # URL Configuration
@@ -138,20 +137,10 @@ sentry_sdk_init(
         "continuous_profiling_auto_start": True,
     },
 )
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.2/howto/static-files/
-
-
-
-# AWS S3 settings
-AWS_S3_REGION_NAME = os.environ.get("OBJECT_STORAGE_REGION", "ap-south-1")
-AWS_S3_ENDPOINT_URL = f"https://s3.{AWS_S3_REGION_NAME}.amazonaws.com"
-AWS_S3_USE_SSL = True
-AWS_STORAGE_BUCKET_NAME = os.environ.get("OBJECT_STORAGE_BUCKET_NAME", "your-bucket-name")
-AWS_ACCESS_KEY_ID = os.environ.get("OBJECT_STORAGE_ACCESS_KEY")
-AWS_SECRET_ACCESS_KEY = os.environ.get("OBJECT_STORAGE_SECRET_KEY")
-AWS_DEFAULT_ACL = "public-read"
-
-# Static files (CSS, JavaScript, Images)
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # Local collection point for static files
+STATICFILES_DIRS = [BASE_DIR / "static"]
+STATIC_ROOT = BASE_DIR / "staticfiles"
+STATICFILES_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+AWS_STORAGE_BUCKET_NAME = "zappa-cabin-booking-staticfile"
+AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
+STATIC_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/static/"
+STATICFILES_LOCATION = "static"

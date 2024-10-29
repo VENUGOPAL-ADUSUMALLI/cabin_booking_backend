@@ -9,10 +9,11 @@
     "project_name": "cabin-booking-backend",
     "runtime": "python3.12",
     "s3_bucket": "zappa-cabin-booking",
-     "staticfiles_location": "static",
+    "staticfiles_location": "static",
     "static_s3_bucket": "zappa-cabin-booking-staticfile",
     "keep_warm": true,
     "log_level": "DEBUG",
-    "slim_handler": true
+    "slim_handler": true,
+    "timeout_seconds": 30
   }
 }
