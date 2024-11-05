@@ -16,8 +16,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY SETTINGS
 SECRET_KEY = 'django-insecure-df)(vrdzh)z!8n)d*lyjy37ywq5_3oh^^&7)l)l-b0@qm_09fv'
 DEBUG = False
-ALLOWED_HOSTS = ['onbwa7m4cf.execute-api.ap-south-1.amazonaws.com', '127.0.0.1']
-
+ALLOWED_HOSTS = ['*']
+# 'onbwa7m4cf.execute-api.ap-south-1.amazonaws.com', '127.0.0.1'
 # Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',
