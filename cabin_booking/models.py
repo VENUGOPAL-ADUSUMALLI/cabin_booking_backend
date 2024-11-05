@@ -84,3 +84,6 @@ class BookingSlot(CreateUpdateTimeDetails):
 
     def __str__(self):
         return f"start_date_time = {self.start_date_time} , end_date_time = {self.end_date_time},cabin_booking = {self.cabin_booking}"
+# cabins = [
+#     Cabin(floor=groundfloor,name="Conference Room")
+# ]
