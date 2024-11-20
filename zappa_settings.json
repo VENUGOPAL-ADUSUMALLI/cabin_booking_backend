@@ -11,19 +11,9 @@
     "s3_bucket": "zappa-cabin-booking",
     "staticfiles_location": "static",
     "static_s3_bucket": "zappa-cabin-booking-staticfile",
-    "keep_warm": true,
-    "log_level": "DEBUG",
+    "keep_warm": false,
+    "log_level": "INFO",
     "slim_handler": true,
-    "timeout_seconds": 30,
-    "vpc_config": {
-      "SubnetIds": [
-        "subnet-02c91b35808fb739b",
-        "subnet-0607aa8e4016f7d40",
-        "subnet-053091dd53ce71720"
-      ],
-      "SecurityGroupIds": [
-        "sg-01c932c02b47539ac"
-      ]
-    }
+    "timeout_seconds": 30
   }
 }
