@@ -94,6 +94,9 @@ DATABASES = {
         'PASSWORD': os.environ.get('DB_PASSWORD'),
         'HOST': os.environ.get('DB_HOST'),
         'PORT': '3306',
+        'OPTIONS': {
+            'sql_mode': 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION',
+        },
     }
 }
 
